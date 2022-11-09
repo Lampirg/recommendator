@@ -80,7 +80,7 @@ public class MalCommunicator implements AnimeSiteCommunicator {
                 );
                 if (toExclude.contains(animeTitle))
                     continue;
-                recommendedAnime.merge(animeTitle, 1, (prev, cur) -> ++prev * title.score());
+                recommendedAnime.merge(animeTitle, title.score(), (prev, cur) -> ++prev * title.score());
             }
         }
         Set<AnimeRecommendation> animeRecommendationSet = new HashSet<>();
