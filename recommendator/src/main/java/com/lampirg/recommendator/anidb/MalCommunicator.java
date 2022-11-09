@@ -53,10 +53,12 @@ public class MalCommunicator implements AnimeSiteCommunicator {
         {
             Node node = data.node();
             int score = data.listStatus().score() != 0 ? data.listStatus().score() : 1;
-            titleSet.add(new UserAnimeTitle(new AnimeTitle(node.id(), node.title(),
-                    node.mainPicture().medium()), score));
+            titleSet.add(new UserAnimeTitle(new AnimeTitle(
+                    node.id(), node.title(), node.mainPicture().getLargeIfPresent()
+            ),
+                    score));
         });
-        return titleSet;
+        return Set.copyOf(titleSet);
     }
 
     @Override
@@ -83,6 +85,6 @@ public class MalCommunicator implements AnimeSiteCommunicator {
         }
         Set<AnimeRecommendation> animeRecommendationSet = new HashSet<>();
         recommendedAnime.forEach((key, value) -> animeRecommendationSet.add(new AnimeRecommendation(key, value)));
-        return animeRecommendationSet;
+        return Set.copyOf(animeRecommendationSet);
     }
 }
