@@ -64,14 +64,31 @@ public class MalCommunicator implements AnimeSiteCommunicator {
 
     @Override
     public Set<AnimeRecommendation> getSimilarAnimeTitles(Set<UserAnimeTitle> animeTitles) {
-        Map<AnimeTitle, Integer> recommendedAnime = new HashMap<>();
-        Set<AnimeTitle> toExclude = new HashSet<>();
+        TitleMapper titleMapper = new TitleMapper();
+        titleMapper.fillToExclude(animeTitles);
         for (UserAnimeTitle title : animeTitles) {
-            toExclude.add(title.animeTitle());
+            titleMapper.findAndAddTitleRecommendations(title);
         }
-        for (UserAnimeTitle title : animeTitles) {
+        Set<AnimeRecommendation> animeRecommendationSet = new HashSet<>();
+        titleMapper.recommendedAnime.forEach(
+                (key, value) -> animeRecommendationSet.add(new AnimeRecommendation(key, value))
+        );
+        return Set.copyOf(animeRecommendationSet);
+    }
+
+    private class TitleMapper {
+        private Map<AnimeTitle, Integer> recommendedAnime = new HashMap<>();
+        private Set<AnimeTitle> toExclude = new HashSet<>();
+
+        private void fillToExclude(Set<UserAnimeTitle> animeTitles) {
+            for (UserAnimeTitle title : animeTitles) {
+                toExclude.add(title.animeTitle());
+            }
+        }
+
+        private void findAndAddTitleRecommendations(UserAnimeTitle title) {
             String url = "https://api.myanimelist.net/v2/anime/"+title.animeTitle().id()+"?fields=recommendations";
-            ResponseEntity<GetAnimeDetail> response = this.restTemplate.exchange(url, HttpMethod.GET, request, GetAnimeDetail.class);
+            ResponseEntity<GetAnimeDetail> response = restTemplate.exchange(url, HttpMethod.GET, request, GetAnimeDetail.class);
             for (Recommendation recommendation : response.getBody().recommendations()) {
                 AnimeTitle animeTitle = new AnimeTitle(
                         recommendation.node().id(),
@@ -83,8 +100,5 @@ public class MalCommunicator implements AnimeSiteCommunicator {
                 recommendedAnime.merge(animeTitle, title.score(), (prev, cur) -> ++prev * title.score());
             }
         }
-        Set<AnimeRecommendation> animeRecommendationSet = new HashSet<>();
-        recommendedAnime.forEach((key, value) -> animeRecommendationSet.add(new AnimeRecommendation(key, value)));
-        return Set.copyOf(animeRecommendationSet);
     }
 }
