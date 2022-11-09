@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequestMapping("/recommend")
@@ -23,8 +21,11 @@ public class SimilarAnimeController {
     private AnimeSiteCommunicator siteCommunicator;
 
     @GetMapping("/{nickname}")
-    public Set<AnimeRecommendation> getSimilarAnime(@PathVariable String nickname) {
-        return siteCommunicator.getSimilarAnimeTitles(siteCommunicator.getUserAnimeList(nickname));
+    public List<AnimeRecommendation> getSimilarAnime(@PathVariable String nickname) {
+        List<AnimeRecommendation> list =
+                new ArrayList<>(siteCommunicator.getSimilarAnimeTitles(siteCommunicator.getUserAnimeList(nickname)));
+        list.sort(Comparator.comparingInt(AnimeRecommendation::numOfRecommendations).reversed());
+        return list;
     }
 
 }
