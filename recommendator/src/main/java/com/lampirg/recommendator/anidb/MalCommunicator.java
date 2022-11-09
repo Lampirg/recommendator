@@ -29,17 +29,18 @@ public class MalCommunicator implements AnimeSiteCommunicator {
     private static final String CLIENT_ID_HEADER = "X-MAL-CLIENT-ID";
     private final String clientId = "a4e33f4b0a5b5e9cbdbbcee74debbb3f";
     private HttpHeaders authHeader;
+    HttpEntity<String> request;
 
     @PostConstruct
     private void init() {
         authHeader = new HttpHeaders();
         authHeader.set(CLIENT_ID_HEADER, clientId);
+        request = new HttpEntity<>(authHeader);
     }
 
     @Override
     public Set<UserAnimeTitle> getUserAnimeList(String username) {
         String url = "https://api.myanimelist.net/v2/users/"+username+"/animelist?fields=list_status&status=completed&limit=1000";
-        HttpEntity<String> request = new HttpEntity<>(authHeader);
         List<Data> dataList = new ArrayList<>();
         while (true) {
             ResponseEntity<GetUserListJsonResult> response = this.restTemplate.exchange(url, HttpMethod.GET, request, GetUserListJsonResult.class);
@@ -63,7 +64,6 @@ public class MalCommunicator implements AnimeSiteCommunicator {
 
     @Override
     public Set<AnimeRecommendation> getSimilarAnimeTitles(Set<UserAnimeTitle> animeTitles) {
-        HttpEntity<String> request = new HttpEntity<>(authHeader);
         Map<AnimeTitle, Integer> recommendedAnime = new HashMap<>();
         Set<AnimeTitle> toExclude = new HashSet<>();
         for (UserAnimeTitle title : animeTitles) {
