@@ -76,7 +76,7 @@ public class MalCommunicator implements AnimeSiteCommunicator {
                 AnimeTitle animeTitle = new AnimeTitle(
                         recommendation.node().id(),
                         recommendation.node().title(),
-                        recommendation.node().mainPicture().medium()
+                        recommendation.node().mainPicture().getLargeIfPresent()
                 );
                 if (toExclude.contains(animeTitle))
                     continue;
