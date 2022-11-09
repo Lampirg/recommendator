@@ -10,5 +10,5 @@ import java.util.Set;
 
 public interface AnimeSiteCommunicator {
     Set<UserAnimeTitle> getUserAnimeList(String username);
-    Map<AnimeTitle, Integer> getSimilarAnimeTitles(Set<UserAnimeTitle> animeTitles);
+    Set<AnimeRecommendation> getSimilarAnimeTitles(Set<UserAnimeTitle> animeTitles);
 }

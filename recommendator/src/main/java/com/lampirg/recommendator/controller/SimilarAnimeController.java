@@ -2,6 +2,7 @@ package com.lampirg.recommendator.controller;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.lampirg.recommendator.anidb.AnimeSiteCommunicator;
+import com.lampirg.recommendator.model.AnimeRecommendation;
 import com.lampirg.recommendator.model.AnimeTitle;
 import com.lampirg.recommendator.model.UserAnimeTitle;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class SimilarAnimeController {
     private AnimeSiteCommunicator siteCommunicator;
 
     @GetMapping("/{nickname}")
-    public Map<AnimeTitle, Integer> getSimilarAnime(@PathVariable String nickname) {
+    public Set<AnimeRecommendation> getSimilarAnime(@PathVariable String nickname) {
         return siteCommunicator.getSimilarAnimeTitles(siteCommunicator.getUserAnimeList(nickname));
     }
 

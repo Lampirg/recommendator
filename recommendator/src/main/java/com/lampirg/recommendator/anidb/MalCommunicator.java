@@ -60,19 +60,13 @@ public class MalCommunicator implements AnimeSiteCommunicator {
     }
 
     @Override
-    public Map<AnimeTitle, Integer> getSimilarAnimeTitles(Set<UserAnimeTitle> animeTitles) {
+    public Set<AnimeRecommendation> getSimilarAnimeTitles(Set<UserAnimeTitle> animeTitles) {
         HttpEntity<String> request = new HttpEntity<>(authHeader);
         Map<AnimeTitle, Integer> recommendedAnime = new HashMap<>();
-//        Set<AnimeRecommendation> recommendedAnime = new HashSet<>();
         Set<AnimeTitle> toExclude = new HashSet<>();
         for (UserAnimeTitle title : animeTitles) {
             toExclude.add(title.animeTitle());
         }
-//        for (UserAnimeTitle title : animeTitles) {
-//            String url = "https://api.myanimelist.net/v2/anime/"+title.animeTitle().id()+"?fields=recommendations";
-//            ResponseEntity<GetAnimeDetail> response = this.restTemplate.exchange(url, HttpMethod.GET, request, GetAnimeDetail.class);
-//            recommendedAnime.
-//        }
         for (UserAnimeTitle title : animeTitles) {
             String url = "https://api.myanimelist.net/v2/anime/"+title.animeTitle().id()+"?fields=recommendations";
             ResponseEntity<GetAnimeDetail> response = this.restTemplate.exchange(url, HttpMethod.GET, request, GetAnimeDetail.class);
@@ -87,7 +81,8 @@ public class MalCommunicator implements AnimeSiteCommunicator {
                 recommendedAnime.merge(animeTitle, 1, (prev, cur) -> ++prev * title.score());
             }
         }
-
-        return recommendedAnime;
+        Set<AnimeRecommendation> animeRecommendationSet = new HashSet<>();
+        recommendedAnime.forEach((key, value) -> animeRecommendationSet.add(new AnimeRecommendation(key, value)));
+        return animeRecommendationSet;
     }
 }
