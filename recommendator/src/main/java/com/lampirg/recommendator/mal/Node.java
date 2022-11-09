@@ -1,0 +1,11 @@
+package com.lampirg.recommendator.mal;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public record Node(
+        long id,
+        String title,
+        @JsonProperty("main_picture")
+        MainPicture mainPicture
+) {
+}
