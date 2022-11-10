@@ -18,6 +18,8 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Service
@@ -66,9 +68,12 @@ public class MalCommunicator implements AnimeSiteCommunicator {
     public Set<AnimeRecommendation> getSimilarAnimeTitles(Set<UserAnimeTitle> animeTitles) {
         TitleMapper titleMapper = new TitleMapper();
         titleMapper.fillToExclude(animeTitles);
+        CompletableFuture<Void> future = CompletableFuture.allOf();
         for (UserAnimeTitle title : animeTitles) {
-            titleMapper.findAndAddTitleRecommendations(title);
+            future =CompletableFuture.allOf(future,
+                    CompletableFuture.runAsync(() -> titleMapper.findAndAddTitleRecommendations(title)));
         }
+        future.join();
         Set<AnimeRecommendation> animeRecommendationSet = new HashSet<>();
         titleMapper.recommendedAnime.forEach(
                 (key, value) -> animeRecommendationSet.add(new AnimeRecommendation(key, value))
@@ -77,13 +82,15 @@ public class MalCommunicator implements AnimeSiteCommunicator {
     }
 
     private class TitleMapper {
-        private Map<AnimeTitle, Integer> recommendedAnime = new HashMap<>();
-        private Set<AnimeTitle> toExclude = new HashSet<>();
+        private Map<AnimeTitle, Integer> recommendedAnime = new ConcurrentHashMap<>();
+        private Set<AnimeTitle> toExclude = Set.of();
 
         private void fillToExclude(Set<UserAnimeTitle> animeTitles) {
+            toExclude = new HashSet<>();
             for (UserAnimeTitle title : animeTitles) {
                 toExclude.add(title.animeTitle());
             }
+            toExclude = Set.copyOf(toExclude);
         }
 
         private void findAndAddTitleRecommendations(UserAnimeTitle title) {
