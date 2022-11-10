@@ -54,12 +54,8 @@ public class MalCommunicator implements AnimeSiteCommunicator {
         Set<UserAnimeTitle> titleSet = new HashSet<>();
         dataList.forEach(data ->
         {
-            Node node = data.node();
             int score = data.listStatus().score() != 0 ? data.listStatus().score() : 1;
-            titleSet.add(new UserAnimeTitle(new AnimeTitle(
-                    node.id(), node.title(), node.mainPicture().getLargeIfPresent()
-            ),
-                    score));
+            titleSet.add(new UserAnimeTitle(AnimeTitle.retreiveFromMalNode(data.node()), score));
         });
         return Set.copyOf(titleSet);
     }
@@ -70,7 +66,7 @@ public class MalCommunicator implements AnimeSiteCommunicator {
         titleMapper.fillToExclude(animeTitles);
         CompletableFuture<Void> future = CompletableFuture.allOf();
         for (UserAnimeTitle title : animeTitles) {
-            future =CompletableFuture.allOf(future,
+            future = CompletableFuture.allOf(future,
                     CompletableFuture.runAsync(() -> titleMapper.findAndAddTitleRecommendations(title)));
         }
         future.join();
@@ -97,11 +93,7 @@ public class MalCommunicator implements AnimeSiteCommunicator {
             String url = "https://api.myanimelist.net/v2/anime/"+title.animeTitle().id()+"?fields=recommendations";
             ResponseEntity<GetAnimeDetail> response = restTemplate.exchange(url, HttpMethod.GET, request, GetAnimeDetail.class);
             for (Recommendation recommendation : response.getBody().recommendations()) {
-                AnimeTitle animeTitle = new AnimeTitle(
-                        recommendation.node().id(),
-                        recommendation.node().title(),
-                        recommendation.node().mainPicture().getLargeIfPresent()
-                );
+                AnimeTitle animeTitle = AnimeTitle.retreiveFromMalNode(recommendation.node());
                 if (toExclude.contains(animeTitle))
                     continue;
                 recommendedAnime.merge(animeTitle, title.score(), (prev, cur) -> ++prev * title.score());
