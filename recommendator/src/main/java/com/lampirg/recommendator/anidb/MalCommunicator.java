@@ -70,8 +70,9 @@ public class MalCommunicator implements AnimeSiteCommunicator {
                     CompletableFuture.runAsync(() -> titleMapper.findAndAddTitleRecommendations(title)));
         }
         future.join();
+        Map<AnimeTitle, Integer> result = new HashMap<>(titleMapper.recommendedAnime);
         Set<AnimeRecommendation> animeRecommendationSet = new HashSet<>();
-        titleMapper.recommendedAnime.forEach(
+        result.forEach(
                 (key, value) -> animeRecommendationSet.add(new AnimeRecommendation(key, value))
         );
         return Set.copyOf(animeRecommendationSet);
@@ -96,7 +97,7 @@ public class MalCommunicator implements AnimeSiteCommunicator {
                 AnimeTitle animeTitle = AnimeTitle.retreiveFromMalNode(recommendation.node());
                 if (toExclude.contains(animeTitle))
                     continue;
-                recommendedAnime.merge(animeTitle, title.score(), (prev, cur) -> ++prev * title.score());
+                recommendedAnime.merge(animeTitle, title.score(), Integer::sum);
             }
         }
     }
