@@ -89,7 +89,7 @@ public class MalCommunicator implements AnimeSiteCommunicator {
                 AnimeTitle animeTitle = AnimeTitle.retreiveFromMalNode(recommendation.node());
                 if (toExclude.contains(animeTitle))
                     continue;
-                recommendedAnime.merge(animeTitle, title.score(), (prev, cur) -> ++prev * title.score());
+                recommendedAnime.merge(animeTitle, title.score(), Integer::sum);
             }
         }
     }
