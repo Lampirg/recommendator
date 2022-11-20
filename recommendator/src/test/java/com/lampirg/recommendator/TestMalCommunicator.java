@@ -28,29 +28,24 @@ public class TestMalCommunicator {
         this.communicator = communicator;
     }
 
-    @Test
-    void getRecommendationForRimisaki() {
-        final int JUMPS = 1;
-        Set<UserAnimeTitle> titles = communicator.getUserAnimeList("Rimisaki");
+    private void getRecommendationForUser(String user, int jumps) {
+        Set<UserAnimeTitle> titles = communicator.getUserAnimeList(user);
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        for (int i = 0; i < JUMPS; i++) {
+        for (int i = 0; i < jumps; i++) {
             communicator.getSimilarAnimeTitles(titles);
         }
         stopWatch.stop();
-        logger.info(stopWatch.getTotalTimeSeconds() / JUMPS + " seconds");
+        logger.info(stopWatch.getTotalTimeSeconds() / jumps + " seconds");
+    }
+
+    @Test
+    void getRecommendationForRimisaki() {
+        getRecommendationForUser("Rimisaki", 4);
     }
 
     @Test
     void getRecommendationForLampirg() {
-        final int JUMPS = 1;
-        Set<UserAnimeTitle> titles = communicator.getUserAnimeList("Lampirg");
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
-        for (int i = 0; i < JUMPS; i++) {
-            communicator.getSimilarAnimeTitles(titles);
-        }
-        stopWatch.stop();
-        logger.info(stopWatch.getTotalTimeSeconds() / JUMPS + " seconds");
+        getRecommendationForUser("Lampirg", 1);
     }
 }
