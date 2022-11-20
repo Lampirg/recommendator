@@ -4,7 +4,6 @@ import com.lampirg.recommendator.mal.Data;
 import com.lampirg.recommendator.mal.Recommendation;
 import com.lampirg.recommendator.mal.queries.GetAnimeDetail;
 import com.lampirg.recommendator.mal.queries.GetUserListJsonResult;
-import com.lampirg.recommendator.mal.Node;
 import com.lampirg.recommendator.model.AnimeRecommendation;
 import com.lampirg.recommendator.model.AnimeTitle;
 import com.lampirg.recommendator.model.UserAnimeTitle;
@@ -19,7 +18,6 @@ import org.springframework.web.client.RestTemplate;
 import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.concurrent.*;
-import java.util.stream.Collectors;
 
 @Service
 public class MalCommunicator implements AnimeSiteCommunicator {
@@ -87,6 +85,7 @@ public class MalCommunicator implements AnimeSiteCommunicator {
         private final Map<AnimeTitle, Integer> recommendedAnime = new ConcurrentHashMap<>();
         private Set<AnimeTitle> toExclude = Set.of();
         DelayQueue<DelayedResponse> delayQueue = new DelayQueue<>();
+        private long startTime;
 
         private void fillToExclude(Set<UserAnimeTitle> animeTitles) {
             toExclude = new HashSet<>();
@@ -100,6 +99,7 @@ public class MalCommunicator implements AnimeSiteCommunicator {
             String url = "https://api.myanimelist.net/v2/anime/"+title.animeTitle().id()+"?fields=recommendations";
             delayQueue.add(new DelayedResponse(url));
             ResponseEntity<GetAnimeDetail> response = restTemplate.exchange(delayQueue.take().url, HttpMethod.GET, request, GetAnimeDetail.class);
+            startTime = System.currentTimeMillis();
             for (Recommendation recommendation : Objects.requireNonNull(response.getBody()).recommendations()) {
                 AnimeTitle animeTitle = AnimeTitle.retreiveFromMalNode(recommendation.node());
                 if (toExclude.contains(animeTitle))
@@ -111,23 +111,23 @@ public class MalCommunicator implements AnimeSiteCommunicator {
         private class DelayedResponse implements Delayed {
 
             private final String url;
-            private final long startTime;
+//            private final long startTime;
             private final static int DELAY = 500;
 
             public DelayedResponse(String url) {
                 this.url = url;
-                this.startTime = System.currentTimeMillis() + DELAY;
+//                this.startTime = System.currentTimeMillis() + DELAY;
             }
 
             @Override
             public long getDelay(TimeUnit unit) {
-                long dif = startTime - System.currentTimeMillis();
+                long dif = startTime + DELAY - System.currentTimeMillis();
                 return unit.convert(dif, TimeUnit.MILLISECONDS);
             }
 
             @Override
             public int compareTo(Delayed o) {
-                return Long.compare(startTime, ((DelayedResponse) o).startTime);
+                return 0;
             }
         }
     }
