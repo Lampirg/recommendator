@@ -44,7 +44,7 @@ public class MalCommunicator implements AnimeSiteCommunicator {
         List<Data> dataList = new ArrayList<>();
         while (true) {
             ResponseEntity<GetUserListJsonResult> response = this.restTemplate.exchange(url, HttpMethod.GET, request, GetUserListJsonResult.class);
-            dataList.addAll(response.getBody().data());
+            dataList.addAll(Objects.requireNonNull(response.getBody()).data());
             if (!response.getBody().paging().containsKey("next"))
                 break;
             url = response.getBody().paging().get("next");
@@ -73,8 +73,10 @@ public class MalCommunicator implements AnimeSiteCommunicator {
     }
 
     private class TitleMapper {
-        private Map<AnimeTitle, Integer> recommendedAnime = new HashMap<>();
+        private final Map<AnimeTitle, Integer> recommendedAnime = new HashMap<>();
         private Set<AnimeTitle> toExclude = new HashSet<>();
+        private final static long DELAY = 500;
+        private long startTime;
 
         private void fillToExclude(Set<UserAnimeTitle> animeTitles) {
             for (UserAnimeTitle title : animeTitles) {
@@ -84,8 +86,11 @@ public class MalCommunicator implements AnimeSiteCommunicator {
 
         private void findAndAddTitleRecommendations(UserAnimeTitle title) {
             String url = "https://api.myanimelist.net/v2/anime/"+title.animeTitle().id()+"?fields=recommendations";
+            while (System.currentTimeMillis() - startTime < DELAY)
+                Thread.onSpinWait();
             ResponseEntity<GetAnimeDetail> response = restTemplate.exchange(url, HttpMethod.GET, request, GetAnimeDetail.class);
-            for (Recommendation recommendation : response.getBody().recommendations()) {
+            startTime = System.currentTimeMillis();
+            for (Recommendation recommendation : Objects.requireNonNull(response.getBody()).recommendations()) {
                 AnimeTitle animeTitle = AnimeTitle.retreiveFromMalNode(recommendation.node());
                 if (toExclude.contains(animeTitle))
                     continue;
