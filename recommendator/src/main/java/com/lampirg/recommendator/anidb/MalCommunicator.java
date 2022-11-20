@@ -18,8 +18,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -67,7 +66,13 @@ public class MalCommunicator implements AnimeSiteCommunicator {
         CompletableFuture<Void> future = CompletableFuture.allOf();
         for (UserAnimeTitle title : animeTitles) {
             future = CompletableFuture.allOf(future,
-                    CompletableFuture.runAsync(() -> titleMapper.findAndAddTitleRecommendations(title)));
+                    CompletableFuture.runAsync(() -> {
+                        try {
+                            titleMapper.findAndAddTitleRecommendations(title);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }));
         }
         future.join();
         Map<AnimeTitle, Integer> result = new HashMap<>(titleMapper.recommendedAnime);
@@ -79,8 +84,9 @@ public class MalCommunicator implements AnimeSiteCommunicator {
     }
 
     private class TitleMapper {
-        private Map<AnimeTitle, Integer> recommendedAnime = new ConcurrentHashMap<>();
+        private final Map<AnimeTitle, Integer> recommendedAnime = new ConcurrentHashMap<>();
         private Set<AnimeTitle> toExclude = Set.of();
+        DelayQueue<DelayedResponse> delayQueue = new DelayQueue<>();
 
         private void fillToExclude(Set<UserAnimeTitle> animeTitles) {
             toExclude = new HashSet<>();
@@ -90,14 +96,38 @@ public class MalCommunicator implements AnimeSiteCommunicator {
             toExclude = Set.copyOf(toExclude);
         }
 
-        private void findAndAddTitleRecommendations(UserAnimeTitle title) {
+        private void findAndAddTitleRecommendations(UserAnimeTitle title) throws InterruptedException {
             String url = "https://api.myanimelist.net/v2/anime/"+title.animeTitle().id()+"?fields=recommendations";
-            ResponseEntity<GetAnimeDetail> response = restTemplate.exchange(url, HttpMethod.GET, request, GetAnimeDetail.class);
-            for (Recommendation recommendation : response.getBody().recommendations()) {
+            delayQueue.add(new DelayedResponse(url));
+            ResponseEntity<GetAnimeDetail> response = restTemplate.exchange(delayQueue.take().url, HttpMethod.GET, request, GetAnimeDetail.class);
+            for (Recommendation recommendation : Objects.requireNonNull(response.getBody()).recommendations()) {
                 AnimeTitle animeTitle = AnimeTitle.retreiveFromMalNode(recommendation.node());
                 if (toExclude.contains(animeTitle))
                     continue;
                 recommendedAnime.merge(animeTitle, title.score(), Integer::sum);
+            }
+        }
+
+        private class DelayedResponse implements Delayed {
+
+            private final String url;
+            private final long startTime;
+            private final static int DELAY = 500;
+
+            public DelayedResponse(String url) {
+                this.url = url;
+                this.startTime = System.currentTimeMillis() + DELAY;
+            }
+
+            @Override
+            public long getDelay(TimeUnit unit) {
+                long dif = startTime - System.currentTimeMillis();
+                return unit.convert(dif, TimeUnit.MILLISECONDS);
+            }
+
+            @Override
+            public int compareTo(Delayed o) {
+                return Long.compare(startTime, ((DelayedResponse) o).startTime);
             }
         }
     }
