@@ -48,4 +48,9 @@ public class TestMalCommunicator {
     void getRecommendationForLampirg() {
         getRecommendationForUser("Lampirg", 1);
     }
+
+    @Test
+    void getRecommendationForZerity() {
+        getRecommendationForUser("Zerity", 1);
+    }
 }
