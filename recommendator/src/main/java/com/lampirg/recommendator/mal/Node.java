@@ -8,4 +8,8 @@ public record Node(
         @JsonProperty("main_picture")
         MainPicture mainPicture
 ) {
+        public Node {
+                if (mainPicture == null)
+                        mainPicture = new MainPicture("No picture", "No picture");
+        }
 }

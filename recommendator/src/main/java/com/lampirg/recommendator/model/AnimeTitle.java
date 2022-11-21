@@ -7,7 +7,7 @@ public record AnimeTitle(
         String name,
         String imageUrl
 ) {
-    public static AnimeTitle retreiveFromMalNode(Node node) {
+    public static AnimeTitle retrieveFromMalNode(Node node) {
         return new AnimeTitle(node.id(), node.title(), node.mainPicture().getLargeIfPresent());
     }
 }

@@ -52,7 +52,7 @@ public class MalCommunicator implements AnimeSiteCommunicator {
         dataList.forEach(data ->
         {
             int score = data.listStatus().score() != 0 ? data.listStatus().score() : 1;
-            titleSet.add(new UserAnimeTitle(AnimeTitle.retreiveFromMalNode(data.node()), score));
+            titleSet.add(new UserAnimeTitle(AnimeTitle.retrieveFromMalNode(data.node()), score));
         });
         return Set.copyOf(titleSet);
     }
@@ -101,7 +101,7 @@ public class MalCommunicator implements AnimeSiteCommunicator {
             ResponseEntity<GetAnimeDetail> response = restTemplate.exchange(delayQueue.take().url, HttpMethod.GET, request, GetAnimeDetail.class);
             startTime = System.currentTimeMillis();
             for (Recommendation recommendation : Objects.requireNonNull(response.getBody()).recommendations()) {
-                AnimeTitle animeTitle = AnimeTitle.retreiveFromMalNode(recommendation.node());
+                AnimeTitle animeTitle = AnimeTitle.retrieveFromMalNode(recommendation.node());
                 if (toExclude.contains(animeTitle))
                     continue;
                 recommendedAnime.merge(animeTitle, title.score(), Integer::sum);
