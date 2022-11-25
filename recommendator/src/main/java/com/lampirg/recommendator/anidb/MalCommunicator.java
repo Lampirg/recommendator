@@ -8,6 +8,8 @@ import com.lampirg.recommendator.model.AnimeRecommendation;
 import com.lampirg.recommendator.model.AnimeTitle;
 import com.lampirg.recommendator.model.UserAnimeTitle;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -20,20 +22,23 @@ import java.util.*;
 import java.util.concurrent.*;
 
 @Service
+@PropertySource("classpath:mal security code.yml")
 public class MalCommunicator implements AnimeSiteCommunicator {
 
     @Autowired
     private RestTemplate restTemplate;
 
-    private static final String CLIENT_ID_HEADER = "X-MAL-CLIENT-ID";
-    private final String clientId = "a4e33f4b0a5b5e9cbdbbcee74debbb3f";
+    @Value("${clientIdHeader}")
+    private String clientIdHeader;
+    @Value("${clientId}")
+    private String clientId;
     private HttpHeaders authHeader;
     HttpEntity<String> request;
 
     @PostConstruct
     private void init() {
         authHeader = new HttpHeaders();
-        authHeader.set(CLIENT_ID_HEADER, clientId);
+        authHeader.set(clientIdHeader, clientId);
         request = new HttpEntity<>(authHeader);
     }
 
@@ -111,20 +116,15 @@ public class MalCommunicator implements AnimeSiteCommunicator {
         private class DelayedResponse implements Delayed {
 
             private final String url;
-//            private final long startTime;
             private final static int DELAY = 500;
-
             public DelayedResponse(String url) {
                 this.url = url;
-//                this.startTime = System.currentTimeMillis() + DELAY;
             }
-
             @Override
             public long getDelay(TimeUnit unit) {
                 long dif = startTime + DELAY - System.currentTimeMillis();
                 return unit.convert(dif, TimeUnit.MILLISECONDS);
             }
-
             @Override
             public int compareTo(Delayed o) {
                 return 0;
