@@ -1,4 +1,4 @@
-package com.lampirg.recommendator.mal;
+package com.lampirg.recommendator.anidb.mal.json;
 
 import java.util.Objects;
 import java.util.Optional;

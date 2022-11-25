@@ -1,14 +1,18 @@
-package com.lampirg.recommendator.anidb;
+package com.lampirg.recommendator.anidb.mal;
 
-import com.lampirg.recommendator.mal.Data;
-import com.lampirg.recommendator.mal.Recommendation;
-import com.lampirg.recommendator.mal.queries.GetAnimeDetail;
-import com.lampirg.recommendator.mal.queries.GetUserListJsonResult;
-import com.lampirg.recommendator.mal.Node;
+import com.lampirg.recommendator.anidb.AnimeSiteCommunicator;
+import com.lampirg.recommendator.anidb.mal.json.Data;
+import com.lampirg.recommendator.anidb.mal.json.Recommendation;
+import com.lampirg.recommendator.anidb.mal.json.queries.GetAnimeDetail;
+import com.lampirg.recommendator.anidb.mal.json.queries.GetUserListJsonResult;
+import com.lampirg.recommendator.anidb.mal.titlemapper.TitleMapper;
 import com.lampirg.recommendator.model.AnimeRecommendation;
 import com.lampirg.recommendator.model.AnimeTitle;
 import com.lampirg.recommendator.model.UserAnimeTitle;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -18,27 +22,46 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.concurrent.*;
 
 @Service
+@PropertySource("classpath:mal security code.yml")
 public class MalCommunicator implements AnimeSiteCommunicator {
 
-    @Autowired
+
     private RestTemplate restTemplate;
 
-    private static final String CLIENT_ID_HEADER = "X-MAL-CLIENT-ID";
-    private final String clientId = "a4e33f4b0a5b5e9cbdbbcee74debbb3f";
+    private TitleMapper titleMapper;
+
+    @Value("${clientIdHeader}")
+    private String clientIdHeader;
+    @Value("${clientId}")
+    private String clientId;
     private HttpHeaders authHeader;
     HttpEntity<String> request;
+
+    @Autowired
+    public void setRestTemplate(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+
+    @Autowired
+    public void setTitleMapper(@Qualifier("concurrent") TitleMapper titleMapper) {
+        this.titleMapper = titleMapper;
+    }
 
     @PostConstruct
     private void init() {
         authHeader = new HttpHeaders();
-        authHeader.set(CLIENT_ID_HEADER, clientId);
+        authHeader.set(clientIdHeader, clientId);
         request = new HttpEntity<>(authHeader);
     }
 
     @Override
+    public Set<AnimeRecommendation> getSimilarAnimeTitles(String username) {
+        return getSimilarAnimeTitles(getUserAnimeList(username));
+    }
+
     public Set<UserAnimeTitle> getUserAnimeList(String username) {
         String url = "https://api.myanimelist.net/v2/users/"+username+"/animelist?fields=list_status&status=completed&limit=1000";
         List<Data> dataList = new ArrayList<>();
@@ -53,49 +76,25 @@ public class MalCommunicator implements AnimeSiteCommunicator {
         dataList.forEach(data ->
         {
             int score = data.listStatus().score() != 0 ? data.listStatus().score() : 1;
-            titleSet.add(new UserAnimeTitle(AnimeTitle.retreiveFromMalNode(data.node()), score));
+            titleSet.add(new UserAnimeTitle(AnimeTitle.retrieveFromMalNode(data.node()), score));
         });
         return Set.copyOf(titleSet);
     }
 
-    @Override
     public Set<AnimeRecommendation> getSimilarAnimeTitles(Set<UserAnimeTitle> animeTitles) {
-        TitleMapper titleMapper = new TitleMapper();
+        titleMapper.setRequest(request);
         titleMapper.fillToExclude(animeTitles);
+        CompletableFuture<Void> future = CompletableFuture.allOf();
         for (UserAnimeTitle title : animeTitles) {
-            titleMapper.findAndAddTitleRecommendations(title);
+            future = CompletableFuture.allOf(future,
+                    CompletableFuture.runAsync(() -> titleMapper.findAndAddTitleRecommendations(title)));
         }
+        future.join();
+        Map<AnimeTitle, Integer> result = new HashMap<>(titleMapper.getRecommendedAnimeMap());
         Set<AnimeRecommendation> animeRecommendationSet = new HashSet<>();
-        titleMapper.recommendedAnime.forEach(
+        result.forEach(
                 (key, value) -> animeRecommendationSet.add(new AnimeRecommendation(key, value))
         );
         return Set.copyOf(animeRecommendationSet);
-    }
-
-    private class TitleMapper {
-        private final Map<AnimeTitle, Integer> recommendedAnime = new HashMap<>();
-        private Set<AnimeTitle> toExclude = new HashSet<>();
-        private final static long DELAY = 500;
-        private long startTime;
-
-        private void fillToExclude(Set<UserAnimeTitle> animeTitles) {
-            for (UserAnimeTitle title : animeTitles) {
-                toExclude.add(title.animeTitle());
-            }
-        }
-
-        private void findAndAddTitleRecommendations(UserAnimeTitle title) {
-            String url = "https://api.myanimelist.net/v2/anime/"+title.animeTitle().id()+"?fields=recommendations";
-            while (System.currentTimeMillis() - startTime < DELAY)
-                Thread.onSpinWait();
-            ResponseEntity<GetAnimeDetail> response = restTemplate.exchange(url, HttpMethod.GET, request, GetAnimeDetail.class);
-            startTime = System.currentTimeMillis();
-            for (Recommendation recommendation : Objects.requireNonNull(response.getBody()).recommendations()) {
-                AnimeTitle animeTitle = AnimeTitle.retreiveFromMalNode(recommendation.node());
-                if (toExclude.contains(animeTitle))
-                    continue;
-                recommendedAnime.merge(animeTitle, title.score(), Integer::sum);
-            }
-        }
     }
 }

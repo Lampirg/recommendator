@@ -16,7 +16,6 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @SpringBootTest
-@Profile("test")
 public class TestMalCommunicator {
 
     private AnimeSiteCommunicator communicator;
@@ -28,29 +27,28 @@ public class TestMalCommunicator {
         this.communicator = communicator;
     }
 
-    @Test
-    void getRecommendationForRimisaki() {
-        final int JUMPS = 1;
-        Set<UserAnimeTitle> titles = communicator.getUserAnimeList("Rimisaki");
+    private void getRecommendationForUser(String user, int jumps) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        for (int i = 0; i < JUMPS; i++) {
-            communicator.getSimilarAnimeTitles(titles);
+        for (int i = 0; i < jumps; i++) {
+            communicator.getSimilarAnimeTitles(user);
         }
         stopWatch.stop();
-        logger.info(stopWatch.getTotalTimeSeconds() / JUMPS + " seconds");
+        logger.info(stopWatch.getTotalTimeSeconds() / jumps + " seconds");
+    }
+
+    @Test
+    void getRecommendationForRimisaki() {
+        getRecommendationForUser("Rimisaki", 1);
     }
 
     @Test
     void getRecommendationForLampirg() {
-        final int JUMPS = 1;
-        Set<UserAnimeTitle> titles = communicator.getUserAnimeList("Lampirg");
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
-        for (int i = 0; i < JUMPS; i++) {
-            communicator.getSimilarAnimeTitles(titles);
-        }
-        stopWatch.stop();
-        logger.info(stopWatch.getTotalTimeSeconds() / JUMPS + " seconds");
+        getRecommendationForUser("Lampirg", 1);
+    }
+
+    @Test
+    void getRecommendationForZerity() {
+        getRecommendationForUser("Zerity", 1);
     }
 }

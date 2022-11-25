@@ -1,4 +1,4 @@
-package com.lampirg.recommendator;
+package com.lampirg.recommendator.config;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
