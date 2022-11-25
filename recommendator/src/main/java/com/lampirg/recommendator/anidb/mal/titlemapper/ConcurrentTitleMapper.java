@@ -6,6 +6,7 @@ import com.lampirg.recommendator.model.AnimeTitle;
 import com.lampirg.recommendator.model.UserAnimeTitle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 
 @Component("concurrent")
+@Scope("prototype")
 public class ConcurrentTitleMapper implements TitleMapper {
 
     RestTemplate restTemplate;

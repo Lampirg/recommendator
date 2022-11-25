@@ -5,6 +5,7 @@ import com.lampirg.recommendator.anidb.mal.json.queries.GetAnimeDetail;
 import com.lampirg.recommendator.model.AnimeTitle;
 import com.lampirg.recommendator.model.UserAnimeTitle;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.*;
 
 @Component("singleThread")
+@Scope("prototype")
 public class SingleThreadTitleMapper implements TitleMapper {
 
     RestTemplate restTemplate;

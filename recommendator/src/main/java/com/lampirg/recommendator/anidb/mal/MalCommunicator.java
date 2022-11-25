@@ -2,8 +2,6 @@ package com.lampirg.recommendator.anidb.mal;
 
 import com.lampirg.recommendator.anidb.AnimeSiteCommunicator;
 import com.lampirg.recommendator.anidb.mal.json.Data;
-import com.lampirg.recommendator.anidb.mal.json.Recommendation;
-import com.lampirg.recommendator.anidb.mal.json.queries.GetAnimeDetail;
 import com.lampirg.recommendator.anidb.mal.json.queries.GetUserListJsonResult;
 import com.lampirg.recommendator.anidb.mal.titlemapper.TitleMapper;
 import com.lampirg.recommendator.model.AnimeRecommendation;
@@ -13,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -25,19 +25,17 @@ import java.util.*;
 import java.util.concurrent.*;
 
 @Service
+@Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
 @PropertySource("classpath:mal security code.yml")
 public class MalCommunicator implements AnimeSiteCommunicator {
 
-
     private RestTemplate restTemplate;
-
     private TitleMapper titleMapper;
 
     @Value("${clientIdHeader}")
     private String clientIdHeader;
     @Value("${clientId}")
     private String clientId;
-    private HttpHeaders authHeader;
     HttpEntity<String> request;
 
     @Autowired
@@ -46,24 +44,31 @@ public class MalCommunicator implements AnimeSiteCommunicator {
     }
 
     @Autowired
-    public void setTitleMapper(@Qualifier("concurrent") TitleMapper titleMapper) {
+    public void setTitleMapper(@Qualifier("singleThread") TitleMapper titleMapper) {
         this.titleMapper = titleMapper;
     }
 
     @PostConstruct
     private void init() {
-        authHeader = new HttpHeaders();
+        HttpHeaders authHeader = new HttpHeaders();
         authHeader.set(clientIdHeader, clientId);
         request = new HttpEntity<>(authHeader);
     }
 
     @Override
     public Set<AnimeRecommendation> getSimilarAnimeTitles(String username) {
-        return getSimilarAnimeTitles(getUserAnimeList(username));
+        return getSimilarAnimeTitles(getUserCompletedAnimeList(username));
     }
 
-    public Set<UserAnimeTitle> getUserAnimeList(String username) {
-        String url = "https://api.myanimelist.net/v2/users/"+username+"/animelist?fields=list_status&status=completed&limit=1000";
+    public Set<UserAnimeTitle> getUserCompletedAnimeList(String username) {
+        return getUserAnimeList(username, "completed");
+    }
+    public Set<UserAnimeTitle> getUserDroppedAnimeList(String username) {
+        return getUserAnimeList(username, "completed");
+    }
+
+    public Set<UserAnimeTitle> getUserAnimeList(String username, String listType) {
+        String url = "https://api.myanimelist.net/v2/users/"+username+"/animelist?fields=list_status&status="+listType+"&limit=1000";
         List<Data> dataList = new ArrayList<>();
         while (true) {
             ResponseEntity<GetUserListJsonResult> response = this.restTemplate.exchange(url, HttpMethod.GET, request, GetUserListJsonResult.class);
@@ -92,9 +97,7 @@ public class MalCommunicator implements AnimeSiteCommunicator {
         future.join();
         Map<AnimeTitle, Integer> result = new HashMap<>(titleMapper.getRecommendedAnimeMap());
         Set<AnimeRecommendation> animeRecommendationSet = new HashSet<>();
-        result.forEach(
-                (key, value) -> animeRecommendationSet.add(new AnimeRecommendation(key, value))
-        );
+        result.forEach((key, value) -> animeRecommendationSet.add(new AnimeRecommendation(key, value)));
         return Set.copyOf(animeRecommendationSet);
     }
 }
