@@ -67,7 +67,7 @@ public class MalCommunicator implements AnimeSiteCommunicator {
         List<Data> dataList = new ArrayList<>();
         while (true) {
             ResponseEntity<GetUserListJsonResult> response = this.restTemplate.exchange(url, HttpMethod.GET, request, GetUserListJsonResult.class);
-            dataList.addAll(response.getBody().data());
+            dataList.addAll(Objects.requireNonNull(response.getBody()).data());
             if (!response.getBody().paging().containsKey("next"))
                 break;
             url = response.getBody().paging().get("next");
