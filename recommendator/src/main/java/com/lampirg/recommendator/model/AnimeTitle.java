@@ -1,6 +1,6 @@
 package com.lampirg.recommendator.model;
 
-import com.lampirg.recommendator.mal.Node;
+import com.lampirg.recommendator.anidb.mal.json.Node;
 
 public record AnimeTitle(
         long id,

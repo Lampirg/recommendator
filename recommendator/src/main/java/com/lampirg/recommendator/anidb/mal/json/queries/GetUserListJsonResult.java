@@ -1,7 +1,7 @@
-package com.lampirg.recommendator.mal.queries;
+package com.lampirg.recommendator.anidb.mal.json.queries;
 
 
-import com.lampirg.recommendator.mal.Data;
+import com.lampirg.recommendator.anidb.mal.json.Data;
 
 import java.util.List;
 import java.util.Map;

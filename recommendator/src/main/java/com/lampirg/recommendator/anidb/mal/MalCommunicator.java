@@ -1,9 +1,10 @@
-package com.lampirg.recommendator.anidb;
+package com.lampirg.recommendator.anidb.mal;
 
-import com.lampirg.recommendator.mal.Data;
-import com.lampirg.recommendator.mal.Recommendation;
-import com.lampirg.recommendator.mal.queries.GetAnimeDetail;
-import com.lampirg.recommendator.mal.queries.GetUserListJsonResult;
+import com.lampirg.recommendator.anidb.AnimeSiteCommunicator;
+import com.lampirg.recommendator.anidb.mal.json.Data;
+import com.lampirg.recommendator.anidb.mal.json.Recommendation;
+import com.lampirg.recommendator.anidb.mal.json.queries.GetAnimeDetail;
+import com.lampirg.recommendator.anidb.mal.json.queries.GetUserListJsonResult;
 import com.lampirg.recommendator.model.AnimeRecommendation;
 import com.lampirg.recommendator.model.AnimeTitle;
 import com.lampirg.recommendator.model.UserAnimeTitle;
