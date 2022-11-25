@@ -103,12 +103,9 @@ public class MalCommunicator implements AnimeSiteCommunicator {
     public Set<AnimeRecommendation> getSimilarAnimeTitles(Set<UserAnimeTitle> animeTitles, Set<UserAnimeTitle> toExclude) {
         titleMapper.setRequest(request);
         titleMapper.fillToExclude(toExclude);
-        CompletableFuture<Void> future = CompletableFuture.allOf();
         for (UserAnimeTitle title : animeTitles) {
-            future = CompletableFuture.allOf(future,
-                    CompletableFuture.runAsync(() -> titleMapper.findAndAddTitleRecommendations(title)));
+            titleMapper.findAndAddTitleRecommendations(title);
         }
-        future.join();
         Map<AnimeTitle, Integer> result = new HashMap<>(titleMapper.getRecommendedAnimeMap());
         Set<AnimeRecommendation> animeRecommendationSet = new HashSet<>();
         result.forEach((key, value) -> animeRecommendationSet.add(new AnimeRecommendation(key, value)));
