@@ -23,6 +23,8 @@ import org.springframework.web.client.RestTemplate;
 import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
@@ -57,14 +59,26 @@ public class MalCommunicator implements AnimeSiteCommunicator {
 
     @Override
     public Set<AnimeRecommendation> getSimilarAnimeTitles(String username) {
-        return getSimilarAnimeTitles(getUserCompletedAnimeList(username));
+        Set<UserAnimeTitle> completed = getUserCompletedAnimeList(username);
+        Set<UserAnimeTitle> watching = getUserWatchingAnimeList(username);
+        Set<UserAnimeTitle> dropped = getUserDroppedAnimeList(username);
+        Set<UserAnimeTitle> onHold = getUserOnHoldAnimeList(username);
+        Set<UserAnimeTitle> toExclude = Stream.of(completed, watching, dropped, onHold)
+                .flatMap(Set::stream).collect(Collectors.toSet());
+        return getSimilarAnimeTitles(completed, toExclude);
     }
 
     public Set<UserAnimeTitle> getUserCompletedAnimeList(String username) {
         return getUserAnimeList(username, "completed");
     }
+    public Set<UserAnimeTitle> getUserWatchingAnimeList(String username) {
+        return getUserAnimeList(username, "watching");
+    }
     public Set<UserAnimeTitle> getUserDroppedAnimeList(String username) {
-        return getUserAnimeList(username, "completed");
+        return getUserAnimeList(username, "dropped");
+    }
+    public Set<UserAnimeTitle> getUserOnHoldAnimeList(String username) {
+        return getUserAnimeList(username, "on_hold");
     }
 
     public Set<UserAnimeTitle> getUserAnimeList(String username, String listType) {
@@ -86,9 +100,9 @@ public class MalCommunicator implements AnimeSiteCommunicator {
         return Set.copyOf(titleSet);
     }
 
-    public Set<AnimeRecommendation> getSimilarAnimeTitles(Set<UserAnimeTitle> animeTitles) {
+    public Set<AnimeRecommendation> getSimilarAnimeTitles(Set<UserAnimeTitle> animeTitles, Set<UserAnimeTitle> toExclude) {
         titleMapper.setRequest(request);
-        titleMapper.fillToExclude(animeTitles);
+        titleMapper.fillToExclude(toExclude);
         CompletableFuture<Void> future = CompletableFuture.allOf();
         for (UserAnimeTitle title : animeTitles) {
             future = CompletableFuture.allOf(future,
