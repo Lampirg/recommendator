@@ -17,13 +17,17 @@ import java.util.*;
 @RequestMapping("/recommend")
 public class SimilarAnimeController {
 
-    @Autowired
     private AnimeSiteCommunicator siteCommunicator;
 
-    @GetMapping("/{nickname}")
-    public List<AnimeRecommendation> getSimilarAnime(@PathVariable String nickname) {
+    @Autowired
+    public void setSiteCommunicator(AnimeSiteCommunicator siteCommunicator) {
+        this.siteCommunicator = siteCommunicator;
+    }
+
+    @GetMapping("/{username}")
+    public List<AnimeRecommendation> getSimilarAnime(@PathVariable String username) {
         List<AnimeRecommendation> list =
-                new ArrayList<>(siteCommunicator.getSimilarAnimeTitles(siteCommunicator.getUserAnimeList(nickname)));
+                new ArrayList<>(siteCommunicator.getSimilarAnimeTitles(username));
         list.sort(Comparator.comparingInt(AnimeRecommendation::numOfRecommendations).reversed());
         return list;
     }

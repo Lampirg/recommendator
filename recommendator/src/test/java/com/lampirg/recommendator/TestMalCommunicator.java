@@ -16,7 +16,6 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @SpringBootTest
-@Profile("test")
 public class TestMalCommunicator {
 
     private AnimeSiteCommunicator communicator;
@@ -29,11 +28,10 @@ public class TestMalCommunicator {
     }
 
     private void getRecommendationForUser(String user, int jumps) {
-        Set<UserAnimeTitle> titles = communicator.getUserAnimeList(user);
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         for (int i = 0; i < jumps; i++) {
-            communicator.getSimilarAnimeTitles(titles);
+            communicator.getSimilarAnimeTitles(user);
         }
         stopWatch.stop();
         logger.info(stopWatch.getTotalTimeSeconds() / jumps + " seconds");
@@ -41,7 +39,7 @@ public class TestMalCommunicator {
 
     @Test
     void getRecommendationForRimisaki() {
-        getRecommendationForUser("Rimisaki", 4);
+        getRecommendationForUser("Rimisaki", 1);
     }
 
     @Test

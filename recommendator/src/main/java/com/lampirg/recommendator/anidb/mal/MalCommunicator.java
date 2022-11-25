@@ -58,6 +58,10 @@ public class MalCommunicator implements AnimeSiteCommunicator {
     }
 
     @Override
+    public Set<AnimeRecommendation> getSimilarAnimeTitles(String username) {
+        return getSimilarAnimeTitles(getUserAnimeList(username));
+    }
+
     public Set<UserAnimeTitle> getUserAnimeList(String username) {
         String url = "https://api.myanimelist.net/v2/users/"+username+"/animelist?fields=list_status&status=completed&limit=1000";
         List<Data> dataList = new ArrayList<>();
@@ -77,7 +81,6 @@ public class MalCommunicator implements AnimeSiteCommunicator {
         return Set.copyOf(titleSet);
     }
 
-    @Override
     public Set<AnimeRecommendation> getSimilarAnimeTitles(Set<UserAnimeTitle> animeTitles) {
         titleMapper.setRequest(request);
         titleMapper.fillToExclude(animeTitles);
@@ -94,5 +97,4 @@ public class MalCommunicator implements AnimeSiteCommunicator {
         );
         return Set.copyOf(animeRecommendationSet);
     }
-
 }
