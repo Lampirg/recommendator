@@ -49,6 +49,10 @@ public class ConcurrentTitleMapper implements TitleMapper {
     public Map<AnimeTitle, Integer> getRecommendedAnimeMap(Set<UserAnimeTitle> animeTitles) {
         if (!recommendedAnime.isEmpty())
             return recommendedAnime;
+        // TODO: add concurrency here
+        for (UserAnimeTitle title : animeTitles) {
+            findAndAddTitleRecommendations(title);
+        }
         return recommendedAnime;
     }
 
