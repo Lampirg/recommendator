@@ -30,14 +30,9 @@ public class ConcurrentTitleMapper implements TitleMapper {
     HttpEntity<String> request;
 
     private final Map<AnimeTitle, Integer> recommendedAnime = new ConcurrentHashMap<>();
-    private Set<AnimeTitle> toExclude = Set.of();
+    private Set<AnimeTitle> toExclude = new HashSet<>();
     DelayQueue<DelayedResponse> delayQueue = new DelayQueue<>();
     private long startTime;
-
-    @Override
-    public Map<AnimeTitle, Integer> getRecommendedAnimeMap() {
-        return recommendedAnime;
-    }
 
     @Autowired
     public void setRestTemplate(RestTemplate restTemplate) {
@@ -45,16 +40,23 @@ public class ConcurrentTitleMapper implements TitleMapper {
     }
 
     @Override
-    public void setRequest(HttpEntity<String> request) {
+    public TitleMapper setRequest(HttpEntity<String> request) {
         this.request = request;
+        return this;
     }
 
-    public void fillToExclude(Set<UserAnimeTitle> animeTitles) {
-        toExclude = new HashSet<>();
-        for (UserAnimeTitle title : animeTitles) {
-            toExclude.add(title.animeTitle());
+    @Override
+    public Map<AnimeTitle, Integer> getRecommendedAnimeMap(Set<UserAnimeTitle> animeTitles) {
+        if (!recommendedAnime.isEmpty())
+            return recommendedAnime;
+        return recommendedAnime;
+    }
+
+    public TitleMapper fillToExclude(Set<UserAnimeTitle> toExclude) {
+        for (UserAnimeTitle title : toExclude) {
+            this.toExclude.add(title.animeTitle());
         }
-        toExclude = Set.copyOf(toExclude);
+        return this;
     }
 
     public void findAndAddTitleRecommendations(UserAnimeTitle title) {
