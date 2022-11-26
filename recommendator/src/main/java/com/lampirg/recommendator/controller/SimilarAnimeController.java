@@ -6,6 +6,7 @@ import com.lampirg.recommendator.model.AnimeRecommendation;
 import com.lampirg.recommendator.model.AnimeTitle;
 import com.lampirg.recommendator.model.UserAnimeTitle;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,7 @@ public class SimilarAnimeController {
     private AnimeSiteCommunicator siteCommunicator;
 
     @Autowired
-    public void setSiteCommunicator(AnimeSiteCommunicator siteCommunicator) {
+    public void setSiteCommunicator(@Qualifier("concurrent") AnimeSiteCommunicator siteCommunicator) {
         this.siteCommunicator = siteCommunicator;
     }
 

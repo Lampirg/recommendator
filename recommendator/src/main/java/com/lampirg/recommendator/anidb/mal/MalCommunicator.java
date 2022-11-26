@@ -48,7 +48,7 @@ public class MalCommunicator implements AnimeSiteCommunicator {
     }
 
     @Autowired
-    public void setTitleMapper(@Qualifier("singleThread") TitleMapper titleMapper) {
+    public void setTitleMapper(@Qualifier("concurrent") TitleMapper titleMapper) {
         this.titleMapper = titleMapper;
     }
 
