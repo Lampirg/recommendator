@@ -61,6 +61,7 @@ public class MalCommunicator implements AnimeSiteCommunicator {
 
     @Override
     public Set<AnimeRecommendation> getSimilarAnimeTitles(String username) {
+        // TODO: QueryMaker interface/classes
         Set<UserAnimeTitle> completed = getUserCompletedAnimeList(username);
         Set<UserAnimeTitle> watching = getUserWatchingAnimeList(username);
         Set<UserAnimeTitle> dropped = getUserDroppedAnimeList(username);
