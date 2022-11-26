@@ -17,10 +17,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.DelayQueue;
-import java.util.concurrent.Delayed;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.locks.ReentrantLock;
+
 // TODO: fix thread unsafety
 @Component
 @Qualifier("concurrent")
@@ -32,8 +32,9 @@ public class ConcurrentTitleMapper implements TitleMapper {
 
     private final Map<AnimeTitle, Integer> recommendedAnime = new ConcurrentHashMap<>();
     private Set<AnimeTitle> toExclude = new HashSet<>();
-    DelayQueue<DelayedResponse> delayQueue = new DelayQueue<>();
-    private long startTime;
+    private DelayQueue<DelayedResponse> delayQueue = new DelayQueue<>();
+    private volatile long startTime;
+    private ReentrantLock lock = new ReentrantLock();
 
     @Autowired
     public void setRestTemplate(RestTemplate restTemplate) {
@@ -50,10 +51,13 @@ public class ConcurrentTitleMapper implements TitleMapper {
     public Map<AnimeTitle, Integer> getRecommendedAnimeMap(Set<UserAnimeTitle> animeTitles) {
         if (!recommendedAnime.isEmpty())
             return recommendedAnime;
-        // TODO: add concurrency here
+        CompletableFuture<Void> future = CompletableFuture.allOf();
         for (UserAnimeTitle title : animeTitles) {
-            findAndAddTitleRecommendations(title);
+            future = CompletableFuture.allOf(future,
+                    CompletableFuture.runAsync(() -> findAndAddTitleRecommendations(title))
+            );
         }
+        future.join();
         return recommendedAnime;
     }
 
@@ -68,18 +72,26 @@ public class ConcurrentTitleMapper implements TitleMapper {
         String url = "https://api.myanimelist.net/v2/anime/"+title.animeTitle().id()+"?fields=recommendations";
         delayQueue.add(new DelayedResponse(url));
         ResponseEntity<GetAnimeDetail> response = null;
-        try {
-            response = restTemplate.exchange(
-                    delayQueue.take().url, HttpMethod.GET, request, GetAnimeDetail.class);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        startTime = System.currentTimeMillis();
+        response = restTemplate.exchange(
+                getUrlFromQueue(), HttpMethod.GET, request, GetAnimeDetail.class);
         for (Recommendation recommendation : Objects.requireNonNull(response.getBody()).recommendations()) {
             AnimeTitle animeTitle = AnimeTitle.retrieveFromMalNode(recommendation.node());
             if (toExclude.contains(animeTitle))
                 continue;
             recommendedAnime.merge(animeTitle, title.score(), Integer::sum);
+        }
+    }
+
+    private String getUrlFromQueue() {
+        try {
+            lock.lock();
+            String url = delayQueue.take().url;
+            startTime = System.currentTimeMillis();
+            return url;
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } finally {
+            lock.unlock();
         }
     }
 
