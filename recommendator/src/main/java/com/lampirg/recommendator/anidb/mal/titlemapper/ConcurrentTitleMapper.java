@@ -33,6 +33,7 @@ public class ConcurrentTitleMapper implements TitleMapper {
     private final Map<AnimeTitle, Integer> recommendedAnime = new ConcurrentHashMap<>();
     private Set<AnimeTitle> toExclude = new HashSet<>();
     private volatile long startTime;
+    private final static long DELAY = 500;
     private ReentrantLock lock = new ReentrantLock();
 
     @Autowired
@@ -69,8 +70,17 @@ public class ConcurrentTitleMapper implements TitleMapper {
 
     public void findAndAddTitleRecommendations(UserAnimeTitle title) {
         String url = "https://api.myanimelist.net/v2/anime/"+title.animeTitle().id()+"?fields=recommendations";
-        ResponseEntity<GetAnimeDetail> response = restTemplate.exchange(
-                url, HttpMethod.GET, request, GetAnimeDetail.class);
+        ResponseEntity<GetAnimeDetail> response;
+        try {
+            lock.lock();
+            while (System.currentTimeMillis() - startTime < DELAY)
+                Thread.onSpinWait();
+            response = restTemplate.exchange(
+                    url, HttpMethod.GET, request, GetAnimeDetail.class);
+            startTime = System.currentTimeMillis();
+        } finally {
+            lock.unlock();
+        }
         for (Recommendation recommendation : Objects.requireNonNull(response.getBody()).recommendations()) {
             AnimeTitle animeTitle = AnimeTitle.retrieveFromMalNode(recommendation.node());
             if (toExclude.contains(animeTitle))
