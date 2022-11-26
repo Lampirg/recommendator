@@ -14,14 +14,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Component
-@Qualifier("single")
+@Qualifier("concurrent")
 @Scope("prototype")
-public class SingleThreadQueryMaker implements QueryMaker {
-
+public class ConcurrentQueryMaker implements QueryMaker {
     RestTemplate restTemplate;
     private HttpEntity<String> request;
 
@@ -47,10 +47,12 @@ public class SingleThreadQueryMaker implements QueryMaker {
     @Override
     public void setUser(String username) {
         this.username = username;
-        completed = getUserCompletedAnimeList(username);
-        watching = getUserWatchingAnimeList(username);
-        dropped = getUserDroppedAnimeList(username);
-        onHold = getUserOnHoldAnimeList(username);
+        CompletableFuture<Void> future =
+                CompletableFuture.runAsync(() -> completed = getUserCompletedAnimeList(username))
+                        .thenRunAsync(() -> watching = getUserWatchingAnimeList(username))
+                        .thenRunAsync(() -> dropped = getUserDroppedAnimeList(username))
+                        .thenRunAsync(() -> onHold = getUserOnHoldAnimeList(username));
+        future.join();
     }
 
     @Override

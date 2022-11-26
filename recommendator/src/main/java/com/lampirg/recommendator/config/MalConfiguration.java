@@ -1,6 +1,7 @@
 package com.lampirg.recommendator.config;
 
 import com.lampirg.recommendator.anidb.mal.MalCommunicator;
+import com.lampirg.recommendator.anidb.mal.querymaker.ConcurrentQueryMaker;
 import com.lampirg.recommendator.anidb.mal.querymaker.QueryMaker;
 import com.lampirg.recommendator.anidb.mal.querymaker.SingleThreadQueryMaker;
 import com.lampirg.recommendator.anidb.mal.titlemapper.ConcurrentTitleMapper;
@@ -26,7 +27,7 @@ public class MalConfiguration {
     @Bean
     @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
     @Qualifier("concurrent")
-    public MalCommunicator concurrentThreadMalCommunicator(QueryMaker queryMaker,
+    public MalCommunicator concurrentThreadMalCommunicator(ConcurrentQueryMaker queryMaker,
                                                            ConcurrentTitleMapper mapper) {
         MalCommunicator communicator = new MalCommunicator();
         communicator.setQueryMaker(queryMaker);
