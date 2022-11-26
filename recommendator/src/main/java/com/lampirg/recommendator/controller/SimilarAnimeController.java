@@ -28,7 +28,8 @@ public class SimilarAnimeController {
     public List<AnimeRecommendation> getSimilarAnime(@PathVariable String username) {
         List<AnimeRecommendation> list =
                 new ArrayList<>(siteCommunicator.getSimilarAnimeTitles(username));
-        list.sort(Comparator.comparingInt(AnimeRecommendation::numOfRecommendations).reversed());
+        list.sort(Comparator.comparingInt(AnimeRecommendation::numOfRecommendations).reversed()
+                .thenComparing(x -> x.title().name()));
         return list;
     }
 
