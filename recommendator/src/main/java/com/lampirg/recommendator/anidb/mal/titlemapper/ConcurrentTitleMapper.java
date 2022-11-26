@@ -32,7 +32,6 @@ public class ConcurrentTitleMapper implements TitleMapper {
 
     private final Map<AnimeTitle, Integer> recommendedAnime = new ConcurrentHashMap<>();
     private Set<AnimeTitle> toExclude = new HashSet<>();
-    private DelayQueue<DelayedResponse> delayQueue = new DelayQueue<>();
     private volatile long startTime;
     private ReentrantLock lock = new ReentrantLock();
 
@@ -70,46 +69,13 @@ public class ConcurrentTitleMapper implements TitleMapper {
 
     public void findAndAddTitleRecommendations(UserAnimeTitle title) {
         String url = "https://api.myanimelist.net/v2/anime/"+title.animeTitle().id()+"?fields=recommendations";
-        delayQueue.add(new DelayedResponse(url));
-        ResponseEntity<GetAnimeDetail> response = null;
-        response = restTemplate.exchange(
-                getUrlFromQueue(), HttpMethod.GET, request, GetAnimeDetail.class);
+        ResponseEntity<GetAnimeDetail> response = restTemplate.exchange(
+                url, HttpMethod.GET, request, GetAnimeDetail.class);
         for (Recommendation recommendation : Objects.requireNonNull(response.getBody()).recommendations()) {
             AnimeTitle animeTitle = AnimeTitle.retrieveFromMalNode(recommendation.node());
             if (toExclude.contains(animeTitle))
                 continue;
             recommendedAnime.merge(animeTitle, title.score(), Integer::sum);
-        }
-    }
-
-    private String getUrlFromQueue() {
-        try {
-            lock.lock();
-            String url = delayQueue.take().url;
-            startTime = System.currentTimeMillis();
-            return url;
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        } finally {
-            lock.unlock();
-        }
-    }
-
-    private class DelayedResponse implements Delayed {
-
-        private final String url;
-        private final static int DELAY = 500;
-        public DelayedResponse(String url) {
-            this.url = url;
-        }
-        @Override
-        public long getDelay(TimeUnit unit) {
-            long dif = startTime + DELAY - System.currentTimeMillis();
-            return unit.convert(dif, TimeUnit.MILLISECONDS);
-        }
-        @Override
-        public int compareTo(Delayed o) {
-            return 0;
         }
     }
 }
