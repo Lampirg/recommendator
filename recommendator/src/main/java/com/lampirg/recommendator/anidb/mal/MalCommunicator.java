@@ -40,6 +40,8 @@ public class MalCommunicator implements AnimeSiteCommunicator {
     private String clientId;
     HttpEntity<String> request;
 
+    private final static int LIMIT_SIZE = 50;
+
     @Autowired
     public void setRestTemplate(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
@@ -65,7 +67,13 @@ public class MalCommunicator implements AnimeSiteCommunicator {
         Set<UserAnimeTitle> onHold = getUserOnHoldAnimeList(username);
         Set<UserAnimeTitle> toExclude = Stream.of(completed, watching, dropped, onHold)
                 .flatMap(Set::stream).collect(Collectors.toSet());
-        return getSimilarAnimeTitles(completed, toExclude);
+        Set<UserAnimeTitle> toInclude = completed.stream()
+                .sorted(
+                        Comparator.comparingInt(UserAnimeTitle::score).reversed()
+                                .thenComparing(x -> x.animeTitle().name())
+                )
+                .limit(LIMIT_SIZE).collect(Collectors.toSet());
+        return getSimilarAnimeTitles(toInclude, toExclude);
     }
 
     public Set<UserAnimeTitle> getUserCompletedAnimeList(String username) {
