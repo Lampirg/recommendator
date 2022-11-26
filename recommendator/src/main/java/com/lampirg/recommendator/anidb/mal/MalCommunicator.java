@@ -2,8 +2,6 @@ package com.lampirg.recommendator.anidb.mal;
 
 import com.lampirg.recommendator.anidb.AnimeSiteCommunicator;
 import com.lampirg.recommendator.anidb.mal.json.Data;
-import com.lampirg.recommendator.anidb.mal.json.Recommendation;
-import com.lampirg.recommendator.anidb.mal.json.queries.GetAnimeDetail;
 import com.lampirg.recommendator.anidb.mal.json.queries.GetUserListJsonResult;
 import com.lampirg.recommendator.anidb.mal.titlemapper.TitleMapper;
 import com.lampirg.recommendator.model.AnimeRecommendation;
@@ -13,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -23,22 +23,24 @@ import org.springframework.web.client.RestTemplate;
 import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
+@Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
 @PropertySource("classpath:mal security code.yml")
 public class MalCommunicator implements AnimeSiteCommunicator {
 
-
     private RestTemplate restTemplate;
-
     private TitleMapper titleMapper;
 
     @Value("${clientIdHeader}")
     private String clientIdHeader;
     @Value("${clientId}")
     private String clientId;
-    private HttpHeaders authHeader;
     HttpEntity<String> request;
+
+    private final static int LIMIT_SIZE = 50;
 
     @Autowired
     public void setRestTemplate(RestTemplate restTemplate) {
@@ -46,24 +48,49 @@ public class MalCommunicator implements AnimeSiteCommunicator {
     }
 
     @Autowired
-    public void setTitleMapper(@Qualifier("concurrent") TitleMapper titleMapper) {
+    public void setTitleMapper(@Qualifier("singleThread") TitleMapper titleMapper) {
         this.titleMapper = titleMapper;
     }
 
     @PostConstruct
     private void init() {
-        authHeader = new HttpHeaders();
+        HttpHeaders authHeader = new HttpHeaders();
         authHeader.set(clientIdHeader, clientId);
         request = new HttpEntity<>(authHeader);
     }
 
     @Override
     public Set<AnimeRecommendation> getSimilarAnimeTitles(String username) {
-        return getSimilarAnimeTitles(getUserAnimeList(username));
+        Set<UserAnimeTitle> completed = getUserCompletedAnimeList(username);
+        Set<UserAnimeTitle> watching = getUserWatchingAnimeList(username);
+        Set<UserAnimeTitle> dropped = getUserDroppedAnimeList(username);
+        Set<UserAnimeTitle> onHold = getUserOnHoldAnimeList(username);
+        Set<UserAnimeTitle> toExclude = Stream.of(completed, watching, dropped, onHold)
+                .flatMap(Set::stream).collect(Collectors.toSet());
+        Set<UserAnimeTitle> toInclude = completed.stream()
+                .sorted(
+                        Comparator.comparingInt(UserAnimeTitle::score).reversed()
+                                .thenComparing(x -> x.animeTitle().name())
+                )
+                .limit(LIMIT_SIZE).collect(Collectors.toSet());
+        return getSimilarAnimeTitles(toInclude, toExclude);
     }
 
-    public Set<UserAnimeTitle> getUserAnimeList(String username) {
-        String url = "https://api.myanimelist.net/v2/users/"+username+"/animelist?fields=list_status&status=completed&limit=1000";
+    public Set<UserAnimeTitle> getUserCompletedAnimeList(String username) {
+        return getUserAnimeList(username, "completed");
+    }
+    public Set<UserAnimeTitle> getUserWatchingAnimeList(String username) {
+        return getUserAnimeList(username, "watching");
+    }
+    public Set<UserAnimeTitle> getUserDroppedAnimeList(String username) {
+        return getUserAnimeList(username, "dropped");
+    }
+    public Set<UserAnimeTitle> getUserOnHoldAnimeList(String username) {
+        return getUserAnimeList(username, "on_hold");
+    }
+
+    public Set<UserAnimeTitle> getUserAnimeList(String username, String listType) {
+        String url = "https://api.myanimelist.net/v2/users/"+username+"/animelist?fields=list_status&status="+listType+"&limit=1000";
         List<Data> dataList = new ArrayList<>();
         while (true) {
             ResponseEntity<GetUserListJsonResult> response = this.restTemplate.exchange(url, HttpMethod.GET, request, GetUserListJsonResult.class);
@@ -81,20 +108,15 @@ public class MalCommunicator implements AnimeSiteCommunicator {
         return Set.copyOf(titleSet);
     }
 
-    public Set<AnimeRecommendation> getSimilarAnimeTitles(Set<UserAnimeTitle> animeTitles) {
+    public Set<AnimeRecommendation> getSimilarAnimeTitles(Set<UserAnimeTitle> animeTitles, Set<UserAnimeTitle> toExclude) {
         titleMapper.setRequest(request);
-        titleMapper.fillToExclude(animeTitles);
-        CompletableFuture<Void> future = CompletableFuture.allOf();
+        titleMapper.fillToExclude(toExclude);
         for (UserAnimeTitle title : animeTitles) {
-            future = CompletableFuture.allOf(future,
-                    CompletableFuture.runAsync(() -> titleMapper.findAndAddTitleRecommendations(title)));
+            titleMapper.findAndAddTitleRecommendations(title);
         }
-        future.join();
         Map<AnimeTitle, Integer> result = new HashMap<>(titleMapper.getRecommendedAnimeMap());
         Set<AnimeRecommendation> animeRecommendationSet = new HashSet<>();
-        result.forEach(
-                (key, value) -> animeRecommendationSet.add(new AnimeRecommendation(key, value))
-        );
+        result.forEach((key, value) -> animeRecommendationSet.add(new AnimeRecommendation(key, value)));
         return Set.copyOf(animeRecommendationSet);
     }
 }
