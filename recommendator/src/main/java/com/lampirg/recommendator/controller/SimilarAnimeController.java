@@ -1,11 +1,9 @@
 package com.lampirg.recommendator.controller;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.lampirg.recommendator.anidb.AnimeSiteCommunicator;
-import com.lampirg.recommendator.model.AnimeRecommendation;
-import com.lampirg.recommendator.model.AnimeTitle;
-import com.lampirg.recommendator.model.UserAnimeTitle;
+import com.lampirg.recommendator.anidb.model.AnimeRecommendation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +18,7 @@ public class SimilarAnimeController {
     private AnimeSiteCommunicator siteCommunicator;
 
     @Autowired
-    public void setSiteCommunicator(AnimeSiteCommunicator siteCommunicator) {
+    public void setSiteCommunicator(@Qualifier("single") AnimeSiteCommunicator siteCommunicator) {
         this.siteCommunicator = siteCommunicator;
     }
 
@@ -28,7 +26,8 @@ public class SimilarAnimeController {
     public List<AnimeRecommendation> getSimilarAnime(@PathVariable String username) {
         List<AnimeRecommendation> list =
                 new ArrayList<>(siteCommunicator.getSimilarAnimeTitles(username));
-        list.sort(Comparator.comparingInt(AnimeRecommendation::numOfRecommendations).reversed());
+        list.sort(Comparator.comparingInt(AnimeRecommendation::numOfRecommendations).reversed()
+                .thenComparing(x -> x.title().name()));
         return list;
     }
 

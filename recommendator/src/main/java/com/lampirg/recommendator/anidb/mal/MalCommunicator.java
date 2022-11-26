@@ -4,9 +4,9 @@ import com.lampirg.recommendator.anidb.AnimeSiteCommunicator;
 import com.lampirg.recommendator.anidb.mal.json.Data;
 import com.lampirg.recommendator.anidb.mal.json.queries.GetUserListJsonResult;
 import com.lampirg.recommendator.anidb.mal.titlemapper.TitleMapper;
-import com.lampirg.recommendator.model.AnimeRecommendation;
-import com.lampirg.recommendator.model.AnimeTitle;
-import com.lampirg.recommendator.model.UserAnimeTitle;
+import com.lampirg.recommendator.anidb.model.AnimeRecommendation;
+import com.lampirg.recommendator.anidb.model.AnimeTitle;
+import com.lampirg.recommendator.anidb.model.UserAnimeTitle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,13 +22,13 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
-import java.util.concurrent.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
 @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
 @PropertySource("classpath:mal security code.yml")
+@Qualifier("default")
 public class MalCommunicator implements AnimeSiteCommunicator {
 
     private RestTemplate restTemplate;
@@ -47,8 +47,7 @@ public class MalCommunicator implements AnimeSiteCommunicator {
         this.restTemplate = restTemplate;
     }
 
-    @Autowired
-    public void setTitleMapper(@Qualifier("singleThread") TitleMapper titleMapper) {
+    public void setTitleMapper(TitleMapper titleMapper) {
         this.titleMapper = titleMapper;
     }
 
@@ -61,6 +60,7 @@ public class MalCommunicator implements AnimeSiteCommunicator {
 
     @Override
     public Set<AnimeRecommendation> getSimilarAnimeTitles(String username) {
+        // TODO: QueryMaker interface/classes
         Set<UserAnimeTitle> completed = getUserCompletedAnimeList(username);
         Set<UserAnimeTitle> watching = getUserWatchingAnimeList(username);
         Set<UserAnimeTitle> dropped = getUserDroppedAnimeList(username);
@@ -109,12 +109,8 @@ public class MalCommunicator implements AnimeSiteCommunicator {
     }
 
     public Set<AnimeRecommendation> getSimilarAnimeTitles(Set<UserAnimeTitle> animeTitles, Set<UserAnimeTitle> toExclude) {
-        titleMapper.setRequest(request);
-        titleMapper.fillToExclude(toExclude);
-        for (UserAnimeTitle title : animeTitles) {
-            titleMapper.findAndAddTitleRecommendations(title);
-        }
-        Map<AnimeTitle, Integer> result = new HashMap<>(titleMapper.getRecommendedAnimeMap());
+        Map<AnimeTitle, Integer> result = titleMapper.setRequest(request).fillToExclude(toExclude)
+                .getRecommendedAnimeMap(animeTitles);
         Set<AnimeRecommendation> animeRecommendationSet = new HashSet<>();
         result.forEach((key, value) -> animeRecommendationSet.add(new AnimeRecommendation(key, value)));
         return Set.copyOf(animeRecommendationSet);

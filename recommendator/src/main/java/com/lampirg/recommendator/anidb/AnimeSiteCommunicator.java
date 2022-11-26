@@ -1,11 +1,7 @@
 package com.lampirg.recommendator.anidb;
 
-import com.lampirg.recommendator.model.AnimeRecommendation;
-import com.lampirg.recommendator.model.AnimeTitle;
-import com.lampirg.recommendator.model.UserAnimeTitle;
+import com.lampirg.recommendator.anidb.model.AnimeRecommendation;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public interface AnimeSiteCommunicator {

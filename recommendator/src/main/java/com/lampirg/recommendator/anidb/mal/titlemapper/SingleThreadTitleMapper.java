@@ -2,9 +2,10 @@ package com.lampirg.recommendator.anidb.mal.titlemapper;
 
 import com.lampirg.recommendator.anidb.mal.json.Recommendation;
 import com.lampirg.recommendator.anidb.mal.json.queries.GetAnimeDetail;
-import com.lampirg.recommendator.model.AnimeTitle;
-import com.lampirg.recommendator.model.UserAnimeTitle;
+import com.lampirg.recommendator.anidb.model.AnimeTitle;
+import com.lampirg.recommendator.anidb.model.UserAnimeTitle;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -14,7 +15,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
-@Component("singleThread")
+@Component
+@Qualifier("single")
 @Scope("prototype")
 public class SingleThreadTitleMapper implements TitleMapper {
 
@@ -26,28 +28,35 @@ public class SingleThreadTitleMapper implements TitleMapper {
     private final static long DELAY = 500;
     private long startTime;
 
-    @Override
-    public Map<AnimeTitle, Integer> getRecommendedAnimeMap() {
-        return recommendedAnime;
-    }
-
     @Autowired
     public void setRestTemplate(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
     @Override
-    public void setRequest(HttpEntity<String> request) {
+    public TitleMapper setRequest(HttpEntity<String> request) {
         this.request = request;
+        return this;
     }
 
-    public void fillToExclude(Set<UserAnimeTitle> animeTitles) {
+    @Override
+    public Map<AnimeTitle, Integer> getRecommendedAnimeMap(Set<UserAnimeTitle> animeTitles) {
+        if (!recommendedAnime.isEmpty())
+            return recommendedAnime;
         for (UserAnimeTitle title : animeTitles) {
-            toExclude.add(title.animeTitle());
+            findAndAddTitleRecommendations(title);
         }
+        return recommendedAnime;
     }
 
-    public void findAndAddTitleRecommendations(UserAnimeTitle title) {
+    public TitleMapper fillToExclude(Set<UserAnimeTitle> toExclude) {
+        for (UserAnimeTitle title : toExclude) {
+            this.toExclude.add(title.animeTitle());
+        }
+        return this;
+    }
+
+    private void findAndAddTitleRecommendations(UserAnimeTitle title) {
         String url = "https://api.myanimelist.net/v2/anime/"+title.animeTitle().id()+"?fields=recommendations";
         while (System.currentTimeMillis() - startTime < DELAY)
             Thread.onSpinWait();
