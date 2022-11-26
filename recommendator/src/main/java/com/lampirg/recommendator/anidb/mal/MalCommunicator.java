@@ -4,9 +4,9 @@ import com.lampirg.recommendator.anidb.AnimeSiteCommunicator;
 import com.lampirg.recommendator.anidb.mal.json.Data;
 import com.lampirg.recommendator.anidb.mal.json.queries.GetUserListJsonResult;
 import com.lampirg.recommendator.anidb.mal.titlemapper.TitleMapper;
-import com.lampirg.recommendator.model.AnimeRecommendation;
-import com.lampirg.recommendator.model.AnimeTitle;
-import com.lampirg.recommendator.model.UserAnimeTitle;
+import com.lampirg.recommendator.anidb.model.AnimeRecommendation;
+import com.lampirg.recommendator.anidb.model.AnimeTitle;
+import com.lampirg.recommendator.anidb.model.UserAnimeTitle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +22,6 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
-import java.util.concurrent.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 

@@ -2,8 +2,8 @@ package com.lampirg.recommendator.anidb.mal.titlemapper;
 
 import com.lampirg.recommendator.anidb.mal.json.Recommendation;
 import com.lampirg.recommendator.anidb.mal.json.queries.GetAnimeDetail;
-import com.lampirg.recommendator.model.AnimeTitle;
-import com.lampirg.recommendator.model.UserAnimeTitle;
+import com.lampirg.recommendator.anidb.model.AnimeTitle;
+import com.lampirg.recommendator.anidb.model.UserAnimeTitle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.ReentrantLock;
 
 // TODO: fix thread unsafety

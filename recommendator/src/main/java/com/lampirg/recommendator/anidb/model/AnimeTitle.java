@@ -1,4 +1,4 @@
-package com.lampirg.recommendator.model;
+package com.lampirg.recommendator.anidb.model;
 
 import com.lampirg.recommendator.anidb.mal.json.Node;
 

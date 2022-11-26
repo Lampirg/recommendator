@@ -1,10 +1,7 @@
 package com.lampirg.recommendator.controller;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.lampirg.recommendator.anidb.AnimeSiteCommunicator;
-import com.lampirg.recommendator.model.AnimeRecommendation;
-import com.lampirg.recommendator.model.AnimeTitle;
-import com.lampirg.recommendator.model.UserAnimeTitle;
+import com.lampirg.recommendator.anidb.model.AnimeRecommendation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
