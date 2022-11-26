@@ -3,6 +3,7 @@ package com.lampirg.recommendator.anidb.mal;
 import com.lampirg.recommendator.anidb.AnimeSiteCommunicator;
 import com.lampirg.recommendator.anidb.mal.json.Data;
 import com.lampirg.recommendator.anidb.mal.json.queries.GetUserListJsonResult;
+import com.lampirg.recommendator.anidb.mal.querymaker.QueryMaker;
 import com.lampirg.recommendator.anidb.mal.titlemapper.TitleMapper;
 import com.lampirg.recommendator.anidb.model.AnimeRecommendation;
 import com.lampirg.recommendator.anidb.model.AnimeTitle;
@@ -31,7 +32,7 @@ import java.util.stream.Stream;
 @Qualifier("default")
 public class MalCommunicator implements AnimeSiteCommunicator {
 
-    private RestTemplate restTemplate;
+    private QueryMaker queryMaker;
     private TitleMapper titleMapper;
 
     @Value("${clientIdHeader}")
@@ -40,13 +41,9 @@ public class MalCommunicator implements AnimeSiteCommunicator {
     private String clientId;
     HttpEntity<String> request;
 
-    private final static int LIMIT_SIZE = 50;
-
-    @Autowired
-    public void setRestTemplate(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    public void setQueryMaker(QueryMaker queryMaker) {
+        this.queryMaker = queryMaker;
     }
-
     public void setTitleMapper(TitleMapper titleMapper) {
         this.titleMapper = titleMapper;
     }
@@ -60,52 +57,8 @@ public class MalCommunicator implements AnimeSiteCommunicator {
 
     @Override
     public Set<AnimeRecommendation> getSimilarAnimeTitles(String username) {
-        // TODO: QueryMaker interface/classes
-        Set<UserAnimeTitle> completed = getUserCompletedAnimeList(username);
-        Set<UserAnimeTitle> watching = getUserWatchingAnimeList(username);
-        Set<UserAnimeTitle> dropped = getUserDroppedAnimeList(username);
-        Set<UserAnimeTitle> onHold = getUserOnHoldAnimeList(username);
-        Set<UserAnimeTitle> toExclude = Stream.of(completed, watching, dropped, onHold)
-                .flatMap(Set::stream).collect(Collectors.toSet());
-        Set<UserAnimeTitle> toInclude = completed.stream()
-                .sorted(
-                        Comparator.comparingInt(UserAnimeTitle::score).reversed()
-                                .thenComparing(x -> x.animeTitle().name())
-                )
-                .limit(LIMIT_SIZE).collect(Collectors.toSet());
-        return getSimilarAnimeTitles(toInclude, toExclude);
-    }
-
-    public Set<UserAnimeTitle> getUserCompletedAnimeList(String username) {
-        return getUserAnimeList(username, "completed");
-    }
-    public Set<UserAnimeTitle> getUserWatchingAnimeList(String username) {
-        return getUserAnimeList(username, "watching");
-    }
-    public Set<UserAnimeTitle> getUserDroppedAnimeList(String username) {
-        return getUserAnimeList(username, "dropped");
-    }
-    public Set<UserAnimeTitle> getUserOnHoldAnimeList(String username) {
-        return getUserAnimeList(username, "on_hold");
-    }
-
-    public Set<UserAnimeTitle> getUserAnimeList(String username, String listType) {
-        String url = "https://api.myanimelist.net/v2/users/"+username+"/animelist?fields=list_status&status="+listType+"&limit=1000";
-        List<Data> dataList = new ArrayList<>();
-        while (true) {
-            ResponseEntity<GetUserListJsonResult> response = this.restTemplate.exchange(url, HttpMethod.GET, request, GetUserListJsonResult.class);
-            dataList.addAll(Objects.requireNonNull(response.getBody()).data());
-            if (!response.getBody().paging().containsKey("next"))
-                break;
-            url = response.getBody().paging().get("next");
-        }
-        Set<UserAnimeTitle> titleSet = new HashSet<>();
-        dataList.forEach(data ->
-        {
-            int score = data.listStatus().score() != 0 ? data.listStatus().score() : 1;
-            titleSet.add(new UserAnimeTitle(AnimeTitle.retrieveFromMalNode(data.node()), score));
-        });
-        return Set.copyOf(titleSet);
+        queryMaker.setRequest(request).setUser(username);
+        return getSimilarAnimeTitles(queryMaker.getToInclude(), queryMaker.getToExclude());
     }
 
     public Set<AnimeRecommendation> getSimilarAnimeTitles(Set<UserAnimeTitle> animeTitles, Set<UserAnimeTitle> toExclude) {
