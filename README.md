@@ -1,8 +1,8 @@
 # recommendator
  
-This is web application for computing anime title to watch according to user anime list. Right now it supports My Anime List API.
+This is web application for computing anime titles to watch according to user anime list. Right now it supports My Anime List API.
 
-*Note:* this is a **study project** and right now it is problematic to use (as you can see in [usage](#usage)). Thus the project can change significantly.
+*Note:* this is a **study unfinished project** and right now it is problematic to use (as you can see in [usage](#usage)). Thus the project can change significantly.
 
 ## Usage
 
