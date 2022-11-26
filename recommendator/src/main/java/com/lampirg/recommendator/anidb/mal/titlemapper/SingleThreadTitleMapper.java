@@ -16,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.*;
 
 @Component
-@Qualifier("singleThread")
+@Qualifier("single")
 @Scope("prototype")
 public class SingleThreadTitleMapper implements TitleMapper {
 

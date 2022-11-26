@@ -21,7 +21,7 @@ public class SimilarAnimeController {
     private AnimeSiteCommunicator siteCommunicator;
 
     @Autowired
-    public void setSiteCommunicator(@Qualifier("concurrent") AnimeSiteCommunicator siteCommunicator) {
+    public void setSiteCommunicator(@Qualifier("single") AnimeSiteCommunicator siteCommunicator) {
         this.siteCommunicator = siteCommunicator;
     }
 

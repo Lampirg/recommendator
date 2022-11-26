@@ -29,6 +29,7 @@ import java.util.stream.Stream;
 @Service
 @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
 @PropertySource("classpath:mal security code.yml")
+@Qualifier("default")
 public class MalCommunicator implements AnimeSiteCommunicator {
 
     private RestTemplate restTemplate;
@@ -47,8 +48,7 @@ public class MalCommunicator implements AnimeSiteCommunicator {
         this.restTemplate = restTemplate;
     }
 
-    @Autowired
-    public void setTitleMapper(@Qualifier("concurrent") TitleMapper titleMapper) {
+    public void setTitleMapper(TitleMapper titleMapper) {
         this.titleMapper = titleMapper;
     }
 
