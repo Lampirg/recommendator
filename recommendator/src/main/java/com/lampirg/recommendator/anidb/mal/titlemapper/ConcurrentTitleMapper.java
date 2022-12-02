@@ -24,27 +24,11 @@ import java.util.concurrent.*;
 @Component
 @Qualifier("concurrent")
 @Scope("prototype")
-public class ConcurrentTitleMapper implements TitleMapper {
-
-    MalQueryMaker queryMaker;
-    HttpEntity<String> request;
-
-    private final Map<AnimeTitle, Integer> recommendedAnime = new ConcurrentHashMap<>();
-    private Set<AnimeTitle> toExclude = new HashSet<>();
-
-    @Autowired
-    public void setQueryMaker(MalQueryMaker queryMaker) {
-        this.queryMaker = queryMaker;
-    }
-
-    @Override
-    public TitleMapper setRequest(HttpEntity<String> request) {
-        this.request = request;
-        return this;
-    }
-
+public class ConcurrentTitleMapper extends AbstractTitleMapper implements TitleMapper {
     @Override
     public Map<AnimeTitle, Integer> getRecommendedAnimeMap(Set<UserAnimeTitle> animeTitles) {
+        if (recommendedAnime == null)
+            recommendedAnime = new ConcurrentHashMap<>();
         if (!recommendedAnime.isEmpty())
             return recommendedAnime;
         CompletableFuture<Void> future = CompletableFuture.allOf();
@@ -55,25 +39,5 @@ public class ConcurrentTitleMapper implements TitleMapper {
         }
         future.join();
         return recommendedAnime;
-    }
-
-    public TitleMapper fillToExclude(Set<UserAnimeTitle> toExclude) {
-        for (UserAnimeTitle title : toExclude) {
-            this.toExclude.add(title.animeTitle());
-        }
-        return this;
-    }
-
-    public void findAndAddTitleRecommendations(UserAnimeTitle title) {
-        String url = "https://api.myanimelist.net/v2/anime/"+title.animeTitle().id()+"?fields=recommendations";
-        ResponseEntity<GetAnimeDetail> response;
-        response = queryMaker.exchange(
-                url, HttpMethod.GET, request, GetAnimeDetail.class);
-        for (Recommendation recommendation : Objects.requireNonNull(response.getBody()).recommendations()) {
-            AnimeTitle animeTitle = AnimeTitle.retrieveFromMalNode(recommendation.node());
-            if (toExclude.contains(animeTitle))
-                continue;
-            recommendedAnime.merge(animeTitle, title.score(), Integer::sum);
-        }
     }
 }
