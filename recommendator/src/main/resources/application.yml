@@ -1,0 +1,32 @@
+resilience4j.ratelimiter:
+  instances:
+    mal-rps:
+      limitForPeriod: 3
+      limitRefreshPeriod: 1s
+      timeoutDuration: 1s
+
+    mal-rpm:
+      limitForPeriod: 60
+      limitRefreshPeriod: 1m
+      timeoutDuration: 1s
+
+resilience4j.retry:
+  instances:
+    mal-rps:
+      maxAttempts: 20
+      waitDuration: 1s
+    mal-rpm:
+      maxAttempts: 5
+      waitDuration: 10s
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-components: always
+      show-details: always
+      probes:
+        enabled: true
