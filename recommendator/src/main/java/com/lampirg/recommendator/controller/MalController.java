@@ -18,7 +18,7 @@ public class MalController {
     private AnimeSiteCommunicator siteCommunicator;
 
     @Autowired
-    public void setSiteCommunicator(@Qualifier("single") AnimeSiteCommunicator siteCommunicator) {
+    public void setSiteCommunicator(@Qualifier("mal-single") AnimeSiteCommunicator siteCommunicator) {
         this.siteCommunicator = siteCommunicator;
     }
 

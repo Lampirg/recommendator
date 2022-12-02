@@ -14,7 +14,7 @@ public class MalConfiguration {
 
     @Bean
     @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
-    @Qualifier("single")
+    @Qualifier("mal-single")
     public MalCommunicator singleThreadMalCommunicator(SingleThreadUserListExtractor queryMaker,
                                                        SingleThreadTitleMapper mapper) {
         MalCommunicator communicator = new MalCommunicator();
@@ -25,7 +25,7 @@ public class MalConfiguration {
 
     @Bean
     @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
-    @Qualifier("concurrent")
+    @Qualifier("mal-concurrent")
     public MalCommunicator concurrentThreadMalCommunicator(ConcurrentUserListExtractor queryMaker,
                                                            ConcurrentTitleMapper mapper) {
         MalCommunicator communicator = new MalCommunicator();
