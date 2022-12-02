@@ -1,4 +1,4 @@
-package com.lampirg.recommendator.anidb.mal.querymaker;
+package com.lampirg.recommendator.anidb.mal.listextractor;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;

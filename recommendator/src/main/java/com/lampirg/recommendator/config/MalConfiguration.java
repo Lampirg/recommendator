@@ -1,8 +1,8 @@
 package com.lampirg.recommendator.config;
 
 import com.lampirg.recommendator.anidb.mal.MalCommunicator;
-import com.lampirg.recommendator.anidb.mal.querymaker.ConcurrentUserListExtractor;
-import com.lampirg.recommendator.anidb.mal.querymaker.SingleThreadUserListExtractor;
+import com.lampirg.recommendator.anidb.mal.listextractor.ConcurrentUserListExtractor;
+import com.lampirg.recommendator.anidb.mal.listextractor.SingleThreadUserListExtractor;
 import com.lampirg.recommendator.anidb.mal.titlemapper.ConcurrentTitleMapper;
 import com.lampirg.recommendator.anidb.mal.titlemapper.SingleThreadTitleMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
