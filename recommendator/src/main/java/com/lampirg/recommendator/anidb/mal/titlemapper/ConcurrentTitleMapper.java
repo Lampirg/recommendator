@@ -1,5 +1,6 @@
 package com.lampirg.recommendator.anidb.mal.titlemapper;
 
+import com.lampirg.recommendator.anidb.mal.MalQueryMaker;
 import com.lampirg.recommendator.anidb.mal.json.Recommendation;
 import com.lampirg.recommendator.anidb.mal.json.queries.GetAnimeDetail;
 import com.lampirg.recommendator.anidb.model.AnimeTitle;
@@ -18,7 +19,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.*;
-import java.util.concurrent.locks.ReentrantLock;
 
 // TODO: fix thread unsafety
 @Component
@@ -26,18 +26,15 @@ import java.util.concurrent.locks.ReentrantLock;
 @Scope("prototype")
 public class ConcurrentTitleMapper implements TitleMapper {
 
-    RestTemplate restTemplate;
+    MalQueryMaker queryMaker;
     HttpEntity<String> request;
 
     private final Map<AnimeTitle, Integer> recommendedAnime = new ConcurrentHashMap<>();
     private Set<AnimeTitle> toExclude = new HashSet<>();
-    private volatile long startTime;
-    private final static long DELAY = 500;
-    private ReentrantLock lock = new ReentrantLock();
 
     @Autowired
-    public void setRestTemplate(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    public void setQueryMaker(MalQueryMaker queryMaker) {
+        this.queryMaker = queryMaker;
     }
 
     @Override
@@ -70,16 +67,8 @@ public class ConcurrentTitleMapper implements TitleMapper {
     public void findAndAddTitleRecommendations(UserAnimeTitle title) {
         String url = "https://api.myanimelist.net/v2/anime/"+title.animeTitle().id()+"?fields=recommendations";
         ResponseEntity<GetAnimeDetail> response;
-        try {
-            lock.lock();
-            while (System.currentTimeMillis() - startTime < DELAY)
-                Thread.onSpinWait();
-            response = restTemplate.exchange(
-                    url, HttpMethod.GET, request, GetAnimeDetail.class);
-            startTime = System.currentTimeMillis();
-        } finally {
-            lock.unlock();
-        }
+        response = queryMaker.exchange(
+                url, HttpMethod.GET, request, GetAnimeDetail.class);
         for (Recommendation recommendation : Objects.requireNonNull(response.getBody()).recommendations()) {
             AnimeTitle animeTitle = AnimeTitle.retrieveFromMalNode(recommendation.node());
             if (toExclude.contains(animeTitle))

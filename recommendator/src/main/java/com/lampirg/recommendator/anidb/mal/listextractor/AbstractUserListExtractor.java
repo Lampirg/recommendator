@@ -1,5 +1,6 @@
 package com.lampirg.recommendator.anidb.mal.listextractor;
 
+import com.lampirg.recommendator.anidb.mal.MalQueryMaker;
 import com.lampirg.recommendator.anidb.mal.json.Data;
 import com.lampirg.recommendator.anidb.mal.json.queries.GetUserListJsonResult;
 import com.lampirg.recommendator.anidb.model.AnimeTitle;
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public abstract class AbstractUserListExtractor implements UserListExtractor {
-    RestTemplate restTemplate;
+    MalQueryMaker queryMaker;
     private HttpEntity<String> request;
 
     protected String username;
@@ -27,8 +28,8 @@ public abstract class AbstractUserListExtractor implements UserListExtractor {
     private final static int LIMIT_SIZE = 50;
 
     @Autowired
-    public void setRestTemplate(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    public void setQueryMaker(MalQueryMaker queryMaker) {
+        this.queryMaker = queryMaker;
     }
 
     @Override
@@ -73,7 +74,7 @@ public abstract class AbstractUserListExtractor implements UserListExtractor {
         String url = "https://api.myanimelist.net/v2/users/"+username+"/animelist?fields=list_status&status="+listType+"&limit=1000";
         List<Data> dataList = new ArrayList<>();
         while (true) {
-            ResponseEntity<GetUserListJsonResult> response = this.restTemplate.exchange(url, HttpMethod.GET, request, GetUserListJsonResult.class);
+            ResponseEntity<GetUserListJsonResult> response = this.queryMaker.exchange(url, HttpMethod.GET, request, GetUserListJsonResult.class);
             dataList.addAll(Objects.requireNonNull(response.getBody()).data());
             if (!response.getBody().paging().containsKey("next"))
                 break;

@@ -1,5 +1,6 @@
 package com.lampirg.recommendator.anidb.mal.titlemapper;
 
+import com.lampirg.recommendator.anidb.mal.MalQueryMaker;
 import com.lampirg.recommendator.anidb.mal.json.Recommendation;
 import com.lampirg.recommendator.anidb.mal.json.queries.GetAnimeDetail;
 import com.lampirg.recommendator.anidb.model.AnimeTitle;
@@ -20,17 +21,15 @@ import java.util.*;
 @Scope("prototype")
 public class SingleThreadTitleMapper implements TitleMapper {
 
-    RestTemplate restTemplate;
+    MalQueryMaker queryMaker;
     HttpEntity<String> request;
 
     private final Map<AnimeTitle, Integer> recommendedAnime = new HashMap<>();
     private Set<AnimeTitle> toExclude = new HashSet<>();
-    private final static long DELAY = 500;
-    private long startTime;
 
     @Autowired
-    public void setRestTemplate(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    public void setQueryMaker(MalQueryMaker queryMaker) {
+        this.queryMaker = queryMaker;
     }
 
     @Override
@@ -58,10 +57,7 @@ public class SingleThreadTitleMapper implements TitleMapper {
 
     private void findAndAddTitleRecommendations(UserAnimeTitle title) {
         String url = "https://api.myanimelist.net/v2/anime/"+title.animeTitle().id()+"?fields=recommendations";
-        while (System.currentTimeMillis() - startTime < DELAY)
-            Thread.onSpinWait();
-        ResponseEntity<GetAnimeDetail> response = restTemplate.exchange(url, HttpMethod.GET, request, GetAnimeDetail.class);
-        startTime = System.currentTimeMillis();
+        ResponseEntity<GetAnimeDetail> response = queryMaker.exchange(url, HttpMethod.GET, request, GetAnimeDetail.class);
         for (Recommendation recommendation : Objects.requireNonNull(response.getBody()).recommendations()) {
             AnimeTitle animeTitle = AnimeTitle.retrieveFromMalNode(recommendation.node());
             if (toExclude.contains(animeTitle))
