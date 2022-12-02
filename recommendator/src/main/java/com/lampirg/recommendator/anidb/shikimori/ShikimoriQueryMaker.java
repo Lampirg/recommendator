@@ -1,5 +1,6 @@
-package com.lampirg.recommendator.anidb.mal;
+package com.lampirg.recommendator.anidb.shikimori;
 
+import com.lampirg.recommendator.anidb.mal.MalQueryMaker;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,16 +12,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class MalQueryMaker {
-
-    RPSQueryMaker queryMaker;
+public class ShikimoriQueryMaker {
+    MalQueryMaker.RPSQueryMaker queryMaker;
 
     @Autowired
-    public void setQueryMaker(RPSQueryMaker queryMaker) {
+    public void setQueryMaker(MalQueryMaker.RPSQueryMaker queryMaker) {
         this.queryMaker = queryMaker;
     }
 
-    @RateLimiter(name = "mal-rpm")
+    @RateLimiter(name = "shikimori-rpm")
     @Retry(name = "rpm")
     public <T> ResponseEntity<T> exchange(String url, HttpMethod method, @Nullable HttpEntity<?> requestEntity, Class<T> responseType, Object... uriVariables) {
         return queryMaker.exchange(url, method, requestEntity, responseType, uriVariables);
@@ -36,7 +36,7 @@ public class MalQueryMaker {
             this.restTemplate = restTemplate;
         }
 
-        @RateLimiter(name = "mal-rps")
+        @RateLimiter(name = "shikimori-rps")
         @Retry(name = "rps")
         public <T> ResponseEntity<T> exchange(String url, HttpMethod method, @Nullable HttpEntity<?> requestEntity, Class<T> responseType, Object... uriVariables) {
             return restTemplate.exchange(url, method, requestEntity, responseType, uriVariables);

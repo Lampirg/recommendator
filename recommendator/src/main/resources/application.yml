@@ -4,18 +4,26 @@ resilience4j.ratelimiter:
       limitForPeriod: 3
       limitRefreshPeriod: 1s
       timeoutDuration: 1s
-
     mal-rpm:
       limitForPeriod: 60
       limitRefreshPeriod: 1m
       timeoutDuration: 1s
 
+    shikimori-rps:
+      limitForPeriod: 5
+      limitRefreshPeriod: 1s
+      timeoutDuration: 1s
+    shikimori-rpm:
+      limitForPeriod: 90
+      limitRefreshPeriod: 1s
+      timeoutDuration: 1s
+
 resilience4j.retry:
   instances:
-    mal-rps:
+    rps:
       maxAttempts: 20
       waitDuration: 1s
-    mal-rpm:
+    rpm:
       maxAttempts: 5
       waitDuration: 10s
 
