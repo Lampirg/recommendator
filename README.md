@@ -14,7 +14,7 @@ The project isn't deployed anywhere so the only way to run application right now
 
 After that you can run java application and make HTTP requests.
 
-Send GET request to "/recommend/{username}" and the responce will be an array of pairs title|numOfRecommendations.
+Send GET request to "/mal/{username}" and the responce will be an array of pairs title|numOfRecommendations.
 
 ## Occured problems
 
