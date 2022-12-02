@@ -1,14 +1,11 @@
 package com.lampirg.recommendator.anidb.mal;
 
 import com.lampirg.recommendator.anidb.AnimeSiteCommunicator;
-import com.lampirg.recommendator.anidb.mal.json.Data;
-import com.lampirg.recommendator.anidb.mal.json.queries.GetUserListJsonResult;
-import com.lampirg.recommendator.anidb.mal.querymaker.QueryMaker;
+import com.lampirg.recommendator.anidb.mal.listextractor.UserListExtractor;
 import com.lampirg.recommendator.anidb.mal.titlemapper.TitleMapper;
 import com.lampirg.recommendator.anidb.model.AnimeRecommendation;
 import com.lampirg.recommendator.anidb.model.AnimeTitle;
 import com.lampirg.recommendator.anidb.model.UserAnimeTitle;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -16,15 +13,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
@@ -32,7 +24,7 @@ import java.util.stream.Stream;
 @Qualifier("default")
 public class MalCommunicator implements AnimeSiteCommunicator {
 
-    private QueryMaker queryMaker;
+    private UserListExtractor userListExtractor;
     private TitleMapper titleMapper;
 
     @Value("${clientIdHeader}")
@@ -41,8 +33,8 @@ public class MalCommunicator implements AnimeSiteCommunicator {
     private String clientId;
     HttpEntity<String> request;
 
-    public void setQueryMaker(QueryMaker queryMaker) {
-        this.queryMaker = queryMaker;
+    public void setQueryMaker(UserListExtractor userListExtractor) {
+        this.userListExtractor = userListExtractor;
     }
     public void setTitleMapper(TitleMapper titleMapper) {
         this.titleMapper = titleMapper;
@@ -57,8 +49,8 @@ public class MalCommunicator implements AnimeSiteCommunicator {
 
     @Override
     public Set<AnimeRecommendation> getSimilarAnimeTitles(String username) {
-        queryMaker.setRequest(request).setUser(username);
-        return getSimilarAnimeTitles(queryMaker.getToInclude(), queryMaker.getToExclude());
+        userListExtractor.setRequest(request).setUser(username);
+        return getSimilarAnimeTitles(userListExtractor.getToInclude(), userListExtractor.getToExclude());
     }
 
     public Set<AnimeRecommendation> getSimilarAnimeTitles(Set<UserAnimeTitle> animeTitles, Set<UserAnimeTitle> toExclude) {

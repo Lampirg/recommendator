@@ -1,5 +1,6 @@
 package com.lampirg.recommendator.anidb.mal.titlemapper;
 
+import com.lampirg.recommendator.anidb.mal.MalQueryMaker;
 import com.lampirg.recommendator.anidb.mal.json.Recommendation;
 import com.lampirg.recommendator.anidb.mal.json.queries.GetAnimeDetail;
 import com.lampirg.recommendator.anidb.model.AnimeTitle;
@@ -14,59 +15,21 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 @Qualifier("single")
 @Scope("prototype")
-public class SingleThreadTitleMapper implements TitleMapper {
-
-    RestTemplate restTemplate;
-    HttpEntity<String> request;
-
-    private final Map<AnimeTitle, Integer> recommendedAnime = new HashMap<>();
-    private Set<AnimeTitle> toExclude = new HashSet<>();
-    private final static long DELAY = 500;
-    private long startTime;
-
-    @Autowired
-    public void setRestTemplate(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
-    }
-
-    @Override
-    public TitleMapper setRequest(HttpEntity<String> request) {
-        this.request = request;
-        return this;
-    }
-
+public class SingleThreadTitleMapper extends AbstractTitleMapper implements TitleMapper {
     @Override
     public Map<AnimeTitle, Integer> getRecommendedAnimeMap(Set<UserAnimeTitle> animeTitles) {
+        if (recommendedAnime == null)
+            recommendedAnime = new HashMap<>();
         if (!recommendedAnime.isEmpty())
             return recommendedAnime;
         for (UserAnimeTitle title : animeTitles) {
             findAndAddTitleRecommendations(title);
         }
         return recommendedAnime;
-    }
-
-    public TitleMapper fillToExclude(Set<UserAnimeTitle> toExclude) {
-        for (UserAnimeTitle title : toExclude) {
-            this.toExclude.add(title.animeTitle());
-        }
-        return this;
-    }
-
-    private void findAndAddTitleRecommendations(UserAnimeTitle title) {
-        String url = "https://api.myanimelist.net/v2/anime/"+title.animeTitle().id()+"?fields=recommendations";
-        while (System.currentTimeMillis() - startTime < DELAY)
-            Thread.onSpinWait();
-        ResponseEntity<GetAnimeDetail> response = restTemplate.exchange(url, HttpMethod.GET, request, GetAnimeDetail.class);
-        startTime = System.currentTimeMillis();
-        for (Recommendation recommendation : Objects.requireNonNull(response.getBody()).recommendations()) {
-            AnimeTitle animeTitle = AnimeTitle.retrieveFromMalNode(recommendation.node());
-            if (toExclude.contains(animeTitle))
-                continue;
-            recommendedAnime.merge(animeTitle, title.score(), Integer::sum);
-        }
     }
 }
