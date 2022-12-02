@@ -9,7 +9,7 @@ import java.util.concurrent.CompletableFuture;
 @Component
 @Qualifier("concurrent")
 @Scope("prototype")
-public class ConcurrentQueryMaker extends AbstractQueryMaker implements QueryMaker {
+public class ConcurrentUserListExtractor extends AbstractUserListExtractor implements UserListExtractor {
     @Override
     public void setUser(String username) {
         this.username = username;

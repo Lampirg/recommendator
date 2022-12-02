@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Qualifier("single")
 @Scope("prototype")
-public class SingleThreadQueryMaker extends AbstractQueryMaker implements QueryMaker {
+public class SingleThreadUserListExtractor extends AbstractUserListExtractor implements UserListExtractor {
     @Override
     public void setUser(String username) {
         this.username = username;

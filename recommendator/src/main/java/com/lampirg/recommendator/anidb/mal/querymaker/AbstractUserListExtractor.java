@@ -14,7 +14,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public abstract class AbstractQueryMaker implements QueryMaker {
+public abstract class AbstractUserListExtractor implements UserListExtractor {
     RestTemplate restTemplate;
     private HttpEntity<String> request;
 
@@ -32,7 +32,7 @@ public abstract class AbstractQueryMaker implements QueryMaker {
     }
 
     @Override
-    public QueryMaker setRequest(HttpEntity<String> request) {
+    public UserListExtractor setRequest(HttpEntity<String> request) {
         this.request = request;
         return this;
     }

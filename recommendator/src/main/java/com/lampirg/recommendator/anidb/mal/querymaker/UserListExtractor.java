@@ -5,9 +5,9 @@ import org.springframework.http.HttpEntity;
 
 import java.util.Set;
 
-public interface QueryMaker {
+public interface UserListExtractor {
 
-    QueryMaker setRequest(HttpEntity<String> request);
+    UserListExtractor setRequest(HttpEntity<String> request);
     void setUser(String username);
     Set<UserAnimeTitle> getToExclude();
     Set<UserAnimeTitle> getToInclude();
