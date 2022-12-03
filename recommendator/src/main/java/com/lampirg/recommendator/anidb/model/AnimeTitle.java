@@ -14,6 +14,6 @@ public record AnimeTitle(
     }
 
     public static AnimeTitle retrieveFromShikiNode(ShikiNode node) {
-        return new AnimeTitle(node.id(), node.name(), node.image().original());
+        return new AnimeTitle(node.id(), node.name(), "https://shikimori.one"+node.image().original());
     }
 }
