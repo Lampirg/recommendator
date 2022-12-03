@@ -18,7 +18,6 @@ import java.util.*;
 @Service
 @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
 @PropertySource("classpath:mal security code.yml")
-@Qualifier("mal-default")
 public class SimilarAnimeCommunicator implements AnimeSiteCommunicator {
 
     private UserListExtractor userListExtractor;
