@@ -1,9 +1,7 @@
-package com.lampirg.recommendator.anidb;
+package com.lampirg.recommendator.anidb.general;
 
-import com.lampirg.recommendator.anidb.mal.MalQueryMaker;
-import com.lampirg.recommendator.anidb.model.AnimeTitle;
-import com.lampirg.recommendator.anidb.model.UserAnimeTitle;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.lampirg.recommendator.anidb.general.model.AnimeTitle;
+import com.lampirg.recommendator.anidb.general.model.UserAnimeTitle;
 import org.springframework.http.HttpEntity;
 
 import java.util.HashSet;

@@ -1,20 +1,17 @@
 package com.lampirg.recommendator.anidb.mal.listextractor;
 
-import com.lampirg.recommendator.anidb.StandardListCollector;
-import com.lampirg.recommendator.anidb.UserListExtractor;
+import com.lampirg.recommendator.anidb.general.StandardListCollector;
+import com.lampirg.recommendator.anidb.general.UserListExtractor;
 import com.lampirg.recommendator.anidb.mal.MalQueryMaker;
 import com.lampirg.recommendator.anidb.mal.json.Data;
 import com.lampirg.recommendator.anidb.mal.json.queries.GetUserListJsonResult;
-import com.lampirg.recommendator.anidb.model.AnimeTitle;
-import com.lampirg.recommendator.anidb.model.UserAnimeTitle;
+import com.lampirg.recommendator.anidb.general.model.AnimeTitle;
+import com.lampirg.recommendator.anidb.general.model.UserAnimeTitle;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public abstract class AbstractMalUserListExtractor extends StandardListCollector implements UserListExtractor {
 

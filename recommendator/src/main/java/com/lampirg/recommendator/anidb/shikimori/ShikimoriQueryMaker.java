@@ -1,6 +1,6 @@
 package com.lampirg.recommendator.anidb.shikimori;
 
-import com.lampirg.recommendator.anidb.QueryMaker;
+import com.lampirg.recommendator.anidb.general.QueryMaker;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +10,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RequestCallback;
-import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-
-import java.lang.reflect.Type;
 
 @Service
 public class ShikimoriQueryMaker implements QueryMaker {

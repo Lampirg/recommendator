@@ -1,6 +1,6 @@
-package com.lampirg.recommendator.anidb;
+package com.lampirg.recommendator.anidb.general;
 
-import com.lampirg.recommendator.anidb.model.AnimeRecommendation;
+import com.lampirg.recommendator.anidb.general.model.AnimeRecommendation;
 
 import java.util.Set;
 

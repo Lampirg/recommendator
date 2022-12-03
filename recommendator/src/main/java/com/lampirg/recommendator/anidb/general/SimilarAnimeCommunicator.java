@@ -1,9 +1,8 @@
-package com.lampirg.recommendator.anidb;
+package com.lampirg.recommendator.anidb.general;
 
-import com.lampirg.recommendator.anidb.model.AnimeRecommendation;
-import com.lampirg.recommendator.anidb.model.AnimeTitle;
-import com.lampirg.recommendator.anidb.model.UserAnimeTitle;
-import org.springframework.beans.factory.annotation.Qualifier;
+import com.lampirg.recommendator.anidb.general.model.AnimeRecommendation;
+import com.lampirg.recommendator.anidb.general.model.AnimeTitle;
+import com.lampirg.recommendator.anidb.general.model.UserAnimeTitle;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;

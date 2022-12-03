@@ -1,7 +1,7 @@
 package com.lampirg.recommendator.controller;
 
-import com.lampirg.recommendator.anidb.AnimeSiteCommunicator;
-import com.lampirg.recommendator.anidb.model.AnimeRecommendation;
+import com.lampirg.recommendator.anidb.general.AnimeSiteCommunicator;
+import com.lampirg.recommendator.anidb.general.model.AnimeRecommendation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;

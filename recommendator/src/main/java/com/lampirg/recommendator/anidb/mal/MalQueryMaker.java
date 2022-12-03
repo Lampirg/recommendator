@@ -1,6 +1,6 @@
 package com.lampirg.recommendator.anidb.mal;
 
-import com.lampirg.recommendator.anidb.QueryMaker;
+import com.lampirg.recommendator.anidb.general.QueryMaker;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.beans.factory.annotation.Autowired;

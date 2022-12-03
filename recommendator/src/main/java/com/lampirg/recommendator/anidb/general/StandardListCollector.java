@@ -1,6 +1,6 @@
-package com.lampirg.recommendator.anidb;
+package com.lampirg.recommendator.anidb.general;
 
-import com.lampirg.recommendator.anidb.model.UserAnimeTitle;
+import com.lampirg.recommendator.anidb.general.model.UserAnimeTitle;
 import org.springframework.http.HttpEntity;
 
 import java.util.*;

@@ -1,23 +1,20 @@
 package com.lampirg.recommendator.anidb.shikimori;
 
 
-import com.lampirg.recommendator.anidb.StandardListCollector;
-import com.lampirg.recommendator.anidb.UserListExtractor;
-import com.lampirg.recommendator.anidb.model.AnimeTitle;
-import com.lampirg.recommendator.anidb.model.UserAnimeTitle;
+import com.lampirg.recommendator.anidb.general.StandardListCollector;
+import com.lampirg.recommendator.anidb.general.UserListExtractor;
+import com.lampirg.recommendator.anidb.general.model.AnimeTitle;
+import com.lampirg.recommendator.anidb.general.model.UserAnimeTitle;
 import com.lampirg.recommendator.anidb.shikimori.json.ShikiUserNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Component
 @Scope("prototype")

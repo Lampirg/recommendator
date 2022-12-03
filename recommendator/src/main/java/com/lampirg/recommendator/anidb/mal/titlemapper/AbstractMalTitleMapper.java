@@ -1,14 +1,13 @@
 package com.lampirg.recommendator.anidb.mal.titlemapper;
 
-import com.lampirg.recommendator.anidb.IterativeTitleMapper;
-import com.lampirg.recommendator.anidb.TitleMapper;
+import com.lampirg.recommendator.anidb.general.IterativeTitleMapper;
+import com.lampirg.recommendator.anidb.general.TitleMapper;
 import com.lampirg.recommendator.anidb.mal.MalQueryMaker;
 import com.lampirg.recommendator.anidb.mal.json.Recommendation;
 import com.lampirg.recommendator.anidb.mal.json.queries.GetAnimeDetail;
-import com.lampirg.recommendator.anidb.model.AnimeTitle;
-import com.lampirg.recommendator.anidb.model.UserAnimeTitle;
+import com.lampirg.recommendator.anidb.general.model.AnimeTitle;
+import com.lampirg.recommendator.anidb.general.model.UserAnimeTitle;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
