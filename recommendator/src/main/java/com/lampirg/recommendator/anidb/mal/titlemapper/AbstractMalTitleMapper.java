@@ -16,17 +16,16 @@ import java.util.*;
 
 public abstract class AbstractMalTitleMapper extends IterativeTitleMapper implements TitleMapper {
 
-    protected Map<AnimeTitle, Integer> recommendedAnime;
+    private MalQueryMaker queryMaker;
 
-    @Override
     @Autowired
     public void setQueryMaker(MalQueryMaker queryMaker) {
-        super.setQueryMaker(queryMaker);
+        this.queryMaker = queryMaker;
     }
 
     protected final void findAndAddTitleRecommendations(UserAnimeTitle title) {
         String url = "https://api.myanimelist.net/v2/anime/"+title.animeTitle().id()+"?fields=recommendations";
-        ResponseEntity<GetAnimeDetail> response = getQueryMaker().exchange(url, HttpMethod.GET, getRequest(), GetAnimeDetail.class);
+        ResponseEntity<GetAnimeDetail> response = queryMaker.exchange(url, HttpMethod.GET, getRequest(), GetAnimeDetail.class);
         for (Recommendation recommendation : Objects.requireNonNull(response.getBody()).recommendations()) {
             AnimeTitle animeTitle = AnimeTitle.retrieveFromMalNode(recommendation.node());
             if (getToExclude().contains(animeTitle))

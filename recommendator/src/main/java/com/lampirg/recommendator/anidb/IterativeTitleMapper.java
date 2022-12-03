@@ -11,13 +11,9 @@ import java.util.Map;
 import java.util.Set;
 
 public abstract class IterativeTitleMapper implements TitleMapper {
-    private MalQueryMaker queryMaker;
     private HttpEntity<String> request;
+    protected Map<AnimeTitle, Integer> recommendedAnime;
     private Set<AnimeTitle> toExclude = new HashSet<>();
-
-    protected final MalQueryMaker getQueryMaker() {
-        return queryMaker;
-    }
 
     protected final HttpEntity<String> getRequest() {
         return request;
@@ -25,11 +21,6 @@ public abstract class IterativeTitleMapper implements TitleMapper {
 
     protected final Set<AnimeTitle> getToExclude() {
         return toExclude;
-    }
-
-    @Autowired
-    public void setQueryMaker(MalQueryMaker queryMaker) {
-        this.queryMaker = queryMaker;
     }
 
     @Override
