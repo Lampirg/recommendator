@@ -7,6 +7,7 @@ import com.lampirg.recommendator.anidb.model.UserAnimeTitle;
 import com.lampirg.recommendator.anidb.shikimori.json.ShikiNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import java.util.*;
 
 @Service
 @Qualifier("shiki")
+@Scope("prototype")
 public class ShikimoriTitleMapper extends IterativeTitleMapper implements TitleMapper {
 
     private ShikimoriQueryMaker queryMaker;
