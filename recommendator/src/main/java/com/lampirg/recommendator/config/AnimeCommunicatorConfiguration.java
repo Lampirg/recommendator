@@ -1,6 +1,8 @@
 package com.lampirg.recommendator.config;
 
 import com.lampirg.recommendator.anidb.general.SimilarAnimeCommunicator;
+import com.lampirg.recommendator.anidb.general.TitleMapper;
+import com.lampirg.recommendator.anidb.general.UserListExtractor;
 import com.lampirg.recommendator.anidb.mal.listextractor.ConcurrentUserListExtractor;
 import com.lampirg.recommendator.anidb.mal.listextractor.SingleThreadUserListExtractor;
 import com.lampirg.recommendator.anidb.mal.titlemapper.ConcurrentTitleMapper;
@@ -19,10 +21,7 @@ public class AnimeCommunicatorConfiguration {
     @Qualifier("mal-single")
     public SimilarAnimeCommunicator singleThreadMalCommunicator(SingleThreadUserListExtractor listExtractor,
                                                                 SingleThreadTitleMapper mapper) {
-        SimilarAnimeCommunicator communicator = new SimilarAnimeCommunicator();
-        communicator.setListExtractor(listExtractor);
-        communicator.setTitleMapper(mapper);
-        return communicator;
+        return getSimilarAnimeCommunicator(listExtractor, mapper);
     }
 
     @Bean
@@ -30,10 +29,7 @@ public class AnimeCommunicatorConfiguration {
     @Qualifier("mal-concurrent")
     public SimilarAnimeCommunicator concurrentThreadMalCommunicator(ConcurrentUserListExtractor listExtractor,
                                                                     ConcurrentTitleMapper mapper) {
-        SimilarAnimeCommunicator communicator = new SimilarAnimeCommunicator();
-        communicator.setListExtractor(listExtractor);
-        communicator.setTitleMapper(mapper);
-        return communicator;
+        return getSimilarAnimeCommunicator(listExtractor, mapper);
     }
 
     @Bean
@@ -41,6 +37,10 @@ public class AnimeCommunicatorConfiguration {
     @Qualifier("shiki")
     public SimilarAnimeCommunicator shikimoriCommunicator(ShikimoriListExtractor listExtractor,
                                                           ShikimoriTitleMapper mapper) {
+        return getSimilarAnimeCommunicator(listExtractor, mapper);
+    }
+
+    private SimilarAnimeCommunicator getSimilarAnimeCommunicator(UserListExtractor listExtractor, TitleMapper mapper) {
         SimilarAnimeCommunicator communicator = new SimilarAnimeCommunicator();
         communicator.setListExtractor(listExtractor);
         communicator.setTitleMapper(mapper);
