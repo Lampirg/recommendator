@@ -1,6 +1,6 @@
 package com.lampirg.recommendator.anidb.shikimori.json;
 
-public record ShikiNode(
+public record ShikiUserNode(
         int score,
         String name,
         AnimeNode anime
