@@ -1,5 +1,6 @@
 package com.lampirg.recommendator.anidb.mal;
 
+import com.lampirg.recommendator.anidb.QueryMaker;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class MalQueryMaker {
+public class MalQueryMaker implements QueryMaker {
 
     RPSQueryMaker queryMaker;
 

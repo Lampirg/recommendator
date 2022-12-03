@@ -1,5 +1,6 @@
 package com.lampirg.recommendator.anidb.shikimori;
 
+import com.lampirg.recommendator.anidb.QueryMaker;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import org.springframework.web.client.RestTemplate;
 import java.lang.reflect.Type;
 
 @Service
-public class ShikimoriQueryMaker {
+public class ShikimoriQueryMaker implements QueryMaker {
     RPSQueryMaker queryMaker;
 
     @Autowired

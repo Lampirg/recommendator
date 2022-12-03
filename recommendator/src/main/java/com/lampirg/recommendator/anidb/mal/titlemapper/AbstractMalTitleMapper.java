@@ -18,6 +18,12 @@ public abstract class AbstractMalTitleMapper extends IterativeTitleMapper implem
 
     protected Map<AnimeTitle, Integer> recommendedAnime;
 
+    @Override
+    @Autowired
+    public void setQueryMaker(MalQueryMaker queryMaker) {
+        super.setQueryMaker(queryMaker);
+    }
+
     protected final void findAndAddTitleRecommendations(UserAnimeTitle title) {
         String url = "https://api.myanimelist.net/v2/anime/"+title.animeTitle().id()+"?fields=recommendations";
         ResponseEntity<GetAnimeDetail> response = getQueryMaker().exchange(url, HttpMethod.GET, getRequest(), GetAnimeDetail.class);
