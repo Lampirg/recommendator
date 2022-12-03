@@ -2,13 +2,13 @@ package com.lampirg.recommendator.anidb.mal.json;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public record Node(
+public record MalNode(
         long id,
         String title,
         @JsonProperty("main_picture")
         MainPicture mainPicture
 ) {
-        public Node {
+        public MalNode {
                 if (mainPicture == null)
                         mainPicture = new MainPicture("No picture", "No picture");
         }

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 public record Recommendation(
-        Node node,
+        MalNode node,
         @JsonProperty("num_recommendations")
         int numberOfRecommendations
 ) {
