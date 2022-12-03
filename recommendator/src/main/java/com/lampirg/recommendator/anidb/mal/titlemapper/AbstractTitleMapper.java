@@ -1,5 +1,6 @@
 package com.lampirg.recommendator.anidb.mal.titlemapper;
 
+import com.lampirg.recommendator.anidb.TitleMapper;
 import com.lampirg.recommendator.anidb.mal.MalQueryMaker;
 import com.lampirg.recommendator.anidb.mal.json.Recommendation;
 import com.lampirg.recommendator.anidb.mal.json.queries.GetAnimeDetail;

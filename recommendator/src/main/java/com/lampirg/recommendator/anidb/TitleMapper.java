@@ -1,4 +1,4 @@
-package com.lampirg.recommendator.anidb.mal.titlemapper;
+package com.lampirg.recommendator.anidb;
 
 import com.lampirg.recommendator.anidb.model.AnimeTitle;
 import com.lampirg.recommendator.anidb.model.UserAnimeTitle;
