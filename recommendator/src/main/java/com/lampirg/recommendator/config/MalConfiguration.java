@@ -15,10 +15,10 @@ public class MalConfiguration {
     @Bean
     @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
     @Qualifier("mal-single")
-    public MalCommunicator singleThreadMalCommunicator(SingleThreadUserListExtractor queryMaker,
+    public MalCommunicator singleThreadMalCommunicator(SingleThreadUserListExtractor listExtractor,
                                                        SingleThreadTitleMapper mapper) {
         MalCommunicator communicator = new MalCommunicator();
-        communicator.setQueryMaker(queryMaker);
+        communicator.setListExtractor(listExtractor);
         communicator.setTitleMapper(mapper);
         return communicator;
     }
@@ -26,10 +26,10 @@ public class MalConfiguration {
     @Bean
     @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
     @Qualifier("mal-concurrent")
-    public MalCommunicator concurrentThreadMalCommunicator(ConcurrentUserListExtractor queryMaker,
+    public MalCommunicator concurrentThreadMalCommunicator(ConcurrentUserListExtractor listExtractor,
                                                            ConcurrentTitleMapper mapper) {
         MalCommunicator communicator = new MalCommunicator();
-        communicator.setQueryMaker(queryMaker);
+        communicator.setListExtractor(listExtractor);
         communicator.setTitleMapper(mapper);
         return communicator;
     }

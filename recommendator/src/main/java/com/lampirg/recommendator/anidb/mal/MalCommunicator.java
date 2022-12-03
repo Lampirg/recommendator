@@ -33,7 +33,7 @@ public class MalCommunicator implements AnimeSiteCommunicator {
     private String clientId;
     HttpEntity<String> request;
 
-    public void setQueryMaker(UserListExtractor userListExtractor) {
+    public void setListExtractor(UserListExtractor userListExtractor) {
         this.userListExtractor = userListExtractor;
     }
     public void setTitleMapper(TitleMapper titleMapper) {
