@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.*;
 
-public abstract class AbstractTitleMapper implements TitleMapper {
+public abstract class AbstractMalTitleMapper implements TitleMapper {
 
     private MalQueryMaker queryMaker;
     private HttpEntity<String> request;

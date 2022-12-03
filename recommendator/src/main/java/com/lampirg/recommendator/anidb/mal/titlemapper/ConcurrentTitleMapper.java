@@ -15,7 +15,7 @@ import java.util.concurrent.*;
 @Component
 @Qualifier("concurrent")
 @Scope("prototype")
-public class ConcurrentTitleMapper extends AbstractTitleMapper implements TitleMapper {
+public class ConcurrentTitleMapper extends AbstractMalTitleMapper implements TitleMapper {
     @Override
     public Map<AnimeTitle, Integer> getRecommendedAnimeMap(Set<UserAnimeTitle> animeTitles) {
         if (recommendedAnime == null)
