@@ -1,8 +1,5 @@
-package com.lampirg.recommendator.anidb.mal;
+package com.lampirg.recommendator.anidb;
 
-import com.lampirg.recommendator.anidb.AnimeSiteCommunicator;
-import com.lampirg.recommendator.anidb.UserListExtractor;
-import com.lampirg.recommendator.anidb.TitleMapper;
 import com.lampirg.recommendator.anidb.model.AnimeRecommendation;
 import com.lampirg.recommendator.anidb.model.AnimeTitle;
 import com.lampirg.recommendator.anidb.model.UserAnimeTitle;
@@ -22,7 +19,7 @@ import java.util.*;
 @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
 @PropertySource("classpath:mal security code.yml")
 @Qualifier("mal-default")
-public class MalCommunicator implements AnimeSiteCommunicator {
+public class SimilarAnimeCommunicator implements AnimeSiteCommunicator {
 
     private UserListExtractor userListExtractor;
     private TitleMapper titleMapper;

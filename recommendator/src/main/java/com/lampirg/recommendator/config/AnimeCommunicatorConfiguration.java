@@ -1,6 +1,6 @@
 package com.lampirg.recommendator.config;
 
-import com.lampirg.recommendator.anidb.mal.MalCommunicator;
+import com.lampirg.recommendator.anidb.SimilarAnimeCommunicator;
 import com.lampirg.recommendator.anidb.mal.listextractor.ConcurrentUserListExtractor;
 import com.lampirg.recommendator.anidb.mal.listextractor.SingleThreadUserListExtractor;
 import com.lampirg.recommendator.anidb.mal.titlemapper.ConcurrentTitleMapper;
@@ -17,9 +17,9 @@ public class AnimeCommunicatorConfiguration {
     @Bean
     @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
     @Qualifier("mal-single")
-    public MalCommunicator singleThreadMalCommunicator(SingleThreadUserListExtractor listExtractor,
-                                                       SingleThreadTitleMapper mapper) {
-        MalCommunicator communicator = new MalCommunicator();
+    public SimilarAnimeCommunicator singleThreadMalCommunicator(SingleThreadUserListExtractor listExtractor,
+                                                                SingleThreadTitleMapper mapper) {
+        SimilarAnimeCommunicator communicator = new SimilarAnimeCommunicator();
         communicator.setListExtractor(listExtractor);
         communicator.setTitleMapper(mapper);
         return communicator;
@@ -28,9 +28,9 @@ public class AnimeCommunicatorConfiguration {
     @Bean
     @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
     @Qualifier("mal-concurrent")
-    public MalCommunicator concurrentThreadMalCommunicator(ConcurrentUserListExtractor listExtractor,
-                                                           ConcurrentTitleMapper mapper) {
-        MalCommunicator communicator = new MalCommunicator();
+    public SimilarAnimeCommunicator concurrentThreadMalCommunicator(ConcurrentUserListExtractor listExtractor,
+                                                                    ConcurrentTitleMapper mapper) {
+        SimilarAnimeCommunicator communicator = new SimilarAnimeCommunicator();
         communicator.setListExtractor(listExtractor);
         communicator.setTitleMapper(mapper);
         return communicator;
@@ -39,9 +39,9 @@ public class AnimeCommunicatorConfiguration {
     @Bean
     @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
     @Qualifier("shiki")
-    public MalCommunicator shikimoriCommunicator(ShikimoriListExtractor listExtractor,
-                                                 ShikimoriTitleMapper mapper) {
-        MalCommunicator communicator = new MalCommunicator();
+    public SimilarAnimeCommunicator shikimoriCommunicator(ShikimoriListExtractor listExtractor,
+                                                          ShikimoriTitleMapper mapper) {
+        SimilarAnimeCommunicator communicator = new SimilarAnimeCommunicator();
         communicator.setListExtractor(listExtractor);
         communicator.setTitleMapper(mapper);
         return communicator;
