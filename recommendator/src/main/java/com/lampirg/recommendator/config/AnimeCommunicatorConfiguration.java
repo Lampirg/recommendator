@@ -5,12 +5,14 @@ import com.lampirg.recommendator.anidb.mal.listextractor.ConcurrentUserListExtra
 import com.lampirg.recommendator.anidb.mal.listextractor.SingleThreadUserListExtractor;
 import com.lampirg.recommendator.anidb.mal.titlemapper.ConcurrentTitleMapper;
 import com.lampirg.recommendator.anidb.mal.titlemapper.SingleThreadTitleMapper;
+import com.lampirg.recommendator.anidb.shikimori.ShikimoriListExtractor;
+import com.lampirg.recommendator.anidb.shikimori.ShikimoriTitleMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;
 
 @Configuration
 @ComponentScan("com.lampirg.recommendator.anidb")
-public class MalConfiguration {
+public class AnimeCommunicatorConfiguration {
 
     @Bean
     @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
@@ -28,6 +30,17 @@ public class MalConfiguration {
     @Qualifier("mal-concurrent")
     public MalCommunicator concurrentThreadMalCommunicator(ConcurrentUserListExtractor listExtractor,
                                                            ConcurrentTitleMapper mapper) {
+        MalCommunicator communicator = new MalCommunicator();
+        communicator.setListExtractor(listExtractor);
+        communicator.setTitleMapper(mapper);
+        return communicator;
+    }
+
+    @Bean
+    @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
+    @Qualifier("shiki")
+    public MalCommunicator shikimoriCommunicator(ShikimoriListExtractor listExtractor,
+                                                 ShikimoriTitleMapper mapper) {
         MalCommunicator communicator = new MalCommunicator();
         communicator.setListExtractor(listExtractor);
         communicator.setTitleMapper(mapper);
