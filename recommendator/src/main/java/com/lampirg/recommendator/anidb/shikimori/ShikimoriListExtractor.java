@@ -103,7 +103,7 @@ public class ShikimoriListExtractor implements UserListExtractor {
         dataList.forEach(data ->
         {
             int score = data.score() != 0 ? data.score() : 1;
-            titleSet.add(new UserAnimeTitle(AnimeTitle.retrieveFromShikiNode(data), score));
+            titleSet.add(new UserAnimeTitle(AnimeTitle.retrieveFromShikiNode(data.anime()), score));
         });
         return Set.copyOf(titleSet);
     }
