@@ -1,5 +1,6 @@
 package com.lampirg.recommendator.anidb.mal.listextractor;
 
+import com.lampirg.recommendator.anidb.UserListExtractor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package com.lampirg.recommendator.anidb.mal.listextractor;
+package com.lampirg.recommendator.anidb;
 
 import com.lampirg.recommendator.anidb.model.UserAnimeTitle;
 import org.springframework.http.HttpEntity;

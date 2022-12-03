@@ -1,5 +1,6 @@
 package com.lampirg.recommendator.anidb.mal.listextractor;
 
+import com.lampirg.recommendator.anidb.UserListExtractor;
 import com.lampirg.recommendator.anidb.mal.MalQueryMaker;
 import com.lampirg.recommendator.anidb.mal.json.Data;
 import com.lampirg.recommendator.anidb.mal.json.queries.GetUserListJsonResult;
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 import java.util.stream.Collectors;

@@ -1,7 +1,7 @@
 package com.lampirg.recommendator.anidb.mal;
 
 import com.lampirg.recommendator.anidb.AnimeSiteCommunicator;
-import com.lampirg.recommendator.anidb.mal.listextractor.UserListExtractor;
+import com.lampirg.recommendator.anidb.UserListExtractor;
 import com.lampirg.recommendator.anidb.TitleMapper;
 import com.lampirg.recommendator.anidb.model.AnimeRecommendation;
 import com.lampirg.recommendator.anidb.model.AnimeTitle;

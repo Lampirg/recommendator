@@ -1,10 +1,9 @@
 package com.lampirg.recommendator.anidb.shikimori;
 
 
-import com.lampirg.recommendator.anidb.mal.listextractor.UserListExtractor;
+import com.lampirg.recommendator.anidb.UserListExtractor;
 import com.lampirg.recommendator.anidb.model.AnimeTitle;
 import com.lampirg.recommendator.anidb.model.UserAnimeTitle;
-import com.lampirg.recommendator.anidb.shikimori.json.GetUserListJsonResult;
 import com.lampirg.recommendator.anidb.shikimori.json.ShikiNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
