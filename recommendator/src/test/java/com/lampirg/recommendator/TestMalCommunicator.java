@@ -28,7 +28,7 @@ public class TestMalCommunicator {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         for (int i = 0; i < jumps; i++) {
-            webTestClient.get().uri("/recommend/user")
+            webTestClient.get().uri("/recommend/mal/"+user)
                     .exchange().expectStatus().is2xxSuccessful();
         }
         stopWatch.stop();
