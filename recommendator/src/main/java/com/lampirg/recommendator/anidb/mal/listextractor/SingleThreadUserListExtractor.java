@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Qualifier("single")
 @Scope("prototype")
-public class SingleThreadUserListExtractor extends AbstractUserListExtractor implements UserListExtractor {
+public class SingleThreadUserListExtractor extends AbstractMalUserListExtractor implements UserListExtractor {
     @Override
     public void setUser(String username) {
         this.username = username;
