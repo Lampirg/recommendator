@@ -4,7 +4,7 @@ package com.lampirg.recommendator.anidb.shikimori;
 import com.lampirg.recommendator.anidb.UserListExtractor;
 import com.lampirg.recommendator.anidb.model.AnimeTitle;
 import com.lampirg.recommendator.anidb.model.UserAnimeTitle;
-import com.lampirg.recommendator.anidb.shikimori.json.ShikiNode;
+import com.lampirg.recommendator.anidb.shikimori.json.ShikiUserNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
@@ -83,16 +83,16 @@ public class ShikimoriListExtractor implements UserListExtractor {
     }
 
     public Set<UserAnimeTitle> getUserAnimeList(String username, String listType) {
-        List<ShikiNode> dataList = new ArrayList<>();
+        List<ShikiUserNode> dataList = new ArrayList<>();
         int page = 1;
         int limit = 100;
         while (true) {
             String url = "https://shikimori.one/api/users/"+username+"/anime_rates?status="+listType+"&censored=false&limit="+limit+"&page="+page;
-            ResponseEntity<List<ShikiNode>> response = queryMaker.exchange(
+            ResponseEntity<List<ShikiUserNode>> response = queryMaker.exchange(
                     url,
                     HttpMethod.GET,
                     request,
-                    new ParameterizedTypeReference<List<ShikiNode>>() {}
+                    new ParameterizedTypeReference<List<ShikiUserNode>>() {}
             );
             dataList.addAll(Objects.requireNonNull(response.getBody()));
             if (response.getBody().size() != limit + 1)
