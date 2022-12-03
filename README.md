@@ -14,7 +14,9 @@ The project isn't deployed anywhere so the only way to run application right now
 
 After that you can run java application and make HTTP requests.
 
-Send GET request to "/recommend/\*db name\*/{username}" and the responce will be an array of pairs title|numOfRecommendations.
+Using Shikimori endpoint should be just fine though.
+
+Send GET request to "/recommend/\*db name\*/{username}" and the responce will be an array of pairs title|numOfRecommendations. Keep in mind that Shikimori API is case sensitive to nicknames (unlike MAL API).
 
 \*db name\* variants:
 
