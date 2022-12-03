@@ -1,6 +1,6 @@
 # recommendator
  
-This is web application for computing anime titles to watch according to user anime list. Right now it supports My Anime List API.
+This is web application for computing anime titles to watch according to user anime list. Right now it supports My Anime List and Shikimori.
 
 *Note:* this is a **study unfinished project** and right now it is problematic to use (as you can see in [usage](#usage)). Thus the project can change significantly.
 
@@ -14,7 +14,13 @@ The project isn't deployed anywhere so the only way to run application right now
 
 After that you can run java application and make HTTP requests.
 
-Send GET request to "/mal/{username}" and the responce will be an array of pairs title|numOfRecommendations.
+Send GET request to "/recommend/\*db name\*/{username}" and the responce will be an array of pairs title|numOfRecommendations.
+
+\*db name\* variants:
+
+- mal
+
+- shiki
 
 ## Occured problems
 
