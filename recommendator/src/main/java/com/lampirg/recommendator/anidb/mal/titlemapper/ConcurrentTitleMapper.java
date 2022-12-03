@@ -1,22 +1,13 @@
 package com.lampirg.recommendator.anidb.mal.titlemapper;
 
-import com.lampirg.recommendator.anidb.mal.MalQueryMaker;
-import com.lampirg.recommendator.anidb.mal.json.Recommendation;
-import com.lampirg.recommendator.anidb.mal.json.queries.GetAnimeDetail;
-import com.lampirg.recommendator.anidb.model.AnimeTitle;
-import com.lampirg.recommendator.anidb.model.UserAnimeTitle;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.lampirg.recommendator.anidb.general.TitleMapper;
+import com.lampirg.recommendator.anidb.general.model.AnimeTitle;
+import com.lampirg.recommendator.anidb.general.model.UserAnimeTitle;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.*;
 
@@ -24,7 +15,7 @@ import java.util.concurrent.*;
 @Component
 @Qualifier("concurrent")
 @Scope("prototype")
-public class ConcurrentTitleMapper extends AbstractTitleMapper implements TitleMapper {
+public class ConcurrentTitleMapper extends AbstractMalTitleMapper implements TitleMapper {
     @Override
     public Map<AnimeTitle, Integer> getRecommendedAnimeMap(Set<UserAnimeTitle> animeTitles) {
         if (recommendedAnime == null)

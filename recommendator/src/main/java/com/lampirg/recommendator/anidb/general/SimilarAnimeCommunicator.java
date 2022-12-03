@@ -1,12 +1,8 @@
-package com.lampirg.recommendator.anidb.mal;
+package com.lampirg.recommendator.anidb.general;
 
-import com.lampirg.recommendator.anidb.AnimeSiteCommunicator;
-import com.lampirg.recommendator.anidb.mal.listextractor.UserListExtractor;
-import com.lampirg.recommendator.anidb.mal.titlemapper.TitleMapper;
-import com.lampirg.recommendator.anidb.model.AnimeRecommendation;
-import com.lampirg.recommendator.anidb.model.AnimeTitle;
-import com.lampirg.recommendator.anidb.model.UserAnimeTitle;
-import org.springframework.beans.factory.annotation.Qualifier;
+import com.lampirg.recommendator.anidb.general.model.AnimeRecommendation;
+import com.lampirg.recommendator.anidb.general.model.AnimeTitle;
+import com.lampirg.recommendator.anidb.general.model.UserAnimeTitle;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
@@ -21,8 +17,7 @@ import java.util.*;
 @Service
 @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
 @PropertySource("classpath:mal security code.yml")
-@Qualifier("default")
-public class MalCommunicator implements AnimeSiteCommunicator {
+public class SimilarAnimeCommunicator implements AnimeSiteCommunicator {
 
     private UserListExtractor userListExtractor;
     private TitleMapper titleMapper;
@@ -33,7 +28,7 @@ public class MalCommunicator implements AnimeSiteCommunicator {
     private String clientId;
     HttpEntity<String> request;
 
-    public void setQueryMaker(UserListExtractor userListExtractor) {
+    public void setListExtractor(UserListExtractor userListExtractor) {
         this.userListExtractor = userListExtractor;
     }
     public void setTitleMapper(TitleMapper titleMapper) {

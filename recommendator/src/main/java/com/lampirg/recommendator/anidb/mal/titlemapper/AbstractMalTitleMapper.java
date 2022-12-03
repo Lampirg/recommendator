@@ -1,52 +1,33 @@
 package com.lampirg.recommendator.anidb.mal.titlemapper;
 
+import com.lampirg.recommendator.anidb.general.IterativeTitleMapper;
+import com.lampirg.recommendator.anidb.general.TitleMapper;
 import com.lampirg.recommendator.anidb.mal.MalQueryMaker;
 import com.lampirg.recommendator.anidb.mal.json.Recommendation;
 import com.lampirg.recommendator.anidb.mal.json.queries.GetAnimeDetail;
-import com.lampirg.recommendator.anidb.model.AnimeTitle;
-import com.lampirg.recommendator.anidb.model.UserAnimeTitle;
+import com.lampirg.recommendator.anidb.general.model.AnimeTitle;
+import com.lampirg.recommendator.anidb.general.model.UserAnimeTitle;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
 import java.util.*;
 
-public abstract class AbstractTitleMapper implements TitleMapper {
+public abstract class AbstractMalTitleMapper extends IterativeTitleMapper implements TitleMapper {
 
     private MalQueryMaker queryMaker;
-    private HttpEntity<String> request;
-
-    protected Map<AnimeTitle, Integer> recommendedAnime;
-    private Set<AnimeTitle> toExclude = new HashSet<>();
 
     @Autowired
     public void setQueryMaker(MalQueryMaker queryMaker) {
         this.queryMaker = queryMaker;
     }
 
-    @Override
-    public TitleMapper setRequest(HttpEntity<String> request) {
-        this.request = request;
-        return this;
-    }
-
-    @Override
-    public abstract Map<AnimeTitle, Integer> getRecommendedAnimeMap(Set<UserAnimeTitle> animeTitles);
-
-    public TitleMapper fillToExclude(Set<UserAnimeTitle> toExclude) {
-        for (UserAnimeTitle title : toExclude) {
-            this.toExclude.add(title.animeTitle());
-        }
-        return this;
-    }
-
     protected final void findAndAddTitleRecommendations(UserAnimeTitle title) {
         String url = "https://api.myanimelist.net/v2/anime/"+title.animeTitle().id()+"?fields=recommendations";
-        ResponseEntity<GetAnimeDetail> response = queryMaker.exchange(url, HttpMethod.GET, request, GetAnimeDetail.class);
+        ResponseEntity<GetAnimeDetail> response = queryMaker.exchange(url, HttpMethod.GET, getRequest(), GetAnimeDetail.class);
         for (Recommendation recommendation : Objects.requireNonNull(response.getBody()).recommendations()) {
             AnimeTitle animeTitle = AnimeTitle.retrieveFromMalNode(recommendation.node());
-            if (toExclude.contains(animeTitle))
+            if (getToExclude().contains(animeTitle))
                 continue;
             recommendedAnime.merge(animeTitle, title.score(), Integer::sum);
         }
