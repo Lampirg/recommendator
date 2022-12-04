@@ -2,7 +2,11 @@
  
 This is web application for computing anime titles to watch according to user anime list. Right now it supports My Anime List and Shikimori.
 
-*Note:* this is a **study unfinished project** and right now it is problematic to use (as you can see in [usage](#usage)). Thus the project can change significantly.
+*Note:* this is a **study unfinished project** and right now it may be problematic to use (as you can see in [usage](#usage)). Thus the project can change significantly.
+
+## What does it do?
+
+This application fetches inserted in url user's nickname then collect an array of anime titles that user would like to watch according to his anime list.
 
 ## Usage
 
@@ -23,6 +27,12 @@ Send GET request to "/recommend/\*db name\*/{username}" and the responce will be
 - mal
 
 - shiki
+
+## TODO
+
+- Support of AniList and AniDB.
+
+- Account system that would allow collection recommendations not only from 50 titles with highest score but from all user anime list.
 
 ## Occured problems
 
