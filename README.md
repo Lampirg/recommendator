@@ -32,7 +32,7 @@ Send GET request to "/recommend/\*db name\*/{username}" and the responce will be
 
 - Support of AniList and AniDB.
 
-- Account system that would allow collect recommendations not only from 50 titles with highest score but from all user anime list.
+- Account system that would allow collecting recommendations not only from 50 titles with highest score but from all user anime list.
 
 ## Occured problems
 
