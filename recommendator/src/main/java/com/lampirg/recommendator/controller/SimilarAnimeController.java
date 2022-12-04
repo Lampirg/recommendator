@@ -4,6 +4,7 @@ import com.lampirg.recommendator.anidb.general.AnimeSiteCommunicator;
 import com.lampirg.recommendator.anidb.general.model.AnimeRecommendation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,11 +20,13 @@ public class SimilarAnimeController {
     private AnimeSiteCommunicator shikiCommunicator;
 
     @Autowired
+    @Lazy
     public void setMalCommunicator(@Qualifier("mal-single") AnimeSiteCommunicator siteCommunicator) {
         this.malCommunicator = siteCommunicator;
     }
 
     @Autowired
+    @Lazy
     public void setShikiCommunicator(@Qualifier("shiki") AnimeSiteCommunicator siteCommunicator) {
         this.shikiCommunicator = siteCommunicator;
     }
