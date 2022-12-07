@@ -1,0 +1,40 @@
+query ($name: String) {
+    MediaListCollection(userName: $name, type: ANIME) {
+        user {
+            name
+        }
+        lists {
+            name
+            status
+            entries {
+                media {
+                    id
+                    title {
+                        romaji
+                    }
+                    coverImage {
+                        extraLarge
+                        large
+                        medium
+                    }
+                    recommendations (sort: RATING_DESC) {
+                        nodes {
+                            rating
+                            mediaRecommendation {
+                                id
+                                title {
+                                    romaji
+                                }
+                                coverImage {
+                                    extraLarge
+                                    large
+                                    medium
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
