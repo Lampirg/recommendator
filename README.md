@@ -18,7 +18,7 @@ This application fetches inserted in url user's nickname then collect an array o
 
 ## Usage
 
-The project isn't deployed anywhere so the only way to run application right now is to clone this repository and run it manually. But application need MAL API's client code to make requests otherwise it will be blocked. But if you cloned repository and you do have MAL API's client code, you need to create "mal security code.yml" in resource directory with this structure:
+The project isn't deployed anywhere so the only way to run application right now is to clone this repository and run it manually. To use MAL you need MAL API's client code to make requests otherwise it will be blocked. But if you cloned repository and you do have MAL API's client code, you need to create "mal security code.yml" in resource directory with this structure:
 
 ```yaml
 clientIdHeader: X-MAL-CLIENT-ID
@@ -27,7 +27,7 @@ clientId: /enter your client code here/
 
 After that you can run java application and make HTTP requests.
 
-Using Shikimori endpoint should be just fine though.
+Using Shikimori and AniList endpoint should be just fine though.
 
 Send GET request to "/recommend/\*db name\*/{username}" and the responce will be an array of pairs title|numOfRecommendations. Keep in mind that Shikimori API is case sensitive to nicknames (unlike MAL and AniList APIs).
 
@@ -50,6 +50,8 @@ Send GET request to "/recommend/\*db name\*/{username}" and the responce will be
 - Frontend.
 
 - Bug fixing.
+
+- Deploying.
 
 ## Occured problems
 
