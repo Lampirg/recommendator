@@ -1,23 +1,13 @@
 query ($name: String) {
-    MediaListCollection(userName: $name, type: ANIME) {
-        user {
-            name
-        }
+    completed: MediaListCollection(userName: $name, type: ANIME, status: COMPLETED) {
         lists {
             name
             status
             entries {
+                score
                 media {
-                    id
-                    title {
-                        romaji
-                    }
-                    coverImage {
-                        extraLarge
-                        large
-                        medium
-                    }
-                    recommendations (sort: RATING_DESC) {
+                    ...comparisonFields
+                    recommendations(sort: RATING_DESC) {
                         nodes {
                             rating
                             mediaRecommendation {
@@ -36,5 +26,29 @@ query ($name: String) {
                 }
             }
         }
+    }
+    other: MediaListCollection(userName: $name, type: ANIME, status_in: [CURRENT, DROPPED, PAUSED]) {
+        lists {
+            name
+            status
+            entries {
+                score
+                media {
+                    ...comparisonFields
+                }
+            }
+        }
+    }
+}
+
+fragment comparisonFields on Media {
+    id
+    title {
+        romaji
+    }
+    coverImage {
+        extraLarge
+        large
+        medium
     }
 }
