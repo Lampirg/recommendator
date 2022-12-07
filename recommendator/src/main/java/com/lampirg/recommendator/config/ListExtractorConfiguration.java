@@ -5,6 +5,7 @@ import com.lampirg.recommendator.anidb.mal.listextractor.ConcurrentUserListExtra
 import com.lampirg.recommendator.anidb.mal.listextractor.SingleThreadUserListExtractor;
 import com.lampirg.recommendator.anidb.mal.titlemapper.SingleThreadTitleMapper;
 import com.lampirg.recommendator.anidb.shikimori.ShikimoriListExtractor;
+import com.lampirg.recommendator.config.quilifiers.Shiki;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,7 +31,7 @@ public class ListExtractorConfiguration {
 
     @Bean
     @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
-    @Qualifier("shiki")
+    @Shiki
     public ShikimoriListExtractor shikimoriListExtractor() {
         return new ShikimoriListExtractor();
     }
