@@ -2,7 +2,7 @@
  
 This is web application for computing anime titles to watch according to user anime list. Right now it supports:
 
-- [My Anime List](https://myanimelist.net/) (with it [v2]((https://myanimelist.net/apiconfig/references/api/v2)) API)
+- [My Anime List](https://myanimelist.net/) (with it [v2](https://myanimelist.net/apiconfig/references/api/v2) API)
 
 - [Shikimori](https://shikimori.one/) (with it [v1](https://shikimori.one/api/doc/1.0) and [v2](https://shikimori.one/api/doc/2.0) APIs)
 
