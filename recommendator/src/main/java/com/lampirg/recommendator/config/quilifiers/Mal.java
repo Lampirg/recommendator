@@ -9,5 +9,6 @@ import java.lang.annotation.*;
 @Inherited
 @Documented
 @Qualifier
-public @interface Shiki {
+public @interface Mal {
+    String value() default "";
 }

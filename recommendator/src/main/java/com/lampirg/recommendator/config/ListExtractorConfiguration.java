@@ -5,6 +5,7 @@ import com.lampirg.recommendator.anidb.mal.listextractor.ConcurrentUserListExtra
 import com.lampirg.recommendator.anidb.mal.listextractor.SingleThreadUserListExtractor;
 import com.lampirg.recommendator.anidb.mal.titlemapper.SingleThreadTitleMapper;
 import com.lampirg.recommendator.anidb.shikimori.ShikimoriListExtractor;
+import com.lampirg.recommendator.config.quilifiers.Mal;
 import com.lampirg.recommendator.config.quilifiers.Shiki;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -17,14 +18,14 @@ public class ListExtractorConfiguration {
 
     @Bean
     @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
-    @Qualifier("mal-single")
+    @Mal("single")
     public SingleThreadUserListExtractor singleThreadUserListExtractor() {
         return new SingleThreadUserListExtractor();
     }
 
     @Bean
     @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
-    @Qualifier("mal-concurrent")
+    @Mal("concurrent")
     public ConcurrentUserListExtractor concurrentUserListExtractor() {
         return new ConcurrentUserListExtractor();
     }

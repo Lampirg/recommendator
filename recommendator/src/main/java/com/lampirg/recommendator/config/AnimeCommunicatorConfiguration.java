@@ -11,6 +11,7 @@ import com.lampirg.recommendator.anidb.mal.titlemapper.ConcurrentTitleMapper;
 import com.lampirg.recommendator.anidb.mal.titlemapper.SingleThreadTitleMapper;
 import com.lampirg.recommendator.anidb.shikimori.ShikimoriListExtractor;
 import com.lampirg.recommendator.anidb.shikimori.ShikimoriTitleMapper;
+import com.lampirg.recommendator.config.quilifiers.Mal;
 import com.lampirg.recommendator.config.quilifiers.Shiki;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;
@@ -21,16 +22,16 @@ import org.springframework.context.annotation.*;
 public class AnimeCommunicatorConfiguration {
 
     @Bean
-    @Qualifier("mal-single")
-    public SimilarAnimeCommunicator singleThreadMalCommunicator(@Qualifier("mal-single") UserListExtractor listExtractor,
-                                                                @Qualifier("mal-single") TitleMapper mapper) {
+    @Mal("single")
+    public SimilarAnimeCommunicator singleThreadMalCommunicator(@Mal("single") UserListExtractor listExtractor,
+                                                                @Mal("single") TitleMapper mapper) {
         return getSimilarAnimeCommunicator(listExtractor, mapper);
     }
 
     @Bean
-    @Qualifier("mal-concurrent")
-    public SimilarAnimeCommunicator concurrentThreadMalCommunicator(@Qualifier("mal-concurrent") UserListExtractor listExtractor,
-                                                                    @Qualifier("mal-concurrent") TitleMapper mapper) {
+    @Mal("concurrent")
+    public SimilarAnimeCommunicator concurrentThreadMalCommunicator(@Mal("concurrent") UserListExtractor listExtractor,
+                                                                    @Mal("concurrent") TitleMapper mapper) {
         return getSimilarAnimeCommunicator(listExtractor, mapper);
     }
 

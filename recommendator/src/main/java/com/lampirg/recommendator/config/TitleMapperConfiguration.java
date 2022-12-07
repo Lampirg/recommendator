@@ -4,6 +4,7 @@ import com.lampirg.recommendator.anidb.mal.listextractor.SingleThreadUserListExt
 import com.lampirg.recommendator.anidb.mal.titlemapper.ConcurrentTitleMapper;
 import com.lampirg.recommendator.anidb.mal.titlemapper.SingleThreadTitleMapper;
 import com.lampirg.recommendator.anidb.shikimori.ShikimoriTitleMapper;
+import com.lampirg.recommendator.config.quilifiers.Mal;
 import com.lampirg.recommendator.config.quilifiers.Shiki;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -14,14 +15,14 @@ public class TitleMapperConfiguration {
 
     @Bean
     @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
-    @Qualifier("mal-single")
+    @Mal("single")
     public SingleThreadTitleMapper singleThreadTitleMapper() {
         return new SingleThreadTitleMapper();
     }
 
     @Bean
     @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
-    @Qualifier("mal-concurrent")
+    @Mal("concurrent")
     public ConcurrentTitleMapper concurrentTitleMapper() {
         return new ConcurrentTitleMapper();
     }

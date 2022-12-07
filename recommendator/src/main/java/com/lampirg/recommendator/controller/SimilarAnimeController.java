@@ -2,6 +2,8 @@ package com.lampirg.recommendator.controller;
 
 import com.lampirg.recommendator.anidb.general.AnimeSiteCommunicator;
 import com.lampirg.recommendator.anidb.general.model.AnimeRecommendation;
+import com.lampirg.recommendator.config.quilifiers.Mal;
+import com.lampirg.recommendator.config.quilifiers.Shiki;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
@@ -22,13 +24,13 @@ public class SimilarAnimeController {
 
     @Autowired
     @Lazy
-    public void setMalCommunicator(@Qualifier("mal-single") AnimeSiteCommunicator siteCommunicator) {
+    public void setMalCommunicator(@Mal("single") AnimeSiteCommunicator siteCommunicator) {
         this.malCommunicator = siteCommunicator;
     }
 
     @Autowired
     @Lazy
-    public void setShikiCommunicator(@Qualifier("shiki") AnimeSiteCommunicator siteCommunicator) {
+    public void setShikiCommunicator(@Shiki AnimeSiteCommunicator siteCommunicator) {
         this.shikiCommunicator = siteCommunicator;
     }
 
