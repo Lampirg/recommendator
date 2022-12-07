@@ -18,13 +18,18 @@ resilience4j.ratelimiter:
       limitRefreshPeriod: 1s
       timeoutDuration: 1s
 
+    anilist-rpm:
+      limitForPeriod: 90
+      limitRefreshPeriod: 1s
+      timeoutDuration: 1s
+
 resilience4j.retry:
   instances:
     rps:
       maxAttempts: 20
       waitDuration: 1s
     rpm:
-      maxAttempts: 5
+      maxAttempts: 6
       waitDuration: 10s
 
 management:

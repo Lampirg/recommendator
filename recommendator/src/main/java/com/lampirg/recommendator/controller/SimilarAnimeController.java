@@ -18,6 +18,7 @@ public class SimilarAnimeController {
 
     private AnimeSiteCommunicator malCommunicator;
     private AnimeSiteCommunicator shikiCommunicator;
+    private AnimeSiteCommunicator anilistCommunicator;
 
     @Autowired
     @Lazy
@@ -31,22 +32,32 @@ public class SimilarAnimeController {
         this.shikiCommunicator = siteCommunicator;
     }
 
+    @Autowired
+    @Lazy
+    public void setAnilistCommunicator(@Qualifier("anilist") AnimeSiteCommunicator siteCommunicator) {
+        this.anilistCommunicator = siteCommunicator;
+    }
+
     @GetMapping("/mal/{username}")
     public List<AnimeRecommendation> getMalSimilarAnime(@PathVariable String username) {
+        return getSortedRecommendationList(malCommunicator, username);
+    }
+
+    @GetMapping("/shiki/{username}")
+    public List<AnimeRecommendation> getShikiSimilarAnime(@PathVariable String username) {
+        return getSortedRecommendationList(shikiCommunicator, username);
+    }
+
+    @GetMapping("/anilist/{username}")
+    public List<AnimeRecommendation> getAnilistSimilarAnime(@PathVariable String username) {
+        return getSortedRecommendationList(anilistCommunicator, username);
+    }
+
+    private List<AnimeRecommendation> getSortedRecommendationList(AnimeSiteCommunicator malCommunicator, String username) {
         List<AnimeRecommendation> list =
                 new ArrayList<>(malCommunicator.getSimilarAnimeTitles(username));
         list.sort(Comparator.comparingInt(AnimeRecommendation::numOfRecommendations).reversed()
                 .thenComparing(x -> x.title().name()));
         return list;
     }
-
-    @GetMapping("/shiki/{username}")
-    public List<AnimeRecommendation> getShikiSimilarAnime(@PathVariable String username) {
-        List<AnimeRecommendation> list =
-                new ArrayList<>(shikiCommunicator.getSimilarAnimeTitles(username));
-        list.sort(Comparator.comparingInt(AnimeRecommendation::numOfRecommendations).reversed()
-                .thenComparing(x -> x.title().name()));
-        return list;
-    }
-
 }

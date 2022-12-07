@@ -1,5 +1,7 @@
 package com.lampirg.recommendator.config;
 
+import com.lampirg.recommendator.anidb.anilist.AnilistCommunicator;
+import com.lampirg.recommendator.anidb.general.AnimeSiteCommunicator;
 import com.lampirg.recommendator.anidb.general.SimilarAnimeCommunicator;
 import com.lampirg.recommendator.anidb.general.TitleMapper;
 import com.lampirg.recommendator.anidb.general.UserListExtractor;
@@ -38,6 +40,12 @@ public class AnimeCommunicatorConfiguration {
     public SimilarAnimeCommunicator shikimoriCommunicator(ShikimoriListExtractor listExtractor,
                                                           ShikimoriTitleMapper mapper) {
         return getSimilarAnimeCommunicator(listExtractor, mapper);
+    }
+
+    @Bean
+    @Qualifier("anilist")
+    public AnimeSiteCommunicator anilistCommunicator() {
+        return new AnilistCommunicator();
     }
 
     private SimilarAnimeCommunicator getSimilarAnimeCommunicator(UserListExtractor listExtractor, TitleMapper mapper) {
