@@ -11,10 +11,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.*;
 
-// TODO: fix thread unsafety
-@Component
-@Qualifier("concurrent")
-@Scope("prototype")
 public class ConcurrentTitleMapper extends AbstractMalTitleMapper implements TitleMapper {
     @Override
     public Map<AnimeTitle, Integer> getRecommendedAnimeMap(Set<UserAnimeTitle> animeTitles) {

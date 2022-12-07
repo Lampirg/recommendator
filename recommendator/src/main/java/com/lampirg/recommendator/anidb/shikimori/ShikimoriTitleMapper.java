@@ -15,9 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-@Service
-@Qualifier("shiki")
-@Scope("prototype")
 public class ShikimoriTitleMapper extends IterativeTitleMapper implements TitleMapper {
 
     private ShikimoriQueryMaker queryMaker;

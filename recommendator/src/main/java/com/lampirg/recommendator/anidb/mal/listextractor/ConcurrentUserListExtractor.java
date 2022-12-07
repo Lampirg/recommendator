@@ -7,9 +7,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.concurrent.CompletableFuture;
 
-@Component
-@Qualifier("concurrent")
-@Scope("prototype")
 public class ConcurrentUserListExtractor extends AbstractMalUserListExtractor implements UserListExtractor {
     @Override
     public void setUser(String username) {

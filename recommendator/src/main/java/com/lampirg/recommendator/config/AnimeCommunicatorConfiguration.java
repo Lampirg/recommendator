@@ -15,30 +15,28 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;
 
 @Configuration
+@Import({ListExtractorConfiguration.class, TitleMapperConfiguration.class})
 @ComponentScan("com.lampirg.recommendator.anidb")
 public class AnimeCommunicatorConfiguration {
 
     @Bean
-    @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
     @Qualifier("mal-single")
-    public SimilarAnimeCommunicator singleThreadMalCommunicator(SingleThreadUserListExtractor listExtractor,
-                                                                SingleThreadTitleMapper mapper) {
+    public SimilarAnimeCommunicator singleThreadMalCommunicator(@Qualifier("mal-single") UserListExtractor listExtractor,
+                                                                @Qualifier("mal-single") TitleMapper mapper) {
         return getSimilarAnimeCommunicator(listExtractor, mapper);
     }
 
     @Bean
-    @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
     @Qualifier("mal-concurrent")
-    public SimilarAnimeCommunicator concurrentThreadMalCommunicator(ConcurrentUserListExtractor listExtractor,
-                                                                    ConcurrentTitleMapper mapper) {
+    public SimilarAnimeCommunicator concurrentThreadMalCommunicator(@Qualifier("mal-concurrent") UserListExtractor listExtractor,
+                                                                    @Qualifier("mal-concurrent") TitleMapper mapper) {
         return getSimilarAnimeCommunicator(listExtractor, mapper);
     }
 
     @Bean
-    @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
     @Qualifier("shiki")
-    public SimilarAnimeCommunicator shikimoriCommunicator(ShikimoriListExtractor listExtractor,
-                                                          ShikimoriTitleMapper mapper) {
+    public SimilarAnimeCommunicator shikimoriCommunicator(@Qualifier("shiki") UserListExtractor listExtractor,
+                                                          @Qualifier("shiki") TitleMapper mapper) {
         return getSimilarAnimeCommunicator(listExtractor, mapper);
     }
 

@@ -9,9 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
-@Component
-@Qualifier("single")
-@Scope("prototype")
 public class SingleThreadTitleMapper extends AbstractMalTitleMapper implements TitleMapper {
     @Override
     public Map<AnimeTitle, Integer> getRecommendedAnimeMap(Set<UserAnimeTitle> animeTitles) {

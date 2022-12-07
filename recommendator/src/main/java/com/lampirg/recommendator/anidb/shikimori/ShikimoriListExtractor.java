@@ -16,9 +16,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
-@Component
-@Scope("prototype")
-@Qualifier("shiki")
+
 public class ShikimoriListExtractor extends StandardListCollector implements UserListExtractor {
 
     private ShikimoriQueryMaker queryMaker;

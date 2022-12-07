@@ -5,9 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-@Component
-@Qualifier("single")
-@Scope("prototype")
+
 public class SingleThreadUserListExtractor extends AbstractMalUserListExtractor implements UserListExtractor {
     @Override
     public void setUser(String username) {
