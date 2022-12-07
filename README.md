@@ -8,7 +8,7 @@ This is web application for computing anime titles to watch according to user an
 
 - [AniList](https://anilist.co/) (with it [GraphQL](https://github.com/AniList/ApiV2-GraphQL-Docs) API)
 
-**Note**: it is **highly recommended** to use anilist if possible because it's collect full user list and still has the highest speed.
+**Note**: it is **highly recommended** to use anilist if possible because it collects full user list and still has the highest speed.
 
 *Note:* this is a **study unfinished project** and right now it may be problematic to use (as you can see in [usage](#usage)). Thus the project can change significantly.
 
