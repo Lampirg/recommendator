@@ -2,6 +2,7 @@ package com.lampirg.recommendator.controller;
 
 import com.lampirg.recommendator.anidb.general.AnimeSiteCommunicator;
 import com.lampirg.recommendator.anidb.general.model.AnimeRecommendation;
+import com.lampirg.recommendator.config.quilifiers.Anilist;
 import com.lampirg.recommendator.config.quilifiers.Mal;
 import com.lampirg.recommendator.config.quilifiers.Shiki;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class SimilarAnimeController {
 
     @Autowired
     @Lazy
-    public void setAnilistCommunicator(@Qualifier("anilist") AnimeSiteCommunicator siteCommunicator) {
+    public void setAnilistCommunicator(@Anilist AnimeSiteCommunicator siteCommunicator) {
         this.anilistCommunicator = siteCommunicator;
     }
 

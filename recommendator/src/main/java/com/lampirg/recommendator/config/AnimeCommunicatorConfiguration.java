@@ -11,6 +11,7 @@ import com.lampirg.recommendator.anidb.mal.titlemapper.ConcurrentTitleMapper;
 import com.lampirg.recommendator.anidb.mal.titlemapper.SingleThreadTitleMapper;
 import com.lampirg.recommendator.anidb.shikimori.ShikimoriListExtractor;
 import com.lampirg.recommendator.anidb.shikimori.ShikimoriTitleMapper;
+import com.lampirg.recommendator.config.quilifiers.Anilist;
 import com.lampirg.recommendator.config.quilifiers.Mal;
 import com.lampirg.recommendator.config.quilifiers.Shiki;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -43,7 +44,7 @@ public class AnimeCommunicatorConfiguration {
     }
 
     @Bean
-    @Qualifier("anilist")
+    @Anilist
     public AnimeSiteCommunicator anilistCommunicator() {
         return new AnilistCommunicator();
     }
