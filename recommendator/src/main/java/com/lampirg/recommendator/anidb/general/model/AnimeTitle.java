@@ -1,5 +1,7 @@
 package com.lampirg.recommendator.anidb.general.model;
 
+import com.lampirg.recommendator.anidb.anilist.json.Completed;
+import com.lampirg.recommendator.anidb.anilist.json.Other;
 import com.lampirg.recommendator.anidb.mal.json.MalNode;
 import com.lampirg.recommendator.anidb.shikimori.json.ShikiNode;
 
@@ -14,5 +16,15 @@ public record AnimeTitle(
 
     public static AnimeTitle retrieveFromShikiNode(ShikiNode node) {
         return new AnimeTitle(node.id(), node.name(), "https://shikimori.one"+node.image().original());
+    }
+
+    public static AnimeTitle retrieveFromAnilistMedia(Other.Lists.Entries.Media media) {
+        return new AnimeTitle(media.id(), media.title().romaji(), media.coverImage().extraLarge().replaceAll("\\\\", ""));
+    }
+    public static AnimeTitle retrieveFromAnilistMedia(Completed.CompletedList.Entries.Media media) {
+        return new AnimeTitle(media.id(), media.title().romaji(), media.coverImage().extraLarge().replaceAll("\\\\", ""));
+    }
+    public static AnimeTitle retrieveFromAnilistMedia(Completed.CompletedList.Entries.Media.Recommendations.Nodes.MediaRecommendation media) {
+        return new AnimeTitle(media.id(), media.title().romaji(), media.coverImage().extraLarge().replaceAll("\\\\", ""));
     }
 }
