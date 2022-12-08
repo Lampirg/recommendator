@@ -5,16 +5,9 @@ import com.lampirg.recommendator.anidb.general.AnimeSiteCommunicator;
 import com.lampirg.recommendator.anidb.general.SimilarAnimeCommunicator;
 import com.lampirg.recommendator.anidb.general.TitleMapper;
 import com.lampirg.recommendator.anidb.general.UserListExtractor;
-import com.lampirg.recommendator.anidb.mal.listextractor.ConcurrentUserListExtractor;
-import com.lampirg.recommendator.anidb.mal.listextractor.SingleThreadUserListExtractor;
-import com.lampirg.recommendator.anidb.mal.titlemapper.ConcurrentTitleMapper;
-import com.lampirg.recommendator.anidb.mal.titlemapper.SingleThreadTitleMapper;
-import com.lampirg.recommendator.anidb.shikimori.ShikimoriListExtractor;
-import com.lampirg.recommendator.anidb.shikimori.ShikimoriTitleMapper;
-import com.lampirg.recommendator.config.quilifiers.Anilist;
-import com.lampirg.recommendator.config.quilifiers.Mal;
-import com.lampirg.recommendator.config.quilifiers.Shiki;
-import org.springframework.beans.factory.annotation.Qualifier;
+import com.lampirg.recommendator.config.qualifiers.Anilist;
+import com.lampirg.recommendator.config.qualifiers.Mal;
+import com.lampirg.recommendator.config.qualifiers.Shiki;
 import org.springframework.context.annotation.*;
 
 @Configuration

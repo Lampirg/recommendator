@@ -1,12 +1,10 @@
 package com.lampirg.recommendator.config;
 
-import com.lampirg.recommendator.anidb.mal.listextractor.SingleThreadUserListExtractor;
 import com.lampirg.recommendator.anidb.mal.titlemapper.ConcurrentTitleMapper;
 import com.lampirg.recommendator.anidb.mal.titlemapper.SingleThreadTitleMapper;
 import com.lampirg.recommendator.anidb.shikimori.ShikimoriTitleMapper;
-import com.lampirg.recommendator.config.quilifiers.Mal;
-import com.lampirg.recommendator.config.quilifiers.Shiki;
-import org.springframework.beans.factory.annotation.Qualifier;
+import com.lampirg.recommendator.config.qualifiers.Mal;
+import com.lampirg.recommendator.config.qualifiers.Shiki;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;

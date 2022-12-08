@@ -1,4 +1,4 @@
-package com.lampirg.recommendator.config.quilifiers;
+package com.lampirg.recommendator.config.qualifiers;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -9,6 +9,6 @@ import java.lang.annotation.*;
 @Inherited
 @Documented
 @Qualifier
-public @interface Anilist {
+public @interface Shiki {
     String value() default "";
 }

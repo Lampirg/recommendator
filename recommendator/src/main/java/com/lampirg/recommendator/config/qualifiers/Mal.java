@@ -1,4 +1,4 @@
-package com.lampirg.recommendator.config.quilifiers;
+package com.lampirg.recommendator.config.qualifiers;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 
