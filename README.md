@@ -27,7 +27,7 @@ clientId: /enter your client code here/
 
 After that you can run java application and make HTTP requests.
 
-Using Shikimori and AniList endpoint should be just fine though.
+Using Shikimori and AniList endpoints should be just fine though.
 
 Send GET request to "/recommend/\*db name\*/{username}" and the responce will be an array of pairs title|numOfRecommendations. Keep in mind that Shikimori API is case sensitive to nicknames (unlike MAL and AniList APIs).
 
