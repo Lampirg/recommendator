@@ -7,10 +7,10 @@ import com.lampirg.recommendator.config.qualifiers.Mal;
 import com.lampirg.recommendator.config.qualifiers.Shiki;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.*;
 
@@ -61,5 +61,11 @@ public class SimilarAnimeController {
         list.sort(Comparator.comparingInt(AnimeRecommendation::numOfRecommendations).reversed()
                 .thenComparing(x -> x.title().name()));
         return list;
+    }
+
+    @ExceptionHandler(HttpClientErrorException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<String> notFound(HttpClientErrorException exception) {
+        return new ResponseEntity<>("user not found", HttpStatus.NOT_FOUND);
     }
 }

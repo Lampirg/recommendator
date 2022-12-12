@@ -28,9 +28,13 @@ resilience4j.retry:
     rps:
       maxAttempts: 20
       waitDuration: 1s
+      ignoreExceptions:
+        - org.springframework.web.client.HttpClientErrorException
     rpm:
       maxAttempts: 6
       waitDuration: 10s
+      ignoreExceptions:
+        - org.springframework.web.client.HttpClientErrorException
 
 management:
   endpoints:
