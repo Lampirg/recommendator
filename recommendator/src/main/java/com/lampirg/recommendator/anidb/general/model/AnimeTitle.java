@@ -1,9 +1,9 @@
 package com.lampirg.recommendator.anidb.general.model;
 
-import com.lampirg.recommendator.anidb.anilist.json.Completed;
-import com.lampirg.recommendator.anidb.anilist.json.Other;
-import com.lampirg.recommendator.anidb.mal.json.MalNode;
-import com.lampirg.recommendator.anidb.shikimori.json.ShikiNode;
+import com.lampirg.recommendator.anidb.specific.anilist.json.Completed;
+import com.lampirg.recommendator.anidb.specific.anilist.json.Other;
+import com.lampirg.recommendator.anidb.specific.mal.json.MalNode;
+import com.lampirg.recommendator.anidb.specific.shikimori.json.ShikiNode;
 
 public record AnimeTitle(
         long id,

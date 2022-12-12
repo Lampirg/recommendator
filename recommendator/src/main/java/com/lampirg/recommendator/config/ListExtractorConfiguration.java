@@ -1,8 +1,8 @@
 package com.lampirg.recommendator.config;
 
-import com.lampirg.recommendator.anidb.mal.listextractor.ConcurrentUserListExtractor;
-import com.lampirg.recommendator.anidb.mal.listextractor.SingleThreadUserListExtractor;
-import com.lampirg.recommendator.anidb.shikimori.ShikimoriListExtractor;
+import com.lampirg.recommendator.anidb.specific.mal.listextractor.ConcurrentUserListExtractor;
+import com.lampirg.recommendator.anidb.specific.mal.listextractor.SingleThreadUserListExtractor;
+import com.lampirg.recommendator.anidb.specific.shikimori.ShikimoriListExtractor;
 import com.lampirg.recommendator.config.qualifiers.Mal;
 import com.lampirg.recommendator.config.qualifiers.Shiki;
 import org.springframework.context.annotation.Bean;

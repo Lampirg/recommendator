@@ -1,8 +1,8 @@
 package com.lampirg.recommendator.config;
 
-import com.lampirg.recommendator.anidb.mal.titlemapper.ConcurrentTitleMapper;
-import com.lampirg.recommendator.anidb.mal.titlemapper.SingleThreadTitleMapper;
-import com.lampirg.recommendator.anidb.shikimori.ShikimoriTitleMapper;
+import com.lampirg.recommendator.anidb.specific.mal.titlemapper.ConcurrentTitleMapper;
+import com.lampirg.recommendator.anidb.specific.mal.titlemapper.SingleThreadTitleMapper;
+import com.lampirg.recommendator.anidb.specific.shikimori.ShikimoriTitleMapper;
 import com.lampirg.recommendator.config.qualifiers.Mal;
 import com.lampirg.recommendator.config.qualifiers.Shiki;
 import org.springframework.context.annotation.Bean;
