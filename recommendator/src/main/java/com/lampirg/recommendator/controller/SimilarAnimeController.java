@@ -63,7 +63,7 @@ public class SimilarAnimeController {
         return list;
     }
 
-    @ExceptionHandler(HttpClientErrorException.class)
+    @ExceptionHandler(HttpClientErrorException.NotFound.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<String> notFound(HttpClientErrorException exception) {
         return new ResponseEntity<>("user not found", HttpStatus.NOT_FOUND);
