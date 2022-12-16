@@ -5,7 +5,6 @@ import com.lampirg.recommendator.anidb.general.AnimeSiteCommunicator;
 import com.lampirg.recommendator.anidb.general.SimilarAnimeCommunicator;
 import com.lampirg.recommendator.anidb.general.titlemapper.TitleMapper;
 import com.lampirg.recommendator.anidb.general.listextractor.UserListExtractor;
-import com.lampirg.recommendator.anidb.specific.mal.MalCommunicator;
 import com.lampirg.recommendator.config.qualifiers.Anilist;
 import com.lampirg.recommendator.config.qualifiers.Mal;
 import com.lampirg.recommendator.config.qualifiers.Shiki;
@@ -20,14 +19,14 @@ public class AnimeCommunicatorConfiguration {
     @Mal("single")
     public SimilarAnimeCommunicator singleThreadMalCommunicator(@Mal("single") UserListExtractor listExtractor,
                                                                 @Mal("single") TitleMapper mapper) {
-        return attachBeansToCommunicator(new MalCommunicator(), listExtractor, mapper);
+        return attachBeansToCommunicator(new SimilarAnimeCommunicator(), listExtractor, mapper);
     }
 
     @Bean
     @Mal("concurrent")
     public SimilarAnimeCommunicator concurrentThreadMalCommunicator(@Mal("concurrent") UserListExtractor listExtractor,
                                                                     @Mal("concurrent") TitleMapper mapper) {
-        return attachBeansToCommunicator(new MalCommunicator(), listExtractor, mapper);
+        return attachBeansToCommunicator(new SimilarAnimeCommunicator(), listExtractor, mapper);
     }
 
     @Bean
