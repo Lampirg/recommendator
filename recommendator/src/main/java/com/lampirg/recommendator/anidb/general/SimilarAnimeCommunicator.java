@@ -18,17 +18,12 @@ import java.util.*;
 
 @Service
 @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
-@PropertySource("classpath:mal security code.yml")
 public class SimilarAnimeCommunicator implements AnimeSiteCommunicator {
 
     private UserListExtractor userListExtractor;
     private TitleMapper titleMapper;
 
-    @Value("${clientIdHeader}")
-    private String clientIdHeader;
-    @Value("${clientId}")
-    private String clientId;
-    HttpEntity<String> request;
+    private HttpEntity<String> request;
 
     public void setListExtractor(UserListExtractor userListExtractor) {
         this.userListExtractor = userListExtractor;
@@ -36,12 +31,13 @@ public class SimilarAnimeCommunicator implements AnimeSiteCommunicator {
     public void setTitleMapper(TitleMapper titleMapper) {
         this.titleMapper = titleMapper;
     }
+    protected void setRequest(HttpEntity<String> request) {
+        this.request = request;
+    }
 
     @PostConstruct
-    private void init() {
-        HttpHeaders authHeader = new HttpHeaders();
-        authHeader.set(clientIdHeader, clientId);
-        request = new HttpEntity<>(authHeader);
+    protected void init() {
+        setRequest(new HttpEntity<>(new HttpHeaders()));
     }
 
     @Override
