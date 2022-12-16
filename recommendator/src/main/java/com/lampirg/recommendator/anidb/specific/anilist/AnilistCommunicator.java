@@ -5,9 +5,9 @@ import com.lampirg.recommendator.anidb.specific.anilist.json.GetUserListAndRecom
 import com.lampirg.recommendator.anidb.specific.anilist.json.GraphQlRequest;
 import com.lampirg.recommendator.anidb.specific.anilist.json.Other;
 import com.lampirg.recommendator.anidb.general.AnimeSiteCommunicator;
-import com.lampirg.recommendator.anidb.general.model.AnimeRecommendation;
-import com.lampirg.recommendator.anidb.general.model.AnimeTitle;
-import com.lampirg.recommendator.anidb.general.model.UserAnimeTitle;
+import com.lampirg.recommendator.anidb.titles.model.AnimeRecommendation;
+import com.lampirg.recommendator.anidb.titles.model.AnimeTitle;
+import com.lampirg.recommendator.anidb.titles.model.UserAnimeTitle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;

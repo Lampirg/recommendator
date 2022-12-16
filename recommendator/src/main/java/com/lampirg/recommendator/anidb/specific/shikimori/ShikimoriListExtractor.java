@@ -1,10 +1,10 @@
 package com.lampirg.recommendator.anidb.specific.shikimori;
 
 
-import com.lampirg.recommendator.anidb.general.StandardListCollector;
-import com.lampirg.recommendator.anidb.general.UserListExtractor;
-import com.lampirg.recommendator.anidb.general.model.AnimeTitle;
-import com.lampirg.recommendator.anidb.general.model.UserAnimeTitle;
+import com.lampirg.recommendator.anidb.general.listextractor.StandardListExtractor;
+import com.lampirg.recommendator.anidb.general.listextractor.UserListExtractor;
+import com.lampirg.recommendator.anidb.titles.model.AnimeTitle;
+import com.lampirg.recommendator.anidb.titles.model.UserAnimeTitle;
 import com.lampirg.recommendator.anidb.specific.shikimori.json.ShikiUserNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.*;
 
 
-public class ShikimoriListExtractor extends StandardListCollector implements UserListExtractor {
+public class ShikimoriListExtractor extends StandardListExtractor implements UserListExtractor {
 
     private ShikimoriQueryMaker queryMaker;
 
@@ -32,7 +32,6 @@ public class ShikimoriListExtractor extends StandardListCollector implements Use
             ResponseEntity<List<ShikiUserNode>> response = queryMaker.exchange(
                     url,
                     HttpMethod.GET,
-                    getRequest(),
                     new ParameterizedTypeReference<>() {}
             );
             dataList.addAll(Objects.requireNonNull(response.getBody()));

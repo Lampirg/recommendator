@@ -1,19 +1,19 @@
 package com.lampirg.recommendator.anidb.specific.mal.listextractor;
 
-import com.lampirg.recommendator.anidb.general.StandardListCollector;
-import com.lampirg.recommendator.anidb.general.UserListExtractor;
+import com.lampirg.recommendator.anidb.general.listextractor.StandardListExtractor;
+import com.lampirg.recommendator.anidb.general.listextractor.UserListExtractor;
 import com.lampirg.recommendator.anidb.specific.mal.MalQueryMaker;
 import com.lampirg.recommendator.anidb.specific.mal.json.Data;
 import com.lampirg.recommendator.anidb.specific.mal.json.queries.GetUserListJsonResult;
-import com.lampirg.recommendator.anidb.general.model.AnimeTitle;
-import com.lampirg.recommendator.anidb.general.model.UserAnimeTitle;
+import com.lampirg.recommendator.anidb.titles.model.AnimeTitle;
+import com.lampirg.recommendator.anidb.titles.model.UserAnimeTitle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
 import java.util.*;
 
-public abstract class AbstractMalUserListExtractor extends StandardListCollector implements UserListExtractor {
+public abstract class AbstractMalUserListExtractor extends StandardListExtractor implements UserListExtractor {
 
     private MalQueryMaker queryMaker;
 
@@ -32,7 +32,6 @@ public abstract class AbstractMalUserListExtractor extends StandardListCollector
             ResponseEntity<GetUserListJsonResult> response = this.queryMaker.exchange(
                     url,
                     HttpMethod.GET,
-                    getRequest(),
                     GetUserListJsonResult.class
             );
             dataList.addAll(Objects.requireNonNull(response.getBody()).data());

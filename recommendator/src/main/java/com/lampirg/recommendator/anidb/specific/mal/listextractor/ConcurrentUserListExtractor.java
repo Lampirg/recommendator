@@ -1,6 +1,6 @@
 package com.lampirg.recommendator.anidb.specific.mal.listextractor;
 
-import com.lampirg.recommendator.anidb.general.UserListExtractor;
+import com.lampirg.recommendator.anidb.general.listextractor.UserListExtractor;
 
 import java.util.concurrent.CompletableFuture;
 

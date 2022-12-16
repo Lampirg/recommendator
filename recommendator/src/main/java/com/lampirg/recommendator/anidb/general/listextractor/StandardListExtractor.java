@@ -1,15 +1,13 @@
-package com.lampirg.recommendator.anidb.general;
+package com.lampirg.recommendator.anidb.general.listextractor;
 
-import com.lampirg.recommendator.anidb.general.model.UserAnimeTitle;
+import com.lampirg.recommendator.anidb.titles.model.UserAnimeTitle;
 import org.springframework.http.HttpEntity;
 
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public abstract class StandardListCollector implements UserListExtractor {
-
-    private HttpEntity<String> request;
+public abstract class StandardListExtractor implements UserListExtractor {
 
     protected String username;
     protected Set<UserAnimeTitle> completed;
@@ -18,16 +16,6 @@ public abstract class StandardListCollector implements UserListExtractor {
     protected Set<UserAnimeTitle> onHold;
 
     private final static int LIMIT_SIZE = 50;
-
-    protected final HttpEntity<String> getRequest() {
-        return request;
-    }
-
-    @Override
-    public UserListExtractor setRequest(HttpEntity<String> request) {
-        this.request = request;
-        return this;
-    }
 
     @Override
     public void setUser(String username) {

@@ -1,24 +1,23 @@
 package com.lampirg.recommendator.anidb.specific.shikimori;
 
-import com.lampirg.recommendator.anidb.general.IterativeTitleMapper;
-import com.lampirg.recommendator.anidb.general.TitleMapper;
-import com.lampirg.recommendator.anidb.general.model.AnimeTitle;
-import com.lampirg.recommendator.anidb.general.model.UserAnimeTitle;
-import com.lampirg.recommendator.anidb.specific.shikimori.json.ShikiNode;
+import com.lampirg.recommendator.anidb.general.titlemapper.IterativeTitleMapper;
+import com.lampirg.recommendator.anidb.general.titlemapper.TitleMapper;
+import com.lampirg.recommendator.anidb.titles.model.AnimeTitle;
+import com.lampirg.recommendator.anidb.titles.model.UserAnimeTitle;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class ShikimoriTitleMapper extends IterativeTitleMapper implements TitleMapper {
 
-    private ShikimoriQueryMaker queryMaker;
+    private ShikimoriCacher repository;
+
 
     @Autowired
-    public void setQueryMaker(ShikimoriQueryMaker queryMaker) {
-        this.queryMaker = queryMaker;
+    public void setRepository(ShikimoriCacher repository) {
+        this.repository = repository;
     }
 
     @Override
@@ -35,10 +34,8 @@ public class ShikimoriTitleMapper extends IterativeTitleMapper implements TitleM
 
     @Override
     protected void findAndAddTitleRecommendations(UserAnimeTitle title) {
-        String url = "https://shikimori.one/api/animes/"+title.animeTitle().id()+"/similar";
-        ResponseEntity<List<ShikiNode>> response = queryMaker.exchange(url, HttpMethod.GET, getRequest(), new ParameterizedTypeReference<>() {});
-        for (ShikiNode recommendation : Objects.requireNonNull(response.getBody())) {
-            AnimeTitle animeTitle = AnimeTitle.retrieveFromShikiNode(recommendation);
+        Set<AnimeTitle> recommendedTitles = repository.getRecommendations(title.animeTitle());
+        for (AnimeTitle animeTitle : recommendedTitles) {
             if (getToExclude().contains(animeTitle))
                 continue;
             recommendedAnime.merge(animeTitle, title.score(), Integer::sum);
