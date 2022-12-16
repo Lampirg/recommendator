@@ -1,4 +1,4 @@
-package com.lampirg.recommendator.anidb.general.model;
+package com.lampirg.recommendator.anidb.titles.model;
 
 public record AnimeRecommendation(
         AnimeTitle title,

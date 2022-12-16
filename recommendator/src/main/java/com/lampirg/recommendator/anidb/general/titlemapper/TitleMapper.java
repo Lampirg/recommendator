@@ -1,7 +1,7 @@
 package com.lampirg.recommendator.anidb.general.titlemapper;
 
-import com.lampirg.recommendator.anidb.general.model.AnimeTitle;
-import com.lampirg.recommendator.anidb.general.model.UserAnimeTitle;
+import com.lampirg.recommendator.anidb.titles.model.AnimeTitle;
+import com.lampirg.recommendator.anidb.titles.model.UserAnimeTitle;
 import org.springframework.http.HttpEntity;
 
 import java.util.Map;

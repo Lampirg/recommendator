@@ -1,4 +1,4 @@
-package com.lampirg.recommendator.anidb.general.model;
+package com.lampirg.recommendator.anidb.titles.model;
 
 import com.lampirg.recommendator.anidb.specific.anilist.json.Completed;
 import com.lampirg.recommendator.anidb.specific.anilist.json.Other;

@@ -2,8 +2,8 @@ package com.lampirg.recommendator.anidb.specific.shikimori;
 
 import com.lampirg.recommendator.anidb.general.titlemapper.IterativeTitleMapper;
 import com.lampirg.recommendator.anidb.general.titlemapper.TitleMapper;
-import com.lampirg.recommendator.anidb.general.model.AnimeTitle;
-import com.lampirg.recommendator.anidb.general.model.UserAnimeTitle;
+import com.lampirg.recommendator.anidb.titles.model.AnimeTitle;
+import com.lampirg.recommendator.anidb.titles.model.UserAnimeTitle;
 import com.lampirg.recommendator.anidb.specific.shikimori.json.ShikiNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;

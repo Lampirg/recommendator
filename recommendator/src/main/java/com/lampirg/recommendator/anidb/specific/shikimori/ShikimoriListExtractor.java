@@ -3,8 +3,8 @@ package com.lampirg.recommendator.anidb.specific.shikimori;
 
 import com.lampirg.recommendator.anidb.general.listextractor.StandardListExtractor;
 import com.lampirg.recommendator.anidb.general.listextractor.UserListExtractor;
-import com.lampirg.recommendator.anidb.general.model.AnimeTitle;
-import com.lampirg.recommendator.anidb.general.model.UserAnimeTitle;
+import com.lampirg.recommendator.anidb.titles.model.AnimeTitle;
+import com.lampirg.recommendator.anidb.titles.model.UserAnimeTitle;
 import com.lampirg.recommendator.anidb.specific.shikimori.json.ShikiUserNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;

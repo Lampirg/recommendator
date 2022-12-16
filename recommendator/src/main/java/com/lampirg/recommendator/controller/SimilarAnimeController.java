@@ -1,7 +1,7 @@
 package com.lampirg.recommendator.controller;
 
 import com.lampirg.recommendator.anidb.general.AnimeSiteCommunicator;
-import com.lampirg.recommendator.anidb.general.model.AnimeRecommendation;
+import com.lampirg.recommendator.anidb.titles.model.AnimeRecommendation;
 import com.lampirg.recommendator.config.qualifiers.Anilist;
 import com.lampirg.recommendator.config.qualifiers.Mal;
 import com.lampirg.recommendator.config.qualifiers.Shiki;
