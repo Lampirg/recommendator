@@ -3,6 +3,7 @@ package com.lampirg.recommendator.anidb.specific.mal.titlemapper;
 import com.lampirg.recommendator.anidb.general.titlemapper.IterativeTitleMapper;
 import com.lampirg.recommendator.anidb.general.titlemapper.TitleMapper;
 import com.lampirg.recommendator.anidb.specific.mal.MalQueryMaker;
+import com.lampirg.recommendator.anidb.specific.mal.MalRepository;
 import com.lampirg.recommendator.anidb.specific.mal.json.Recommendation;
 import com.lampirg.recommendator.anidb.specific.mal.json.queries.GetAnimeDetail;
 import com.lampirg.recommendator.anidb.titles.model.AnimeTitle;
@@ -16,17 +17,20 @@ import java.util.*;
 public abstract class AbstractMalTitleMapper extends IterativeTitleMapper implements TitleMapper {
 
     private MalQueryMaker queryMaker;
+    private MalRepository repository;
 
     @Autowired
     public void setQueryMaker(MalQueryMaker queryMaker) {
         this.queryMaker = queryMaker;
     }
+    @Autowired
+    public void setRepository(MalRepository repository) {
+        this.repository = repository;
+    }
 
     protected final void findAndAddTitleRecommendations(UserAnimeTitle title) {
-        String url = "https://api.myanimelist.net/v2/anime/"+title.animeTitle().id()+"?fields=recommendations";
-        ResponseEntity<GetAnimeDetail> response = queryMaker.exchange(url, HttpMethod.GET, getRequest(), GetAnimeDetail.class);
-        for (Recommendation recommendation : Objects.requireNonNull(response.getBody()).recommendations()) {
-            AnimeTitle animeTitle = AnimeTitle.retrieveFromMalNode(recommendation.node());
+        Set<AnimeTitle> recommendedTitles = repository.getRecommendations(title.animeTitle(), queryMaker, getRequest());
+        for (AnimeTitle animeTitle : recommendedTitles) {
             if (getToExclude().contains(animeTitle))
                 continue;
             recommendedAnime.merge(animeTitle, title.score(), Integer::sum);
