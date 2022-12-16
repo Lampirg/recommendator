@@ -1,5 +1,6 @@
 package com.lampirg.recommendator.anidb.general;
 
+import com.lampirg.recommendator.anidb.general.listextractor.UserListExtractor;
 import com.lampirg.recommendator.anidb.general.model.AnimeRecommendation;
 import com.lampirg.recommendator.anidb.general.model.AnimeTitle;
 import com.lampirg.recommendator.anidb.general.model.UserAnimeTitle;

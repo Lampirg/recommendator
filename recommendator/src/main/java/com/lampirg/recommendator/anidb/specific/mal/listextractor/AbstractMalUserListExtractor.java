@@ -1,7 +1,7 @@
 package com.lampirg.recommendator.anidb.specific.mal.listextractor;
 
-import com.lampirg.recommendator.anidb.general.StandardListExtractor;
-import com.lampirg.recommendator.anidb.general.UserListExtractor;
+import com.lampirg.recommendator.anidb.general.listextractor.StandardListExtractor;
+import com.lampirg.recommendator.anidb.general.listextractor.UserListExtractor;
 import com.lampirg.recommendator.anidb.specific.mal.MalQueryMaker;
 import com.lampirg.recommendator.anidb.specific.mal.json.Data;
 import com.lampirg.recommendator.anidb.specific.mal.json.queries.GetUserListJsonResult;

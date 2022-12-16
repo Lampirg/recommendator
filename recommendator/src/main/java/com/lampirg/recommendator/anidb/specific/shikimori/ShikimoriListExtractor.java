@@ -1,8 +1,8 @@
 package com.lampirg.recommendator.anidb.specific.shikimori;
 
 
-import com.lampirg.recommendator.anidb.general.StandardListExtractor;
-import com.lampirg.recommendator.anidb.general.UserListExtractor;
+import com.lampirg.recommendator.anidb.general.listextractor.StandardListExtractor;
+import com.lampirg.recommendator.anidb.general.listextractor.UserListExtractor;
 import com.lampirg.recommendator.anidb.general.model.AnimeTitle;
 import com.lampirg.recommendator.anidb.general.model.UserAnimeTitle;
 import com.lampirg.recommendator.anidb.specific.shikimori.json.ShikiUserNode;
