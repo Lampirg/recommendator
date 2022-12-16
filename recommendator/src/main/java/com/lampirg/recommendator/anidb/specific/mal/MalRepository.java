@@ -20,7 +20,7 @@ public class MalRepository implements AnimeTitleRepository {
     @Cacheable("mal-recommendations")
     public Set<AnimeTitle> getRecommendations(AnimeTitle title, MalQueryMaker queryMaker, HttpEntity<String> request) {
         String url = "https://api.myanimelist.net/v2/anime/"+title.id()+"?fields=recommendations";
-        ResponseEntity<GetAnimeDetail> response = queryMaker.exchange(url, HttpMethod.GET, request, GetAnimeDetail.class);
+        ResponseEntity<GetAnimeDetail> response = queryMaker.exchange(url, HttpMethod.GET, GetAnimeDetail.class);
         Set<AnimeTitle> recommendedTitles = new HashSet<>();
         for (Recommendation recommendation : Objects.requireNonNull(response.getBody()).recommendations()) {
             recommendedTitles.add(AnimeTitle.retrieveFromMalNode(recommendation.node()));

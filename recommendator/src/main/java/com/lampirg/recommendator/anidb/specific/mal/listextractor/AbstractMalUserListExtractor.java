@@ -32,7 +32,6 @@ public abstract class AbstractMalUserListExtractor extends StandardListExtractor
             ResponseEntity<GetUserListJsonResult> response = this.queryMaker.exchange(
                     url,
                     HttpMethod.GET,
-                    getRequest(),
                     GetUserListJsonResult.class
             );
             dataList.addAll(Objects.requireNonNull(response.getBody()).data());
