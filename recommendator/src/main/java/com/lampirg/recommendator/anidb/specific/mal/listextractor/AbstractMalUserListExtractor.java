@@ -1,6 +1,6 @@
 package com.lampirg.recommendator.anidb.specific.mal.listextractor;
 
-import com.lampirg.recommendator.anidb.general.StandardListCollector;
+import com.lampirg.recommendator.anidb.general.StandardListExtractor;
 import com.lampirg.recommendator.anidb.general.UserListExtractor;
 import com.lampirg.recommendator.anidb.specific.mal.MalQueryMaker;
 import com.lampirg.recommendator.anidb.specific.mal.json.Data;
@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.*;
 
-public abstract class AbstractMalUserListExtractor extends StandardListCollector implements UserListExtractor {
+public abstract class AbstractMalUserListExtractor extends StandardListExtractor implements UserListExtractor {
 
     private MalQueryMaker queryMaker;
 

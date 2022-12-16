@@ -1,7 +1,7 @@
 package com.lampirg.recommendator.anidb.specific.shikimori;
 
 
-import com.lampirg.recommendator.anidb.general.StandardListCollector;
+import com.lampirg.recommendator.anidb.general.StandardListExtractor;
 import com.lampirg.recommendator.anidb.general.UserListExtractor;
 import com.lampirg.recommendator.anidb.general.model.AnimeTitle;
 import com.lampirg.recommendator.anidb.general.model.UserAnimeTitle;
@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.*;
 
 
-public class ShikimoriListExtractor extends StandardListCollector implements UserListExtractor {
+public class ShikimoriListExtractor extends StandardListExtractor implements UserListExtractor {
 
     private ShikimoriQueryMaker queryMaker;
 

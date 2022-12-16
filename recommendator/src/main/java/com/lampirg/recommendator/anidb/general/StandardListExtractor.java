@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public abstract class StandardListCollector implements UserListExtractor {
+public abstract class StandardListExtractor implements UserListExtractor {
 
     private HttpEntity<String> request;
 
