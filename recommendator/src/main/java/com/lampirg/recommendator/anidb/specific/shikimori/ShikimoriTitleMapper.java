@@ -2,26 +2,18 @@ package com.lampirg.recommendator.anidb.specific.shikimori;
 
 import com.lampirg.recommendator.anidb.general.titlemapper.IterativeTitleMapper;
 import com.lampirg.recommendator.anidb.general.titlemapper.TitleMapper;
-import com.lampirg.recommendator.anidb.specific.mal.MalChacher;
 import com.lampirg.recommendator.anidb.titles.model.AnimeTitle;
 import com.lampirg.recommendator.anidb.titles.model.UserAnimeTitle;
-import com.lampirg.recommendator.anidb.specific.shikimori.json.ShikiNode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class ShikimoriTitleMapper extends IterativeTitleMapper implements TitleMapper {
 
-    private ShikimoriQueryMaker queryMaker;
     private ShikimoriCacher repository;
 
-    @Autowired
-    public void setQueryMaker(ShikimoriQueryMaker queryMaker) {
-        this.queryMaker = queryMaker;
-    }
 
     @Autowired
     public void setRepository(ShikimoriCacher repository) {
@@ -42,7 +34,7 @@ public class ShikimoriTitleMapper extends IterativeTitleMapper implements TitleM
 
     @Override
     protected void findAndAddTitleRecommendations(UserAnimeTitle title) {
-        Set<AnimeTitle> recommendedTitles = repository.getRecommendations(title.animeTitle(), queryMaker);
+        Set<AnimeTitle> recommendedTitles = repository.getRecommendations(title.animeTitle());
         for (AnimeTitle animeTitle : recommendedTitles) {
             if (getToExclude().contains(animeTitle))
                 continue;
