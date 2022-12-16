@@ -3,7 +3,7 @@ package com.lampirg.recommendator.config;
 import com.lampirg.recommendator.anidb.specific.anilist.AnilistCommunicator;
 import com.lampirg.recommendator.anidb.general.AnimeSiteCommunicator;
 import com.lampirg.recommendator.anidb.general.SimilarAnimeCommunicator;
-import com.lampirg.recommendator.anidb.general.TitleMapper;
+import com.lampirg.recommendator.anidb.general.titlemapper.TitleMapper;
 import com.lampirg.recommendator.anidb.general.listextractor.UserListExtractor;
 import com.lampirg.recommendator.config.qualifiers.Anilist;
 import com.lampirg.recommendator.config.qualifiers.Mal;
