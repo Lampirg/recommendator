@@ -9,8 +9,6 @@ import java.util.stream.Stream;
 
 public abstract class StandardListExtractor implements UserListExtractor {
 
-    private HttpEntity<String> request;
-
     protected String username;
     protected Set<UserAnimeTitle> completed;
     protected Set<UserAnimeTitle> watching;
@@ -18,16 +16,6 @@ public abstract class StandardListExtractor implements UserListExtractor {
     protected Set<UserAnimeTitle> onHold;
 
     private final static int LIMIT_SIZE = 50;
-
-    protected final HttpEntity<String> getRequest() {
-        return request;
-    }
-
-    @Override
-    public UserListExtractor setRequest(HttpEntity<String> request) {
-        this.request = request;
-        return this;
-    }
 
     @Override
     public void setUser(String username) {

@@ -21,7 +21,6 @@ public class SimilarAnimeCommunicator implements AnimeSiteCommunicator {
     private UserListExtractor userListExtractor;
     private TitleMapper titleMapper;
 
-    private HttpEntity<String> request;
 
     public void setListExtractor(UserListExtractor userListExtractor) {
         this.userListExtractor = userListExtractor;
@@ -29,23 +28,15 @@ public class SimilarAnimeCommunicator implements AnimeSiteCommunicator {
     public void setTitleMapper(TitleMapper titleMapper) {
         this.titleMapper = titleMapper;
     }
-    protected void setRequest(HttpEntity<String> request) {
-        this.request = request;
-    }
-
-    @PostConstruct
-    protected void init() {
-        setRequest(new HttpEntity<>(new HttpHeaders()));
-    }
 
     @Override
     public Set<AnimeRecommendation> getSimilarAnimeTitles(String username) {
-        userListExtractor.setRequest(request).setUser(username);
+        userListExtractor.setUser(username);
         return getSimilarAnimeTitles(userListExtractor.getToInclude(), userListExtractor.getToExclude());
     }
 
     public Set<AnimeRecommendation> getSimilarAnimeTitles(Set<UserAnimeTitle> animeTitles, Set<UserAnimeTitle> toExclude) {
-        Map<AnimeTitle, Integer> result = titleMapper.setRequest(request).fillToExclude(toExclude)
+        Map<AnimeTitle, Integer> result = titleMapper.fillToExclude(toExclude)
                 .getRecommendedAnimeMap(animeTitles);
         Set<AnimeRecommendation> animeRecommendationSet = new HashSet<>();
         result.forEach((key, value) -> animeRecommendationSet.add(new AnimeRecommendation(key, value)));

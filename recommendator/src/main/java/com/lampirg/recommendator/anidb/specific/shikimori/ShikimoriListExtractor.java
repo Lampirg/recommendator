@@ -32,7 +32,6 @@ public class ShikimoriListExtractor extends StandardListExtractor implements Use
             ResponseEntity<List<ShikiUserNode>> response = queryMaker.exchange(
                     url,
                     HttpMethod.GET,
-                    getRequest(),
                     new ParameterizedTypeReference<>() {}
             );
             dataList.addAll(Objects.requireNonNull(response.getBody()));
