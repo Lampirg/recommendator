@@ -28,9 +28,7 @@ public class AnilistCommunicator implements AnimeSiteCommunicator {
 
     private AnilistQueryMaker queryMaker;
 
-    private HttpEntity<GraphQlRequest> request;
-
-    private Resource resource = new ClassPathResource("query.graphql");
+    private final Resource resource = new ClassPathResource("query.graphql");
 
     @Autowired
     public void setQueryMaker(AnilistQueryMaker queryMaker) {
@@ -56,14 +54,13 @@ public class AnilistCommunicator implements AnimeSiteCommunicator {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        request = new HttpEntity<>(new GraphQlRequest(query, String.format(GetUserListAndRecommendations.variables, username)));
-        ResponseEntity<GetUserListAndRecommendations> response = queryMaker.exchange(
+        HttpEntity<GraphQlRequest> request = new HttpEntity<>(new GraphQlRequest(query, String.format(GetUserListAndRecommendations.variables, username)));
+        return queryMaker.exchange(
                 URI.create("https://graphql.anilist.co"),
                 HttpMethod.POST,
                 request,
                 GetUserListAndRecommendations.class
         );
-        return response;
     }
 
     private Set<AnimeTitle> getToExclude(ResponseEntity<GetUserListAndRecommendations> response) {
