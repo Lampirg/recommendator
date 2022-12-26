@@ -2,6 +2,7 @@ package com.lampirg.recommendator.controller;
 
 import com.lampirg.recommendator.anidb.general.AnimeSiteCommunicator;
 import com.lampirg.recommendator.anidb.titles.model.AnimeRecommendation;
+import com.lampirg.recommendator.anidb.titles.model.AnimeRecommendationList;
 import com.lampirg.recommendator.config.qualifiers.Anilist;
 import com.lampirg.recommendator.config.qualifiers.Mal;
 import com.lampirg.recommendator.config.qualifiers.Shiki;
@@ -41,26 +42,26 @@ public class SimilarAnimeController {
     }
 
     @GetMapping("/mal/{username}")
-    public List<AnimeRecommendation> getMalSimilarAnime(@PathVariable String username) {
+    public AnimeRecommendationList getMalSimilarAnime(@PathVariable String username) {
         return getSortedRecommendationList(malCommunicator, username);
     }
 
     @GetMapping("/shiki/{username}")
-    public List<AnimeRecommendation> getShikiSimilarAnime(@PathVariable String username) {
+    public AnimeRecommendationList getShikiSimilarAnime(@PathVariable String username) {
         return getSortedRecommendationList(shikiCommunicator, username);
     }
 
     @GetMapping("/anilist/{username}")
-    public List<AnimeRecommendation> getAnilistSimilarAnime(@PathVariable String username) {
+    public AnimeRecommendationList getAnilistSimilarAnime(@PathVariable String username) {
         return getSortedRecommendationList(anilistCommunicator, username);
     }
 
-    private List<AnimeRecommendation> getSortedRecommendationList(AnimeSiteCommunicator malCommunicator, String username) {
+    private AnimeRecommendationList getSortedRecommendationList(AnimeSiteCommunicator malCommunicator, String username) {
         List<AnimeRecommendation> list =
                 new ArrayList<>(malCommunicator.getSimilarAnimeTitles(username));
         list.sort(Comparator.comparingInt(AnimeRecommendation::numOfRecommendations).reversed()
                 .thenComparing(x -> x.title().name()));
-        return list;
+        return new AnimeRecommendationList(list);
     }
 
     @ExceptionHandler(HttpClientErrorException.NotFound.class)
