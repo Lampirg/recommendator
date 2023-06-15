@@ -1,41 +1,12 @@
-resilience4j.ratelimiter:
-  instances:
-    mal-rps:
-      limitForPeriod: 3
-      limitRefreshPeriod: 1s
-      timeoutDuration: 1s
-    mal-rpm:
-      limitForPeriod: 60
-      limitRefreshPeriod: 1m
-      timeoutDuration: 1s
-
-    shikimori-rps:
-      limitForPeriod: 5
-      limitRefreshPeriod: 1s
-      timeoutDuration: 1s
-    shikimori-rpm:
-      limitForPeriod: 90
-      limitRefreshPeriod: 1s
-      timeoutDuration: 1s
-
-    anilist-rpm:
-      limitForPeriod: 90
-      limitRefreshPeriod: 1s
-      timeoutDuration: 1s
-
-resilience4j.retry:
-  instances:
-    rps:
-      maxAttempts: 20
-      waitDuration: 1s
-      ignoreExceptions:
-        - org.springframework.web.client.HttpClientErrorException.NotFound
-    rpm:
-      maxAttempts: 6
-      waitDuration: 10s
-      ignoreExceptions:
-        - org.springframework.web.client.HttpClientErrorException.NotFound
-
+spring:
+  application:
+    name: recommendator
+server:
+  port: 8081
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
 management:
   endpoints:
     web:
