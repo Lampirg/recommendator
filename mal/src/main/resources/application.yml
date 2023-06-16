@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: mal
+server:
+  port: 8082
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+resilience4j.ratelimiter:
+  instances:
+    mal-rps:
+      limitForPeriod: 3
+      limitRefreshPeriod: 1s
+      timeoutDuration: 1s
+    mal-rpm:
+      limitForPeriod: 60
+      limitRefreshPeriod: 1m
+      timeoutDuration: 1s
+
+resilience4j.retry:
+  instances:
+    rps:
+      maxAttempts: 20
+      waitDuration: 1s
+      ignoreExceptions:
+        - org.springframework.web.client.HttpClientErrorException.NotFound
+    rpm:
+      maxAttempts: 6
+      waitDuration: 10s
+      ignoreExceptions:
+        - org.springframework.web.client.HttpClientErrorException.NotFound
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-components: always
+      show-details: always
+      probes:
+        enabled: true

@@ -1,0 +1,54 @@
+query ($name: String) {
+    completed: MediaListCollection(userName: $name, type: ANIME, status: COMPLETED) {
+        lists {
+            name
+            status
+            entries {
+                score
+                media {
+                    ...comparisonFields
+                    recommendations(sort: RATING_DESC) {
+                        nodes {
+                            rating
+                            mediaRecommendation {
+                                id
+                                title {
+                                    romaji
+                                }
+                                coverImage {
+                                    extraLarge
+                                    large
+                                    medium
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    other: MediaListCollection(userName: $name, type: ANIME, status_in: [CURRENT, DROPPED, PAUSED]) {
+        lists {
+            name
+            status
+            entries {
+                score
+                media {
+                    ...comparisonFields
+                }
+            }
+        }
+    }
+}
+
+fragment comparisonFields on Media {
+    id
+    title {
+        romaji
+    }
+    coverImage {
+        extraLarge
+        large
+        medium
+    }
+}
