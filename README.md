@@ -1,24 +1,33 @@
 # recommendator
+
+## Tech stack
+
+- Java 17
+- Spring Framework
+- Spring Boot
+- Spring Cloud
+
+## About
  
 This is web application for computing anime titles to watch according to user anime list. Right now it supports:
 
-- [My Anime List](https://myanimelist.net/) (with it [v2](https://myanimelist.net/apiconfig/references/api/v2) API)
+- [My Anime List](https://myanimelist.net/) (with its [v2](https://myanimelist.net/apiconfig/references/api/v2) API)
 
-- [Shikimori](https://shikimori.one/) (with it [v1](https://shikimori.one/api/doc/1.0) and [v2](https://shikimori.one/api/doc/2.0) APIs)
+- [Shikimori](https://shikimori.one/) (with its [v1](https://shikimori.one/api/doc/1.0) and [v2](https://shikimori.one/api/doc/2.0) APIs)
 
-- [AniList](https://anilist.co/) (with it [GraphQL](https://github.com/AniList/ApiV2-GraphQL-Docs) API)
+- [AniList](https://anilist.co/) (with its [GraphQL](https://github.com/AniList/ApiV2-GraphQL-Docs) API)
 
 **Note**: it is **highly recommended** to use anilist if possible because it collects full user list and still has the highest speed.
 
-*Note:* this is a **study unfinished project** and right now it may be problematic to use (as you can see in [usage](#usage)). Thus the project can change significantly.
+*Note:* this is a **unfinished pet project** and right now it may be problematic to use (as you can see in [usage](#usage)). Thus the project can change significantly.
 
 ## What does it do?
 
-This application fetches inserted in url user's nickname then collect an array of anime titles that user would like to watch according to his anime list. It does not modify user list in any way.
+This application goes through user's profile.
 
 ## Usage
 
-The project isn't deployed anywhere so the only way to run application right now is to clone this repository and run it manually. To use MAL you need MAL API's client code to make requests otherwise it will be blocked. But if you cloned repository and you do have MAL API's client code, you need to create "mal security code.yml" in resource directory with this structure:
+The project isn't deployed anywhere so the only way to use application right now is to clone this repository and run it manually. To use MAL you need MAL API's client code to make requests otherwise it will be blocked. But if you cloned repository and you do have MAL API's client code, you need to create "mal security code.yml" in resource directory with this structure:
 
 ```yaml
 clientIdHeader: X-MAL-CLIENT-ID
