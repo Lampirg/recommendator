@@ -23,7 +23,7 @@ This is web application for computing anime titles to watch according to user an
 
 ## What does it do?
 
-This application goes through user's profile.
+This application goes through user's anime entries and counts similar anime. It returns sorted recommended animes' list.
 
 ## Usage
 
