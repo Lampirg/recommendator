@@ -1,4 +1,4 @@
-package com.lampirg.recommendator;
+package com.lampirg.speed;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -8,10 +8,10 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.util.StopWatch;
-
+// TODO: benchmark
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient(timeout = "PT90S")
-public class TestMalCommunicator {
+public class BenchmarkMalCommunicator {
 
     private static Logger logger = LogManager.getLogger(TestMalCommunicator.class);
 
