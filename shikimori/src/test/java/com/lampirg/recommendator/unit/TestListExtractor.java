@@ -1,4 +1,4 @@
-package com.lampirg.recommendator;
+package com.lampirg.recommendator.unit;
 
 import com.lampirg.recommendator.anidb.ShikimoriListExtractor;
 import com.lampirg.recommendator.anidb.ShikimoriQueryMaker;
