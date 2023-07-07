@@ -1,4 +1,4 @@
-package com.lampirg.recommendator;
+package com.lampirg.recommendator.unit;
 
 import com.lampirg.recommendator.anidb.MalCacher;
 import com.lampirg.recommendator.anidb.MalQueryMaker;

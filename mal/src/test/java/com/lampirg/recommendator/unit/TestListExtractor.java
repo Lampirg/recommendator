@@ -1,4 +1,4 @@
-package com.lampirg.recommendator;
+package com.lampirg.recommendator.unit;
 
 import com.lampirg.recommendator.anidb.MalQueryMaker;
 import com.lampirg.recommendator.anidb.general.listextractor.UserListExtractor;
