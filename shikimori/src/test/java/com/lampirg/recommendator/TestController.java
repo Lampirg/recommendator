@@ -5,12 +5,16 @@ import com.lampirg.recommendator.anidb.titles.model.AnimeRecommendation;
 import com.lampirg.recommendator.anidb.titles.model.AnimeTitle;
 import com.lampirg.recommendator.config.qualifiers.Shiki;
 import com.lampirg.recommendator.controller.ShikiController;
+import io.micrometer.core.instrument.util.IOUtils;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
@@ -18,6 +22,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.client.HttpClientErrorException;
 
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Set;
 
 @WebMvcTest(ShikiController.class)
@@ -27,6 +33,8 @@ public class TestController {
     private AnimeSiteCommunicator shikiCommunicator;
     @Autowired
     private MockMvc mockMvc;
+    @Value("classpath:response.json")
+    private Resource resource;
 
     @Test
     @DisplayName("Test that for user certain titles will be found and sorted")
@@ -46,44 +54,7 @@ public class TestController {
                 )
         );
         String nickname = "lampirg";
-        String json = """
-                {
-                	"animeRecommendations": [
-                		{
-                			"title": {
-                				"id": 2,
-                				"name": "Hadaske: Return to Omsk",
-                				"imageUrl": "/totally-notfound"
-                			},
-                			"numOfRecommendations": 7
-                		},
-                		{
-                			"title": {
-                				"id": 4,
-                				"name": "Hadaske - Kukic",
-                				"imageUrl": "/notfound"
-                			},
-                			"numOfRecommendations": 6
-                		},
-                		{
-                			"title": {
-                				"id": 1,
-                				"name": "Hadaske",
-                				"imageUrl": "/notfound"
-                			},
-                			"numOfRecommendations": 4
-                		},
-                		{
-                			"title": {
-                				"id": 3,
-                				"name": "DeHadaske",
-                				"imageUrl": "/no"
-                			},
-                			"numOfRecommendations": 1
-                		}
-                    ]
-                }
-                """;
+        String json = getJson(resource);
         Mockito.when(shikiCommunicator.getSimilarAnimeTitles(nickname)).thenReturn(recommendations);
         mockMvc.perform(MockMvcRequestBuilders.get("/shiki/{nickname}", nickname))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -100,5 +71,11 @@ public class TestController {
         mockMvc.perform(MockMvcRequestBuilders.get("/shiki/{nickname}", wrongNickname))
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andExpect(MockMvcResultMatchers.content().string("user not found"));
+    }
+    @SneakyThrows
+    private String getJson(Resource resource) {
+        try (InputStream inputStream = resource.getInputStream()) {
+            return IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+        }
     }
 }
