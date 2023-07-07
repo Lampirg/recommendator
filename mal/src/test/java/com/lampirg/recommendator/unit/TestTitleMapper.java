@@ -6,6 +6,7 @@ import com.lampirg.recommendator.anidb.titlemapper.SingleThreadTitleMapper;
 import com.lampirg.recommendator.anidb.titles.model.AnimeTitle;
 import com.lampirg.recommendator.anidb.titles.model.UserAnimeTitle;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -51,6 +52,7 @@ public class TestTitleMapper {
     private final Set<UserAnimeTitle> toExclude = Set.of(new UserAnimeTitle(titles.get(2), 5));
 
     @Test
+    @DisplayName("Test TitleMapper classes without anime titles to exclude")
     void notGivenToExclude() {
         Mockito.when(malCacher.getRecommendations(Mockito.any()))
                 .then(onMock -> reccommendations.get((AnimeTitle) onMock.getArgument(0)));
@@ -65,6 +67,7 @@ public class TestTitleMapper {
     }
 
     @Test
+    @DisplayName("Test TitleMapper classes with anime titles to exclude")
     void givenToExclude() {
         Mockito.when(malCacher.getRecommendations(Mockito.any()))
                 .then(onMock -> reccommendations.get((AnimeTitle) onMock.getArgument(0)));
@@ -79,6 +82,7 @@ public class TestTitleMapper {
     }
 
     @Test
+    @DisplayName("Test second call of getRecommendedAnimeMap method in TitleMapper classes")
     void whenSecondTime() {
         Mockito.when(malCacher.getRecommendations(Mockito.any()))
                 .then(onMock -> reccommendations.get((AnimeTitle) onMock.getArgument(0)));

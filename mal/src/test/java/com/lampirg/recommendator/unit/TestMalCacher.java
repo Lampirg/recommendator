@@ -2,11 +2,13 @@ package com.lampirg.recommendator.unit;
 
 import com.lampirg.recommendator.anidb.MalCacher;
 import com.lampirg.recommendator.anidb.MalQueryMaker;
-import com.lampirg.recommendator.anidb.json.*;
+import com.lampirg.recommendator.anidb.json.MainPicture;
+import com.lampirg.recommendator.anidb.json.MalNode;
+import com.lampirg.recommendator.anidb.json.Recommendation;
 import com.lampirg.recommendator.anidb.json.queries.GetAnimeDetail;
-import com.lampirg.recommendator.anidb.json.queries.GetUserListJsonResult;
 import com.lampirg.recommendator.anidb.titles.model.AnimeTitle;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -17,7 +19,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -47,6 +48,7 @@ public class TestMalCacher {
     );
 
     @Test
+    @DisplayName("Test MalCacher class")
     void testQuery() {
         Mockito.when(malQueryMaker.exchange(
                 "https://api.myanimelist.net/v2/anime/3?fields=recommendations",
