@@ -3,9 +3,10 @@
 ## Tech stack
 
 - Java 17
-- Spring Framework
+- Spring Framework (with MVC web framework)
 - Spring Boot
 - Spring Cloud
+- JUnit
 
 ## About
  
