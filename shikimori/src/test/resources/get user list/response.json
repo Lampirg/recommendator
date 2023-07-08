@@ -1,0 +1,100 @@
+[
+  {
+    "id": 108034500,
+    "score": 10,
+    "status": "completed",
+    "text": "",
+    "episodes": 26,
+    "chapters": 0,
+    "volumes": 0,
+    "text_html": "",
+    "rewatches": 0,
+    "created_at": "2021-09-09T14:57:44.960+03:00",
+    "updated_at": "2022-01-09T05:14:28.215+03:00",
+    "user": {
+      "id": 985999,
+      "nickname": "grizee",
+      "avatar": "https://desu.shikimori.one/system/users/x48/985999.png?1631188539",
+      "image": {
+        "x160": "https://desu.shikimori.one/system/users/x160/985999.png?1631188539",
+        "x148": "https://desu.shikimori.one/system/users/x148/985999.png?1631188539",
+        "x80": "https://desu.shikimori.one/system/users/x80/985999.png?1631188539",
+        "x64": "https://desu.shikimori.one/system/users/x64/985999.png?1631188539",
+        "x48": "https://desu.shikimori.one/system/users/x48/985999.png?1631188539",
+        "x32": "https://desu.shikimori.one/system/users/x32/985999.png?1631188539",
+        "x16": "https://desu.shikimori.one/system/users/x16/985999.png?1631188539"
+      },
+      "last_online_at": "2022-08-09T15:59:09.714+03:00",
+      "url": "https://shikimori.one/grizee"
+    },
+    "anime": {
+      "id": 1,
+      "name": "Cowboy Bebop",
+      "russian": "Ковбой Бибоп",
+      "image": {
+        "original": "/system/animes/original/1.jpg?1674378220",
+        "preview": "/system/animes/preview/1.jpg?1674378220",
+        "x96": "/system/animes/x96/1.jpg?1674378220",
+        "x48": "/system/animes/x48/1.jpg?1674378220"
+      },
+      "url": "/animes/1-cowboy-bebop",
+      "kind": "tv",
+      "score": "8.75",
+      "status": "released",
+      "episodes": 26,
+      "episodes_aired": 0,
+      "aired_on": "1998-04-03",
+      "released_on": "1999-04-24"
+    },
+    "manga": null
+  },
+  {
+    "id": 121254045,
+    "score": 10,
+    "status": "completed",
+    "text": null,
+    "episodes": 26,
+    "chapters": 0,
+    "volumes": 0,
+    "text_html": "",
+    "rewatches": 0,
+    "created_at": "2022-04-22T01:45:57.655+03:00",
+    "updated_at": "2022-04-22T01:45:59.801+03:00",
+    "user": {
+      "id": 985999,
+      "nickname": "grizee",
+      "avatar": "https://desu.shikimori.one/system/users/x48/985999.png?1631188539",
+      "image": {
+        "x160": "https://desu.shikimori.one/system/users/x160/985999.png?1631188539",
+        "x148": "https://desu.shikimori.one/system/users/x148/985999.png?1631188539",
+        "x80": "https://desu.shikimori.one/system/users/x80/985999.png?1631188539",
+        "x64": "https://desu.shikimori.one/system/users/x64/985999.png?1631188539",
+        "x48": "https://desu.shikimori.one/system/users/x48/985999.png?1631188539",
+        "x32": "https://desu.shikimori.one/system/users/x32/985999.png?1631188539",
+        "x16": "https://desu.shikimori.one/system/users/x16/985999.png?1631188539"
+      },
+      "last_online_at": "2022-08-09T15:59:09.714+03:00",
+      "url": "https://shikimori.one/grizee"
+    },
+    "anime": {
+      "id": 30,
+      "name": "Neon Genesis Evangelion",
+      "russian": "Евангелион нового поколения",
+      "image": {
+        "original": "/system/animes/original/30.jpg?1674378478",
+        "preview": "/system/animes/preview/30.jpg?1674378478",
+        "x96": "/system/animes/x96/30.jpg?1674378478",
+        "x48": "/system/animes/x48/30.jpg?1674378478"
+      },
+      "url": "/animes/30-neon-genesis-evangelion",
+      "kind": "tv",
+      "score": "8.35",
+      "status": "released",
+      "episodes": 26,
+      "episodes_aired": 0,
+      "aired_on": "1995-10-04",
+      "released_on": "1996-03-27"
+    },
+    "manga": null
+  }
+]
