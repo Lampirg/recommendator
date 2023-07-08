@@ -1,0 +1,43 @@
+{
+  "id": 6682,
+  "title": "11eyes",
+  "main_picture": {
+    "medium": "https:\/\/cdn.myanimelist.net\/images\/anime\/6\/73520.jpg",
+    "large": "https:\/\/cdn.myanimelist.net\/images\/anime\/6\/73520l.jpg"
+  },
+  "recommendations": [
+    {
+      "node": {
+        "id": 4975,
+        "title": "ChäoS;HEAd",
+        "main_picture": {
+          "medium": "https:\/\/cdn.myanimelist.net\/images\/anime\/13\/15443.jpg",
+          "large": "https:\/\/cdn.myanimelist.net\/images\/anime\/13\/15443l.jpg"
+        }
+      },
+      "num_recommendations": 7
+    },
+    {
+      "node": {
+        "id": 355,
+        "title": "Shakugan no Shana",
+        "main_picture": {
+          "medium": "https:\/\/cdn.myanimelist.net\/images\/anime\/8\/21197.jpg",
+          "large": "https:\/\/cdn.myanimelist.net\/images\/anime\/8\/21197l.jpg"
+        }
+      },
+      "num_recommendations": 6
+    },
+    {
+      "node": {
+        "id": 10620,
+        "title": "Mirai Nikki (TV)",
+        "main_picture": {
+          "medium": "https:\/\/cdn.myanimelist.net\/images\/anime\/13\/33465.jpg",
+          "large": "https:\/\/cdn.myanimelist.net\/images\/anime\/13\/33465l.jpg"
+        }
+      },
+      "num_recommendations": 5
+    }
+  ]
+}
