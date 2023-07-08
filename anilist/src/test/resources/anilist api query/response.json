@@ -1,0 +1,124 @@
+{
+  "data": {
+    "completed": {
+      "lists": [
+        {
+          "name": "Completed",
+          "status": "COMPLETED",
+          "entries": [
+            {
+              "score": 4,
+              "media": {
+                "id": 6682,
+                "title": {
+                  "romaji": "11eyes"
+                },
+                "coverImage": {
+                  "extraLarge": "https:\/\/s4.anilist.co\/file\/anilistcdn\/media\/anime\/cover\/large\/bx6682-ZptgLsCCNHjL.jpg",
+                  "large": "https:\/\/s4.anilist.co\/file\/anilistcdn\/media\/anime\/cover\/medium\/bx6682-ZptgLsCCNHjL.jpg",
+                  "medium": "https:\/\/s4.anilist.co\/file\/anilistcdn\/media\/anime\/cover\/small\/bx6682-ZptgLsCCNHjL.jpg"
+                },
+                "recommendations": {
+                  "nodes": [
+                    {
+                      "rating": 7,
+                      "mediaRecommendation": {
+                        "id": 10620,
+                        "title": {
+                          "romaji": "Mirai Nikki"
+                        },
+                        "coverImage": {
+                          "extraLarge": "https:\/\/s4.anilist.co\/file\/anilistcdn\/media\/anime\/cover\/large\/bx10620-OMnOMuZBgEKy.png",
+                          "large": "https:\/\/s4.anilist.co\/file\/anilistcdn\/media\/anime\/cover\/medium\/bx10620-OMnOMuZBgEKy.png",
+                          "medium": "https:\/\/s4.anilist.co\/file\/anilistcdn\/media\/anime\/cover\/small\/bx10620-OMnOMuZBgEKy.png"
+                        }
+                      }
+                    },
+                    {
+                      "rating": 4,
+                      "mediaRecommendation": {
+                        "id": 9331,
+                        "title": {
+                          "romaji": "Yumekui Merry"
+                        },
+                        "coverImage": {
+                          "extraLarge": "https:\/\/s4.anilist.co\/file\/anilistcdn\/media\/anime\/cover\/large\/bx9331-f2bAShenxOeX.jpg",
+                          "large": "https:\/\/s4.anilist.co\/file\/anilistcdn\/media\/anime\/cover\/medium\/bx9331-f2bAShenxOeX.jpg",
+                          "medium": "https:\/\/s4.anilist.co\/file\/anilistcdn\/media\/anime\/cover\/small\/bx9331-f2bAShenxOeX.jpg"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "other": {
+      "lists": [
+        {
+          "name": "Watching",
+          "status": "CURRENT",
+          "entries": [
+            {
+              "score": 0,
+              "media": {
+                "id": 1372,
+                "title": {
+                  "romaji": "Taiho Shichauzo (TV)"
+                },
+                "coverImage": {
+                  "extraLarge": "https:\/\/s4.anilist.co\/file\/anilistcdn\/media\/anime\/cover\/large\/bx1372-Q1B078xXbu2c.png",
+                  "large": "https:\/\/s4.anilist.co\/file\/anilistcdn\/media\/anime\/cover\/medium\/bx1372-Q1B078xXbu2c.png",
+                  "medium": "https:\/\/s4.anilist.co\/file\/anilistcdn\/media\/anime\/cover\/small\/bx1372-Q1B078xXbu2c.png"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Dropped",
+          "status": "DROPPED",
+          "entries": [
+            {
+              "score": 0,
+              "media": {
+                "id": 269,
+                "title": {
+                  "romaji": "BLEACH"
+                },
+                "coverImage": {
+                  "extraLarge": "https:\/\/s4.anilist.co\/file\/anilistcdn\/media\/anime\/cover\/large\/bx269-KxkqTIuQgJ6v.png",
+                  "large": "https:\/\/s4.anilist.co\/file\/anilistcdn\/media\/anime\/cover\/medium\/bx269-KxkqTIuQgJ6v.png",
+                  "medium": "https:\/\/s4.anilist.co\/file\/anilistcdn\/media\/anime\/cover\/small\/bx269-KxkqTIuQgJ6v.png"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Paused",
+          "status": "PAUSED",
+          "entries": [
+            {
+              "score": 0,
+              "media": {
+                "id": 100673,
+                "title": {
+                  "romaji": "Hisone to Maso-tan"
+                },
+                "coverImage": {
+                  "extraLarge": "https:\/\/s4.anilist.co\/file\/anilistcdn\/media\/anime\/cover\/large\/nx100673-AXPJdjIXRRED.jpg",
+                  "large": "https:\/\/s4.anilist.co\/file\/anilistcdn\/media\/anime\/cover\/medium\/nx100673-AXPJdjIXRRED.jpg",
+                  "medium": "https:\/\/s4.anilist.co\/file\/anilistcdn\/media\/anime\/cover\/small\/nx100673-AXPJdjIXRRED.jpg"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
