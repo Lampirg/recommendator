@@ -36,8 +36,8 @@ public class TestListExtractor {
     ShikimoriListExtractor shikimoriListExtractor;
 
     private final List<ShikiUserNode> completedJson = List.of(
-            new ShikiUserNode(10, "", new ShikiNode(1, "Hadaske", new Image("/notfound"))),
-            new ShikiUserNode(10, "", new ShikiNode(2, "Hadaske: Return to Omsk", new Image("/totally-notfound")))
+            new ShikiUserNode(10, new ShikiNode(1, "Hadaske", new Image("/notfound"))),
+            new ShikiUserNode(10, new ShikiNode(2, "Hadaske: Return to Omsk", new Image("/totally-notfound")))
     );
 
     private final List<ShikiUserNode> watchingJson = List.of();
@@ -45,8 +45,8 @@ public class TestListExtractor {
     private final List<ShikiUserNode> onHoldJson = List.of();
 
     private final List<ShikiUserNode> droppedJson = List.of(
-            new ShikiUserNode(10, "", new ShikiNode(3, "DeHadaske", new Image("/ccv"))),
-            new ShikiUserNode(10, "", new ShikiNode(4, "Hadaske - Kukic", new Image("/sss")))
+            new ShikiUserNode(10, new ShikiNode(3, "DeHadaske", new Image("/ccv"))),
+            new ShikiUserNode(10, new ShikiNode(4, "Hadaske - Kukic", new Image("/sss")))
     );
 
     @Test
