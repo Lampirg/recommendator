@@ -1,0 +1,40 @@
+[
+  {
+    "id": 205,
+    "name": "Samurai Champloo",
+    "russian": "Самурай Чамплу",
+    "image": {
+      "original": "/system/animes/original/205.jpg?1674332481",
+      "preview": "/system/animes/preview/205.jpg?1674332481",
+      "x96": "/system/animes/x96/205.jpg?1674332481",
+      "x48": "/system/animes/x48/205.jpg?1674332481"
+    },
+    "url": "/animes/205-samurai-champloo",
+    "kind": "tv",
+    "score": "8.51",
+    "status": "released",
+    "episodes": 26,
+    "episodes_aired": 0,
+    "aired_on": "2004-05-20",
+    "released_on": "2005-03-19"
+  },
+  {
+    "id": 6,
+    "name": "Trigun",
+    "russian": "Триган",
+    "image": {
+      "original": "/system/animes/original/6.jpg?1674560642",
+      "preview": "/system/animes/preview/6.jpg?1674560642",
+      "x96": "/system/animes/x96/6.jpg?1674560642",
+      "x48": "/system/animes/x48/6.jpg?1674560642"
+    },
+    "url": "/animes/6-trigun",
+    "kind": "tv",
+    "score": "8.22",
+    "status": "released",
+    "episodes": 26,
+    "episodes_aired": 0,
+    "aired_on": "1998-04-01",
+    "released_on": "1998-09-30"
+  }
+]

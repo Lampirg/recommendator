@@ -20,7 +20,7 @@ public class TestGetUserListJson {
     private JacksonTester<List<ShikiUserNode>> jacksonTester;
 
     @Test
-    @DisplayName("Test deserialization")
+    @DisplayName("Test that user list deserialized correctly")
     void testDeserialization() throws IOException {
         List<ShikiUserNode> expected = List.of(
                 new ShikiUserNode(10, new ShikiNode(
