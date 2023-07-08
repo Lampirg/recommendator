@@ -6,6 +6,7 @@ import com.lampirg.recommendator.anidb.json.Image;
 import com.lampirg.recommendator.anidb.json.ShikiNode;
 import com.lampirg.recommendator.anidb.titles.model.AnimeTitle;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -40,6 +41,7 @@ public class TestCacher {
     );
 
     @Test
+    @DisplayName("Test data extractor (ShikimoriCacher)")
     void testQuery() {
         Mockito.when(shikimoriQueryMaker.exchange(
                 "https://shikimori.one/api/animes/3/similar",

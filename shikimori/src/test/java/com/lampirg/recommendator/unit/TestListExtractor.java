@@ -9,6 +9,7 @@ import com.lampirg.recommendator.anidb.json.ShikiUserNode;
 import com.lampirg.recommendator.anidb.titles.model.AnimeTitle;
 import com.lampirg.recommendator.anidb.titles.model.UserAnimeTitle;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -50,7 +51,8 @@ public class TestListExtractor {
     );
 
     @Test
-    void testSingleThread() {
+    @DisplayName("Test List Extractor")
+    void testListExtractor() {
         when(queryMaker.exchange(Mockito.contains("completed"), Mockito.eq(HttpMethod.GET), Mockito.eq(new ParameterizedTypeReference<List<ShikiUserNode>>() {
         }))).thenReturn(ResponseEntity.of(Optional.of(completedJson)));
         when(queryMaker.exchange(Mockito.contains("dropped"), Mockito.eq(HttpMethod.GET), Mockito.eq(new ParameterizedTypeReference<List<ShikiUserNode>>() {
