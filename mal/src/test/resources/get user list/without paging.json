@@ -1,0 +1,39 @@
+{
+  "data": [
+    {
+      "node": {
+        "id": 53917,
+        "title": "1000-mankai Hug Nanda",
+        "main_picture": {
+          "medium": "https:\/\/cdn.myanimelist.net\/images\/anime\/1793\/131968.jpg",
+          "large": "https:\/\/cdn.myanimelist.net\/images\/anime\/1793\/131968l.jpg"
+        }
+      },
+      "list_status": {
+        "status": "completed",
+        "score": 0,
+        "num_episodes_watched": 1,
+        "is_rewatching": false,
+        "updated_at": "2023-01-03T10:30:07+00:00"
+      }
+    },
+    {
+      "node": {
+        "id": 6682,
+        "title": "11eyes",
+        "main_picture": {
+          "medium": "https:\/\/cdn.myanimelist.net\/images\/anime\/6\/73520.jpg",
+          "large": "https:\/\/cdn.myanimelist.net\/images\/anime\/6\/73520l.jpg"
+        }
+      },
+      "list_status": {
+        "status": "completed",
+        "score": 4,
+        "num_episodes_watched": 12,
+        "is_rewatching": false,
+        "updated_at": "2018-11-06T14:09:28+00:00"
+      }
+    }
+  ],
+  "paging": {}
+}

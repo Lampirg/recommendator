@@ -1,4 +1,4 @@
-package com.lampirg.recommendator;
+package com.lampirg.recommendator.unit;
 
 import com.lampirg.recommendator.anidb.MalQueryMaker;
 import com.lampirg.recommendator.anidb.general.listextractor.UserListExtractor;
@@ -12,6 +12,7 @@ import com.lampirg.recommendator.anidb.listextractor.SingleThreadUserListExtract
 import com.lampirg.recommendator.anidb.titles.model.AnimeTitle;
 import com.lampirg.recommendator.anidb.titles.model.UserAnimeTitle;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -72,11 +73,13 @@ public class TestListExtractor {
     );
 
     @Test
+    @DisplayName("Test SingleThreadUserListExtractor class")
     void testSingleThread() {
         testListExtractor(singleThreadUserListExtractor);
     }
 
     @Test
+    @DisplayName("Test ConcurrentUserListExtractor class")
     void testMultiThread() {
         testListExtractor(concurrentUserListExtractor);
     }

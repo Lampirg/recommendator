@@ -1,0 +1,36 @@
+{
+  "animeRecommendations": [
+    {
+      "title": {
+        "id": 2,
+        "name": "Hadaske: Return to Omsk",
+        "imageUrl": "/totally-notfound"
+      },
+      "numOfRecommendations": 7
+    },
+    {
+      "title": {
+        "id": 4,
+        "name": "Hadaske - Kukic",
+        "imageUrl": "/notfound"
+      },
+      "numOfRecommendations": 6
+    },
+    {
+      "title": {
+        "id": 1,
+        "name": "Hadaske",
+        "imageUrl": "/notfound"
+      },
+      "numOfRecommendations": 4
+    },
+    {
+      "title": {
+        "id": 3,
+        "name": "DeHadaske",
+        "imageUrl": "/no"
+      },
+      "numOfRecommendations": 1
+    }
+  ]
+}

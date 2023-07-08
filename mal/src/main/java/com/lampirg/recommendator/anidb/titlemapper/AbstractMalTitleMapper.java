@@ -11,15 +11,15 @@ import java.util.*;
 
 public abstract class AbstractMalTitleMapper extends IterativeTitleMapper implements TitleMapper {
 
-    private MalCacher repository;
+    private MalCacher dataExtractor;
 
     @Autowired
-    public void setRepository(MalCacher repository) {
-        this.repository = repository;
+    public void setDataExtractor(MalCacher dataExtractor) {
+        this.dataExtractor = dataExtractor;
     }
 
     protected final void findAndAddTitleRecommendations(UserAnimeTitle title) {
-        Set<AnimeTitle> recommendedTitles = repository.getRecommendations(title.animeTitle());
+        Set<AnimeTitle> recommendedTitles = dataExtractor.getRecommendations(title.animeTitle());
         for (AnimeTitle animeTitle : recommendedTitles) {
             if (getToExclude().contains(animeTitle))
                 continue;
