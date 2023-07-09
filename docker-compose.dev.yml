@@ -2,9 +2,9 @@ version: '2.1'
 services:
   discovery:
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
-      interval: 30s
-      timeout: 5s
+      test: [ "CMD", "wget", "--no-verbose", "http://localhost:8080/actuator/health" ]
+      interval: 10s
+      timeout: 20s
       retries: 5
     build: discovery
     environment:
@@ -13,14 +13,14 @@ services:
       - "8761:8080"
   recommendator:
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
-      interval: 30s
-      timeout: 5s
+      test: [ "CMD", "wget", "--no-verbose", "http://localhost:8080/actuator/health" ]
+      interval: 10s
+      timeout: 20s
       retries: 5
     build: recommendator
     environment:
       SERVER_PORT: 8080
-      DISCOVERY_URL: http://localhost:8080/eureka/
+      DISCOVERY_URL: http://discovery-service:8761/eureka/
     ports:
       - "8081:8080"
     depends_on:
@@ -28,14 +28,14 @@ services:
         condition: service_healthy
   mal:
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
-      interval: 30s
-      timeout: 5s
+      test: [ "CMD", "wget", "--no-verbose", "http://localhost:8080/actuator/health" ]
+      interval: 10s
+      timeout: 20s
       retries: 5
     build: mal
     environment:
       SERVER_PORT: 8080
-      DISCOVERY_URL: http://localhost:8080/eureka/
+      DISCOVERY_URL: http://discovery-service:8761/eureka/
     ports:
       - "8082:8080"
     depends_on:
