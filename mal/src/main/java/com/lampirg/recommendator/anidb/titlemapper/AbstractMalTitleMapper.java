@@ -8,15 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractMalTitleMapper extends IterativeTitleMapper implements TitleMapper {
 
-    private MalRecommendationsFinder dataExtractor;
+    private MalRecommendationsFinder recommendationsFinder;
 
     @Autowired
-    public void setDataExtractor(MalRecommendationsFinder dataExtractor) {
-        this.dataExtractor = dataExtractor;
+    public void setRecommendationsFinder(MalRecommendationsFinder recommendationsFinder) {
+        this.recommendationsFinder = recommendationsFinder;
     }
 
     protected final void findAndAddTitleRecommendations(UserAnimeTitle userAnimeTitle) {
-        dataExtractor.findRecommendations(userAnimeTitle.animeTitle()).stream()
+        recommendationsFinder.findRecommendations(userAnimeTitle.animeTitle()).stream()
                 .filter(animeTitle -> !getToExclude().contains(animeTitle))
                 .forEach(animeTitle -> recommendedAnime.merge(animeTitle, userAnimeTitle.score(), Integer::sum));
     }
