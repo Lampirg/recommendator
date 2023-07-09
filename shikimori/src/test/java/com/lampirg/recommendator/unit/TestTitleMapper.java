@@ -1,6 +1,6 @@
 package com.lampirg.recommendator.unit;
 
-import com.lampirg.recommendator.anidb.ShikimoriRecommendationsFinder;
+import com.lampirg.recommendator.anidb.query.ShikimoriRecommendationsFinder;
 import com.lampirg.recommendator.anidb.ShikimoriTitleMapper;
 import com.lampirg.recommendator.anidb.titles.model.AnimeTitle;
 import com.lampirg.recommendator.anidb.titles.model.UserAnimeTitle;

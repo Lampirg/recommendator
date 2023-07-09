@@ -1,5 +1,7 @@
-package com.lampirg.recommendator.anidb;
+package com.lampirg.recommendator.anidb.query;
 
+import com.lampirg.recommendator.anidb.ShikimoriQueryMaker;
+import com.lampirg.recommendator.anidb.Utils;
 import com.lampirg.recommendator.anidb.json.ShikiNode;
 import com.lampirg.recommendator.anidb.titles.model.AnimeTitle;
 import com.lampirg.recommendator.anidb.titles.repository.AnimeRecommendationsCacher;
