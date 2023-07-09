@@ -2,19 +2,16 @@ package com.lampirg.recommendator.anidb.titlemapper;
 
 import com.lampirg.recommendator.anidb.general.titlemapper.IterativeTitleMapper;
 import com.lampirg.recommendator.anidb.general.titlemapper.TitleMapper;
-import com.lampirg.recommendator.anidb.MalRecommendationsExtractor;
-import com.lampirg.recommendator.anidb.titles.model.AnimeTitle;
+import com.lampirg.recommendator.anidb.MalRecommendationsFinder;
 import com.lampirg.recommendator.anidb.titles.model.UserAnimeTitle;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.*;
-
 public abstract class AbstractMalTitleMapper extends IterativeTitleMapper implements TitleMapper {
 
-    private MalRecommendationsExtractor dataExtractor;
+    private MalRecommendationsFinder dataExtractor;
 
     @Autowired
-    public void setDataExtractor(MalRecommendationsExtractor dataExtractor) {
+    public void setDataExtractor(MalRecommendationsFinder dataExtractor) {
         this.dataExtractor = dataExtractor;
     }
 

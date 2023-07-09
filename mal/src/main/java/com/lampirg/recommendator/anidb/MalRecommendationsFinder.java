@@ -1,7 +1,6 @@
 package com.lampirg.recommendator.anidb;
 
 import com.lampirg.recommendator.anidb.json.queries.GetAnimeDetail;
-import com.lampirg.recommendator.anidb.json.Recommendation;
 import com.lampirg.recommendator.anidb.titles.model.AnimeTitle;
 import com.lampirg.recommendator.anidb.titles.repository.AnimeRecommendationsCacher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +9,12 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class MalRecommendationsExtractor implements AnimeRecommendationsCacher {
+public class MalRecommendationsFinder implements AnimeRecommendationsCacher {
 
     private MalQueryMaker queryMaker;
 

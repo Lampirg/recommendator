@@ -1,6 +1,6 @@
 package com.lampirg.recommendator.unit;
 
-import com.lampirg.recommendator.anidb.MalRecommendationsExtractor;
+import com.lampirg.recommendator.anidb.MalRecommendationsFinder;
 import com.lampirg.recommendator.anidb.titlemapper.ConcurrentTitleMapper;
 import com.lampirg.recommendator.anidb.titlemapper.SingleThreadTitleMapper;
 import com.lampirg.recommendator.anidb.titles.model.AnimeTitle;
@@ -23,7 +23,7 @@ import java.util.Set;
 public class TestTitleMapper {
 
     @Mock
-    MalRecommendationsExtractor malRecommendationsExtractor;
+    MalRecommendationsFinder malRecommendationsFinder;
     @InjectMocks
     SingleThreadTitleMapper singleThreadTitleMapper;
     @InjectMocks
@@ -54,7 +54,7 @@ public class TestTitleMapper {
     @Test
     @DisplayName("Test TitleMapper classes without anime titles to exclude")
     void notGivenToExclude() {
-        Mockito.when(malRecommendationsExtractor.findRecommendations(Mockito.any()))
+        Mockito.when(malRecommendationsFinder.findRecommendations(Mockito.any()))
                 .then(onMock -> reccommendations.get((AnimeTitle) onMock.getArgument(0)));
         singleThreadTitleMapper.fillToExclude(Set.of());
         var result = singleThreadTitleMapper.getRecommendedAnimeMap(userTitles);
@@ -69,7 +69,7 @@ public class TestTitleMapper {
     @Test
     @DisplayName("Test TitleMapper classes with anime titles to exclude")
     void givenToExclude() {
-        Mockito.when(malRecommendationsExtractor.findRecommendations(Mockito.any()))
+        Mockito.when(malRecommendationsFinder.findRecommendations(Mockito.any()))
                 .then(onMock -> reccommendations.get((AnimeTitle) onMock.getArgument(0)));
         singleThreadTitleMapper.fillToExclude(toExclude);
         var result = singleThreadTitleMapper.getRecommendedAnimeMap(userTitles);
@@ -84,7 +84,7 @@ public class TestTitleMapper {
     @Test
     @DisplayName("Test second call of getRecommendedAnimeMap method in TitleMapper classes")
     void whenSecondTime() {
-        Mockito.when(malRecommendationsExtractor.findRecommendations(Mockito.any()))
+        Mockito.when(malRecommendationsFinder.findRecommendations(Mockito.any()))
                 .then(onMock -> reccommendations.get((AnimeTitle) onMock.getArgument(0)));
         singleThreadTitleMapper.fillToExclude(Set.of());
         var result = singleThreadTitleMapper.getRecommendedAnimeMap(userTitles);
