@@ -1,10 +1,10 @@
 package com.lampirg.recommendator.unit;
 
 import com.lampirg.recommendator.anidb.ShikimoriListExtractor;
-import com.lampirg.recommendator.anidb.query.ShikimoriQueryMaker;
 import com.lampirg.recommendator.anidb.json.Image;
 import com.lampirg.recommendator.anidb.json.ShikiNode;
 import com.lampirg.recommendator.anidb.json.ShikiUserNode;
+import com.lampirg.recommendator.anidb.query.ShikimoriUserListFinder;
 import com.lampirg.recommendator.anidb.titles.model.AnimeTitle;
 import com.lampirg.recommendator.anidb.titles.model.UserAnimeTitle;
 import org.junit.jupiter.api.Assertions;
@@ -13,15 +13,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -31,20 +26,20 @@ import static org.mockito.Mockito.when;
 public class TestListExtractor {
 
     @Mock
-    ShikimoriQueryMaker queryMaker;
+    ShikimoriUserListFinder shikimoriUserListFinder;
     @InjectMocks
     ShikimoriListExtractor shikimoriListExtractor;
 
-    private final List<ShikiUserNode> completedJson = List.of(
+    private final List<ShikiUserNode> completed = List.of(
             new ShikiUserNode(10, new ShikiNode(1, "Hadaske", new Image("/notfound"))),
             new ShikiUserNode(10, new ShikiNode(2, "Hadaske: Return to Omsk", new Image("/totally-notfound")))
     );
 
-    private final List<ShikiUserNode> watchingJson = List.of();
+    private final List<ShikiUserNode> watching = List.of();
 
-    private final List<ShikiUserNode> onHoldJson = List.of();
+    private final List<ShikiUserNode> onHold = List.of();
 
-    private final List<ShikiUserNode> droppedJson = List.of(
+    private final List<ShikiUserNode> dropped = List.of(
             new ShikiUserNode(10, new ShikiNode(3, "DeHadaske", new Image("/ccv"))),
             new ShikiUserNode(10, new ShikiNode(4, "Hadaske - Kukic", new Image("/sss")))
     );
@@ -52,17 +47,13 @@ public class TestListExtractor {
     @Test
     @DisplayName("Test List Extractor")
     void testListExtractor() {
-        when(queryMaker.exchange(Mockito.contains("completed"), Mockito.eq(HttpMethod.GET), Mockito.eq(new ParameterizedTypeReference<List<ShikiUserNode>>() {
-        }))).thenReturn(ResponseEntity.of(Optional.of(completedJson)));
-        when(queryMaker.exchange(Mockito.contains("dropped"), Mockito.eq(HttpMethod.GET), Mockito.eq(new ParameterizedTypeReference<List<ShikiUserNode>>() {
-        }))).thenReturn(ResponseEntity.of(Optional.of(droppedJson)));
-        when(queryMaker.exchange(Mockito.contains("watching"), Mockito.eq(HttpMethod.GET), Mockito.eq(new ParameterizedTypeReference<List<ShikiUserNode>>() {
-        }))).thenReturn(ResponseEntity.of(Optional.of(watchingJson)));
-        when(queryMaker.exchange(Mockito.contains("on_hold"), Mockito.eq(HttpMethod.GET), Mockito.eq(new ParameterizedTypeReference<List<ShikiUserNode>>() {
-        }))).thenReturn(ResponseEntity.of(Optional.of(onHoldJson)));
+        when(shikimoriUserListFinder.findUserList("lampirg", "completed")).thenReturn(completed);
+        when(shikimoriUserListFinder.findUserList("lampirg", "dropped")).thenReturn(dropped);
+        when(shikimoriUserListFinder.findUserList("lampirg", "watching")).thenReturn(watching);
+        when(shikimoriUserListFinder.findUserList("lampirg", "on_hold")).thenReturn(onHold);
         shikimoriListExtractor.setUser("lampirg");
         Assertions.assertEquals(
-                completedJson
+                completed
                         .stream()
                         .map(
                                 data -> new UserAnimeTitle(new AnimeTitle(data.anime().id(), data.anime().name(), "https://shikimori.one" + data.anime().image().original()), data.score())
@@ -71,7 +62,7 @@ public class TestListExtractor {
                 shikimoriListExtractor.getToInclude()
         );
         Assertions.assertEquals(
-                Stream.of(droppedJson, completedJson, watchingJson, onHoldJson)
+                Stream.of(dropped, completed, watching, onHold)
                         .flatMap(Collection::stream)
                         .map(
                                 data -> new UserAnimeTitle(new AnimeTitle(data.anime().id(), data.anime().name(), "https://shikimori.one" + data.anime().image().original()), data.score())
