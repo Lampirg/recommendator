@@ -25,16 +25,22 @@ public class MalUserListFinder {
                 "https://api.myanimelist.net/v2/users/" + username + "/animelist?fields=list_status&status=" + listType + "&limit=1000"
         );
         List<Data> dataList = new ArrayList<>();
-        while (queryUrl.isPresent()) {
-            ResponseEntity<GetUserListJsonResult> response = this.queryMaker.exchange(
-                    queryUrl.get(),
-                    HttpMethod.GET,
-                    GetUserListJsonResult.class
-            );
-            dataList.addAll(Objects.requireNonNull(response.getBody()).data());
-            queryUrl = Optional.ofNullable(response.getBody().paging().get("next"));
+        Tuple tuple = new Tuple(queryUrl, dataList);
+        while (tuple.queryUrl.isPresent()) {
+            tuple = performQuery(tuple.queryUrl);
+            dataList.addAll(tuple.dataList);
         }
         return List.copyOf(dataList);
     }
 
+    private Tuple performQuery(Optional<String> queryUrl) {
+        ResponseEntity<GetUserListJsonResult> response = this.queryMaker.exchange(
+                queryUrl.get(),
+                HttpMethod.GET,
+                GetUserListJsonResult.class
+        );
+        queryUrl = Optional.ofNullable(response.getBody().paging().get("next"));
+        return new Tuple(queryUrl, response.getBody().data());
+    }
+    record Tuple(Optional<String> queryUrl, List<Data> dataList) {}
 }
