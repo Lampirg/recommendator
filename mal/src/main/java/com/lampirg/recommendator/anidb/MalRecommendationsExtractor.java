@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class MalRecommendationsExtractor implements AnimeRecommendationsCacher {
@@ -28,10 +29,8 @@ public class MalRecommendationsExtractor implements AnimeRecommendationsCacher {
     public Set<AnimeTitle> findRecommendations(AnimeTitle title) {
         String url = "https://api.myanimelist.net/v2/anime/"+title.id()+"?fields=recommendations";
         ResponseEntity<GetAnimeDetail> response = queryMaker.exchange(url, HttpMethod.GET, GetAnimeDetail.class);
-        Set<AnimeTitle> recommendedTitles = new HashSet<>();
-        for (Recommendation recommendation : Objects.requireNonNull(response.getBody()).recommendations()) {
-            recommendedTitles.add(Utils.retrieveFromMalNode(recommendation.node()));
-        }
-        return recommendedTitles;
+        return Objects.requireNonNull(response.getBody()).recommendations().stream()
+                .map(recommendation -> Utils.retrieveFromMalNode(recommendation.node()))
+                .collect(Collectors.toSet());
     }
 }
