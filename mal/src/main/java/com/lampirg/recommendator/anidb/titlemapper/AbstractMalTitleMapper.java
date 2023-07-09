@@ -19,7 +19,7 @@ public abstract class AbstractMalTitleMapper extends IterativeTitleMapper implem
     }
 
     protected final void findAndAddTitleRecommendations(UserAnimeTitle title) {
-        Set<AnimeTitle> recommendedTitles = dataExtractor.getRecommendations(title.animeTitle());
+        Set<AnimeTitle> recommendedTitles = dataExtractor.findRecommendations(title.animeTitle());
         for (AnimeTitle animeTitle : recommendedTitles) {
             if (getToExclude().contains(animeTitle))
                 continue;

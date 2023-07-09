@@ -25,7 +25,7 @@ public class MalCacher implements AnimeRecommendationsCacher {
     }
 
     @Cacheable("mal-recommendations")
-    public Set<AnimeTitle> getRecommendations(AnimeTitle title) {
+    public Set<AnimeTitle> findRecommendations(AnimeTitle title) {
         String url = "https://api.myanimelist.net/v2/anime/"+title.id()+"?fields=recommendations";
         ResponseEntity<GetAnimeDetail> response = queryMaker.exchange(url, HttpMethod.GET, GetAnimeDetail.class);
         Set<AnimeTitle> recommendedTitles = new HashSet<>();

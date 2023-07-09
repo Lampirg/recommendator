@@ -66,7 +66,7 @@ public class TestMalCacher {
                                 json.recommendations().get(1).node().id(),
                                 json.recommendations().get(1).node().title(),
                                 json.recommendations().get(1).node().mainPicture().getLargeIfPresent())),
-                malCacher.getRecommendations(titles.get(2))
+                malCacher.findRecommendations(titles.get(2))
         );
     }
 }

@@ -54,7 +54,7 @@ public class TestTitleMapper {
     @Test
     @DisplayName("Test TitleMapper classes without anime titles to exclude")
     void notGivenToExclude() {
-        Mockito.when(malCacher.getRecommendations(Mockito.any()))
+        Mockito.when(malCacher.findRecommendations(Mockito.any()))
                 .then(onMock -> reccommendations.get((AnimeTitle) onMock.getArgument(0)));
         singleThreadTitleMapper.fillToExclude(Set.of());
         var result = singleThreadTitleMapper.getRecommendedAnimeMap(userTitles);
@@ -69,7 +69,7 @@ public class TestTitleMapper {
     @Test
     @DisplayName("Test TitleMapper classes with anime titles to exclude")
     void givenToExclude() {
-        Mockito.when(malCacher.getRecommendations(Mockito.any()))
+        Mockito.when(malCacher.findRecommendations(Mockito.any()))
                 .then(onMock -> reccommendations.get((AnimeTitle) onMock.getArgument(0)));
         singleThreadTitleMapper.fillToExclude(toExclude);
         var result = singleThreadTitleMapper.getRecommendedAnimeMap(userTitles);
@@ -84,7 +84,7 @@ public class TestTitleMapper {
     @Test
     @DisplayName("Test second call of getRecommendedAnimeMap method in TitleMapper classes")
     void whenSecondTime() {
-        Mockito.when(malCacher.getRecommendations(Mockito.any()))
+        Mockito.when(malCacher.findRecommendations(Mockito.any()))
                 .then(onMock -> reccommendations.get((AnimeTitle) onMock.getArgument(0)));
         singleThreadTitleMapper.fillToExclude(Set.of());
         var result = singleThreadTitleMapper.getRecommendedAnimeMap(userTitles);
