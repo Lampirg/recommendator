@@ -18,12 +18,9 @@ public abstract class AbstractMalTitleMapper extends IterativeTitleMapper implem
         this.dataExtractor = dataExtractor;
     }
 
-    protected final void findAndAddTitleRecommendations(UserAnimeTitle title) {
-        Set<AnimeTitle> recommendedTitles = dataExtractor.findRecommendations(title.animeTitle());
-        for (AnimeTitle animeTitle : recommendedTitles) {
-            if (getToExclude().contains(animeTitle))
-                continue;
-            recommendedAnime.merge(animeTitle, title.score(), Integer::sum);
-        }
+    protected final void findAndAddTitleRecommendations(UserAnimeTitle userAnimeTitle) {
+        dataExtractor.findRecommendations(userAnimeTitle.animeTitle()).stream()
+                .filter(animeTitle -> !getToExclude().contains(animeTitle))
+                .forEach(animeTitle -> recommendedAnime.merge(animeTitle, userAnimeTitle.score(), Integer::sum));
     }
 }
