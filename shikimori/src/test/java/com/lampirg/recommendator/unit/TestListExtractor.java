@@ -1,8 +1,7 @@
 package com.lampirg.recommendator.unit;
 
 import com.lampirg.recommendator.anidb.ShikimoriListExtractor;
-import com.lampirg.recommendator.anidb.ShikimoriQueryMaker;
-import com.lampirg.recommendator.anidb.general.listextractor.UserListExtractor;
+import com.lampirg.recommendator.anidb.query.ShikimoriQueryMaker;
 import com.lampirg.recommendator.anidb.json.Image;
 import com.lampirg.recommendator.anidb.json.ShikiNode;
 import com.lampirg.recommendator.anidb.json.ShikiUserNode;
