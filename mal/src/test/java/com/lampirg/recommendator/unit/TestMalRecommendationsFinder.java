@@ -1,7 +1,7 @@
 package com.lampirg.recommendator.unit;
 
-import com.lampirg.recommendator.anidb.MalRecommendationsFinder;
-import com.lampirg.recommendator.anidb.MalQueryMaker;
+import com.lampirg.recommendator.anidb.query.MalRecommendationsFinder;
+import com.lampirg.recommendator.anidb.query.MalQueryMaker;
 import com.lampirg.recommendator.anidb.json.MainPicture;
 import com.lampirg.recommendator.anidb.json.MalNode;
 import com.lampirg.recommendator.anidb.json.Recommendation;

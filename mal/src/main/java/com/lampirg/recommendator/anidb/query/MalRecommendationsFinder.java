@@ -1,5 +1,6 @@
-package com.lampirg.recommendator.anidb;
+package com.lampirg.recommendator.anidb.query;
 
+import com.lampirg.recommendator.anidb.Utils;
 import com.lampirg.recommendator.anidb.json.queries.GetAnimeDetail;
 import com.lampirg.recommendator.anidb.titles.model.AnimeTitle;
 import com.lampirg.recommendator.anidb.titles.repository.AnimeRecommendationsCacher;

@@ -1,6 +1,6 @@
 package com.lampirg.recommendator.unit;
 
-import com.lampirg.recommendator.anidb.MalRecommendationsFinder;
+import com.lampirg.recommendator.anidb.query.MalRecommendationsFinder;
 import com.lampirg.recommendator.anidb.titlemapper.ConcurrentTitleMapper;
 import com.lampirg.recommendator.anidb.titlemapper.SingleThreadTitleMapper;
 import com.lampirg.recommendator.anidb.titles.model.AnimeTitle;

@@ -1,6 +1,6 @@
 package com.lampirg.recommendator.unit;
 
-import com.lampirg.recommendator.anidb.MalQueryMaker;
+import com.lampirg.recommendator.anidb.query.MalQueryMaker;
 import com.lampirg.recommendator.anidb.general.listextractor.UserListExtractor;
 import com.lampirg.recommendator.anidb.json.Data;
 import com.lampirg.recommendator.anidb.json.ListStatus;

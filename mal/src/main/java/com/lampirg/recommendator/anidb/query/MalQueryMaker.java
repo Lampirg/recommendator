@@ -1,4 +1,4 @@
-package com.lampirg.recommendator.anidb;
+package com.lampirg.recommendator.anidb.query;
 
 import com.lampirg.recommendator.anidb.general.QueryMaker;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;

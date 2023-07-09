@@ -2,7 +2,7 @@ package com.lampirg.recommendator.anidb.titlemapper;
 
 import com.lampirg.recommendator.anidb.general.titlemapper.IterativeTitleMapper;
 import com.lampirg.recommendator.anidb.general.titlemapper.TitleMapper;
-import com.lampirg.recommendator.anidb.MalRecommendationsFinder;
+import com.lampirg.recommendator.anidb.query.MalRecommendationsFinder;
 import com.lampirg.recommendator.anidb.titles.model.UserAnimeTitle;
 import org.springframework.beans.factory.annotation.Autowired;
 
