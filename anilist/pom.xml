@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.lampirg</groupId>
-	<artifactId>recommendator</artifactId>
+	<artifactId>anilist</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>recommendator</name>
-	<description>Spring recommendator</description>
+	<name>anilist</name>
+	<description>Anilist recommendator</description>
 	<properties>
 		<java.version>17</java.version>
 		<spring-cloud.version>2021.0.7</spring-cloud.version>
