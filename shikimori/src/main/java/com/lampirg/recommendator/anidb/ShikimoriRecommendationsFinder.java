@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Service
-public class ShikimoriCacher implements AnimeRecommendationsCacher {
+public class ShikimoriRecommendationsFinder implements AnimeRecommendationsCacher {
 
     private ShikimoriQueryMaker queryMaker;
 

@@ -1,6 +1,6 @@
 package com.lampirg.recommendator.unit;
 
-import com.lampirg.recommendator.anidb.ShikimoriCacher;
+import com.lampirg.recommendator.anidb.ShikimoriRecommendationsFinder;
 import com.lampirg.recommendator.anidb.ShikimoriQueryMaker;
 import com.lampirg.recommendator.anidb.json.Image;
 import com.lampirg.recommendator.anidb.json.ShikiNode;
@@ -22,11 +22,11 @@ import java.util.Optional;
 import java.util.Set;
 
 @ExtendWith(MockitoExtension.class)
-public class TestCacher {
+public class TestRecommendationsFinder {
     @Mock
     private ShikimoriQueryMaker shikimoriQueryMaker;
     @InjectMocks
-    private ShikimoriCacher shikimoriCacher;
+    private ShikimoriRecommendationsFinder shikimoriRecommendationsFinder;
 
     private final List<ShikiNode> json = List.of(
             new ShikiNode(1, "Hadaske", new Image("/notfound")),
@@ -62,7 +62,7 @@ public class TestCacher {
                                 "https://shikimori.one" + json.get(1).image().original()
                         )
                 ),
-                shikimoriCacher.getRecommendations(titles.get(2))
+                shikimoriRecommendationsFinder.getRecommendations(titles.get(2))
         );
     }
 }
