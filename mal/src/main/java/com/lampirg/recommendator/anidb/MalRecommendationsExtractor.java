@@ -15,7 +15,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Service
-public class MalCacher implements AnimeRecommendationsCacher {
+public class MalRecommendationsExtractor implements AnimeRecommendationsCacher {
 
     private MalQueryMaker queryMaker;
 
