@@ -21,7 +21,9 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 public class AnilistCommunicator implements AnimeSiteCommunicator {
@@ -38,11 +40,11 @@ public class AnilistCommunicator implements AnimeSiteCommunicator {
     @Override
     public Set<AnimeRecommendation> getSimilarAnimeTitles(String username) {
         ResponseEntity<GetUserListAndRecommendations> response = makeAnilistQuery(username);
-        Set<AnimeTitle> toExclude = getToExclude(response);
-        Map<AnimeTitle, Integer> recommendationMap = getRecommendationMap(response, toExclude);
-        Set<AnimeRecommendation> animeRecommendationSet = new HashSet<>();
-        recommendationMap.forEach((key, value) -> animeRecommendationSet.add(new AnimeRecommendation(key, value)));
-        return Set.copyOf(animeRecommendationSet);
+        return getRecommendationMap(response, getToExclude(response))
+                .entrySet()
+                .stream()
+                .map(entry -> new AnimeRecommendation(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     private ResponseEntity<GetUserListAndRecommendations> makeAnilistQuery(String username) {
@@ -64,39 +66,33 @@ public class AnilistCommunicator implements AnimeSiteCommunicator {
     }
 
     private Set<AnimeTitle> getToExclude(ResponseEntity<GetUserListAndRecommendations> response) {
-        Map<String, Set<UserAnimeTitle>> statusMap = new HashMap<>();
-        for (Other.Lists lists : Objects.requireNonNull(response.getBody()).data().other().lists()) {
-            statusMap.put(lists.status(), new HashSet<>());
-            Set<UserAnimeTitle> set = statusMap.get(lists.status());
-            for (Other.Lists.Entries entries : lists.entries()) {
-                set.add(new UserAnimeTitle(Utils.retrieveFromAnilistMedia(entries.media()), entries.score()));
-            }
-        }
-
-        Set<AnimeTitle> toExclude = new HashSet<>();
-        for (Set<UserAnimeTitle> set : statusMap.values()) {
-            for (UserAnimeTitle title: set) {
-                toExclude.add(title.animeTitle());
-            }
-        }
-        return toExclude;
+        Stream<AnimeTitle> completed = response.getBody().data().completed().lists().get(0).entries().stream()
+                .map(entries -> Utils.retrieveFromAnilistMedia(entries.media()));
+        Stream<AnimeTitle> other = response.getBody().data().other().lists().stream()
+                .map(Other.Lists::entries)
+                .flatMap(Collection::stream)
+                .map(entries -> Utils.retrieveFromAnilistMedia(entries.media()));
+        return Stream.concat(completed, other).collect(Collectors.toUnmodifiableSet());
     }
 
     private Map<AnimeTitle, Integer> getRecommendationMap(ResponseEntity<GetUserListAndRecommendations> response, Set<AnimeTitle> toExclude) {
         Map<AnimeTitle, Integer> recommendationMap = new HashMap<>();
-        for (Completed.CompletedList.Entries entries : Objects.requireNonNull(response.getBody()).data().completed().lists().get(0).entries()) {
-            int score = entries.score() != 0 ? entries.score() : 1;
-            UserAnimeTitle completedTitle = new UserAnimeTitle(Utils.retrieveFromAnilistMedia(entries.media()), score);
-            toExclude.add(completedTitle.animeTitle());
-            for (Completed.CompletedList.Entries.Media.Recommendations.Nodes nodes :
-                    entries.media().recommendations().nodes()) {
-                if (nodes.mediaRecommendation() == null || nodes.rating() <= 0)
-                    continue;
-                AnimeTitle recommendedTitle = Utils.retrieveFromAnilistMedia(nodes.mediaRecommendation());
-                recommendationMap.merge(recommendedTitle, completedTitle.score(), Integer::sum);
-            }
-        }
-        recommendationMap.keySet().removeAll(toExclude);
+        response.getBody().data().completed().lists().get(0).entries().stream()
+                .map(mapUserTitleToRecommendations(toExclude))
+                .forEach(entry -> entry.getValue().forEach(
+                        recommendation -> recommendationMap.merge(recommendation, entry.getKey().score(), Integer::sum)
+                ));
         return recommendationMap;
+    }
+
+    private Function<Completed.CompletedList.Entries, Map.Entry<UserAnimeTitle, Set<AnimeTitle>>> mapUserTitleToRecommendations(Set<AnimeTitle> toExclude) {
+        return entries -> Map.entry(
+                new UserAnimeTitle(Utils.retrieveFromAnilistMedia(entries.media()), entries.score()),
+                entries.media().recommendations().nodes().stream()
+                        .filter(nodes -> nodes.mediaRecommendation() != null && nodes.rating() > 0)
+                        .map(nodes -> Utils.retrieveFromAnilistMedia(nodes.mediaRecommendation()))
+                        .filter(title -> !toExclude.contains(title))
+                        .collect(Collectors.toUnmodifiableSet())
+        );
     }
 }
