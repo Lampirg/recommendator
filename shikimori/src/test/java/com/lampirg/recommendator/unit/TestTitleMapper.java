@@ -1,6 +1,6 @@
 package com.lampirg.recommendator.unit;
 
-import com.lampirg.recommendator.anidb.ShikimoriCacher;
+import com.lampirg.recommendator.anidb.query.ShikimoriRecommendationsFinder;
 import com.lampirg.recommendator.anidb.ShikimoriTitleMapper;
 import com.lampirg.recommendator.anidb.titles.model.AnimeTitle;
 import com.lampirg.recommendator.anidb.titles.model.UserAnimeTitle;
@@ -22,7 +22,7 @@ import java.util.Set;
 public class TestTitleMapper {
 
     @Mock
-    ShikimoriCacher malCacher;
+    ShikimoriRecommendationsFinder shikimoriRecommendationsFinder;
     @InjectMocks
     ShikimoriTitleMapper shikimoriTitleMapper;
 
@@ -51,7 +51,7 @@ public class TestTitleMapper {
     @Test
     @DisplayName("Test when exclude list is empty")
     void notGivenToExclude() {
-        Mockito.when(malCacher.getRecommendations(Mockito.any()))
+        Mockito.when(shikimoriRecommendationsFinder.getRecommendations(Mockito.any()))
                 .then(onMock -> recommendations.get((AnimeTitle) onMock.getArgument(0)));
         shikimoriTitleMapper.fillToExclude(Set.of());
         var result = shikimoriTitleMapper.getRecommendedAnimeMap(userTitles);
@@ -62,7 +62,7 @@ public class TestTitleMapper {
     @Test
     @DisplayName("Test when given not empty exclude list")
     void givenToExclude() {
-        Mockito.when(malCacher.getRecommendations(Mockito.any()))
+        Mockito.when(shikimoriRecommendationsFinder.getRecommendations(Mockito.any()))
                 .then(onMock -> recommendations.get((AnimeTitle) onMock.getArgument(0)));
         shikimoriTitleMapper.fillToExclude(toExclude);
         var result = shikimoriTitleMapper.getRecommendedAnimeMap(userTitles);
@@ -73,7 +73,7 @@ public class TestTitleMapper {
     @Test
     @DisplayName("Test caching")
     void whenSecondTime() {
-        Mockito.when(malCacher.getRecommendations(Mockito.any()))
+        Mockito.when(shikimoriRecommendationsFinder.getRecommendations(Mockito.any()))
                 .then(onMock -> recommendations.get((AnimeTitle) onMock.getArgument(0)));
         shikimoriTitleMapper.fillToExclude(Set.of());
         var result = shikimoriTitleMapper.getRecommendedAnimeMap(userTitles);

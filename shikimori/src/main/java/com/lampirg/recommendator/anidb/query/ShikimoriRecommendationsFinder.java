@@ -1,5 +1,6 @@
-package com.lampirg.recommendator.anidb;
+package com.lampirg.recommendator.anidb.query;
 
+import com.lampirg.recommendator.anidb.Utils;
 import com.lampirg.recommendator.anidb.json.ShikiNode;
 import com.lampirg.recommendator.anidb.titles.model.AnimeTitle;
 import com.lampirg.recommendator.anidb.titles.repository.AnimeRecommendationsCacher;
@@ -16,7 +17,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Service
-public class ShikimoriCacher implements AnimeRecommendationsCacher {
+public class ShikimoriRecommendationsFinder implements AnimeRecommendationsCacher {
 
     private ShikimoriQueryMaker queryMaker;
 

@@ -1,7 +1,7 @@
 package com.lampirg.recommendator.unit;
 
-import com.lampirg.recommendator.anidb.MalCacher;
-import com.lampirg.recommendator.anidb.MalQueryMaker;
+import com.lampirg.recommendator.anidb.query.MalRecommendationsFinder;
+import com.lampirg.recommendator.anidb.query.MalQueryMaker;
 import com.lampirg.recommendator.anidb.json.MainPicture;
 import com.lampirg.recommendator.anidb.json.MalNode;
 import com.lampirg.recommendator.anidb.json.Recommendation;
@@ -23,11 +23,11 @@ import java.util.Optional;
 import java.util.Set;
 
 @ExtendWith(MockitoExtension.class)
-public class TestMalCacher {
+public class TestMalRecommendationsFinder {
     @Mock
     private MalQueryMaker malQueryMaker;
     @InjectMocks
-    private MalCacher malCacher;
+    private MalRecommendationsFinder malRecommendationsFinder;
 
     private final GetAnimeDetail json = new GetAnimeDetail(
             List.of(
@@ -66,7 +66,7 @@ public class TestMalCacher {
                                 json.recommendations().get(1).node().id(),
                                 json.recommendations().get(1).node().title(),
                                 json.recommendations().get(1).node().mainPicture().getLargeIfPresent())),
-                malCacher.getRecommendations(titles.get(2))
+                malRecommendationsFinder.findRecommendations(titles.get(2))
         );
     }
 }

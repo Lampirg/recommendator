@@ -1,7 +1,7 @@
-package com.lampirg.recommendator.anidb;
+package com.lampirg.recommendator.anidb.query;
 
+import com.lampirg.recommendator.anidb.Utils;
 import com.lampirg.recommendator.anidb.json.queries.GetAnimeDetail;
-import com.lampirg.recommendator.anidb.json.Recommendation;
 import com.lampirg.recommendator.anidb.titles.model.AnimeTitle;
 import com.lampirg.recommendator.anidb.titles.repository.AnimeRecommendationsCacher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +10,12 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
-public class MalCacher implements AnimeRecommendationsCacher {
+public class MalRecommendationsFinder implements AnimeRecommendationsCacher {
 
     private MalQueryMaker queryMaker;
 
@@ -25,13 +25,11 @@ public class MalCacher implements AnimeRecommendationsCacher {
     }
 
     @Cacheable("mal-recommendations")
-    public Set<AnimeTitle> getRecommendations(AnimeTitle title) {
+    public Set<AnimeTitle> findRecommendations(AnimeTitle title) {
         String url = "https://api.myanimelist.net/v2/anime/"+title.id()+"?fields=recommendations";
         ResponseEntity<GetAnimeDetail> response = queryMaker.exchange(url, HttpMethod.GET, GetAnimeDetail.class);
-        Set<AnimeTitle> recommendedTitles = new HashSet<>();
-        for (Recommendation recommendation : Objects.requireNonNull(response.getBody()).recommendations()) {
-            recommendedTitles.add(Utils.retrieveFromMalNode(recommendation.node()));
-        }
-        return recommendedTitles;
+        return Objects.requireNonNull(response.getBody()).recommendations().stream()
+                .map(recommendation -> Utils.retrieveFromMalNode(recommendation.node()))
+                .collect(Collectors.toSet());
     }
 }

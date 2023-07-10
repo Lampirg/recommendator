@@ -2,6 +2,7 @@ package com.lampirg.recommendator.anidb;
 
 import com.lampirg.recommendator.anidb.general.titlemapper.IterativeTitleMapper;
 import com.lampirg.recommendator.anidb.general.titlemapper.TitleMapper;
+import com.lampirg.recommendator.anidb.query.ShikimoriRecommendationsFinder;
 import com.lampirg.recommendator.anidb.titles.model.AnimeTitle;
 import com.lampirg.recommendator.anidb.titles.model.UserAnimeTitle;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +13,12 @@ import java.util.Set;
 
 public class ShikimoriTitleMapper extends IterativeTitleMapper implements TitleMapper {
 
-    private ShikimoriCacher repository;
+    private ShikimoriRecommendationsFinder recommendationsFinder;
 
 
     @Autowired
-    public void setRepository(ShikimoriCacher repository) {
-        this.repository = repository;
+    public void setRecommendationsFinder(ShikimoriRecommendationsFinder recommendationsFinder) {
+        this.recommendationsFinder = recommendationsFinder;
     }
 
     @Override
@@ -34,7 +35,7 @@ public class ShikimoriTitleMapper extends IterativeTitleMapper implements TitleM
 
     @Override
     protected void findAndAddTitleRecommendations(UserAnimeTitle title) {
-        Set<AnimeTitle> recommendedTitles = repository.getRecommendations(title.animeTitle());
+        Set<AnimeTitle> recommendedTitles = recommendationsFinder.getRecommendations(title.animeTitle());
         for (AnimeTitle animeTitle : recommendedTitles) {
             if (getToExclude().contains(animeTitle))
                 continue;

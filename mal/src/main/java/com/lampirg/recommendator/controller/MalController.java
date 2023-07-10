@@ -5,7 +5,6 @@ import com.lampirg.recommendator.anidb.general.SimilarAnimeCommunicator;
 import com.lampirg.recommendator.anidb.titles.model.AnimeRecommendation;
 import com.lampirg.recommendator.anidb.titles.model.AnimeRecommendationList;
 import com.lampirg.recommendator.config.qualifiers.Mal;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

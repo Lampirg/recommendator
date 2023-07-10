@@ -2,28 +2,22 @@ package com.lampirg.recommendator.anidb.titlemapper;
 
 import com.lampirg.recommendator.anidb.general.titlemapper.IterativeTitleMapper;
 import com.lampirg.recommendator.anidb.general.titlemapper.TitleMapper;
-import com.lampirg.recommendator.anidb.MalCacher;
-import com.lampirg.recommendator.anidb.titles.model.AnimeTitle;
+import com.lampirg.recommendator.anidb.query.MalRecommendationsFinder;
 import com.lampirg.recommendator.anidb.titles.model.UserAnimeTitle;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.*;
-
 public abstract class AbstractMalTitleMapper extends IterativeTitleMapper implements TitleMapper {
 
-    private MalCacher dataExtractor;
+    private MalRecommendationsFinder recommendationsFinder;
 
     @Autowired
-    public void setDataExtractor(MalCacher dataExtractor) {
-        this.dataExtractor = dataExtractor;
+    public void setRecommendationsFinder(MalRecommendationsFinder recommendationsFinder) {
+        this.recommendationsFinder = recommendationsFinder;
     }
 
-    protected final void findAndAddTitleRecommendations(UserAnimeTitle title) {
-        Set<AnimeTitle> recommendedTitles = dataExtractor.getRecommendations(title.animeTitle());
-        for (AnimeTitle animeTitle : recommendedTitles) {
-            if (getToExclude().contains(animeTitle))
-                continue;
-            recommendedAnime.merge(animeTitle, title.score(), Integer::sum);
-        }
+    protected final void findAndAddTitleRecommendations(UserAnimeTitle userAnimeTitle) {
+        recommendationsFinder.findRecommendations(userAnimeTitle.animeTitle()).stream()
+                .filter(animeTitle -> !getToExclude().contains(animeTitle))
+                .forEach(animeTitle -> recommendedAnime.merge(animeTitle, userAnimeTitle.score(), Integer::sum));
     }
 }
