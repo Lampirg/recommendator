@@ -29,7 +29,7 @@ import java.util.stream.Stream;
 public class AnilistCommunicator implements AnimeSiteCommunicator {
 
     private AnilistQueryMaker queryMaker;
-
+    // TODO: remove instantiating according to DI paradigm (and mock it in unit test)
     private final Resource resource = new ClassPathResource("query.graphql");
 
     @Autowired
@@ -48,15 +48,10 @@ public class AnilistCommunicator implements AnimeSiteCommunicator {
     }
 
     private ResponseEntity<GetUserListAndRecommendations> makeAnilistQuery(String username) {
-        String query;
-        try (BufferedReader stream = new BufferedReader(
-                new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8)
-        )) {
-            query = stream.lines().collect(Collectors.joining("\n"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        HttpEntity<GraphQlRequest> request = new HttpEntity<>(new GraphQlRequest(query, String.format(GetUserListAndRecommendations.variables, username)));
+        HttpEntity<GraphQlRequest> request = new HttpEntity<>(new GraphQlRequest(
+                Utils.resourceToString(resource),
+                String.format(GetUserListAndRecommendations.variables, username)
+        ));
         return queryMaker.exchange(
                 URI.create("https://graphql.anilist.co"),
                 HttpMethod.POST,

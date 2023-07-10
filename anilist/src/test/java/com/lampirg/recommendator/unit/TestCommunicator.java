@@ -21,7 +21,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-// TODO: mock "query.graphql" file and remove its from AnilistCommunicator class according to DI paradigm
+
 @ExtendWith(MockitoExtension.class)
 public class TestCommunicator {
     @Mock
