@@ -40,7 +40,7 @@ public class AnilistCommunicator implements AnimeSiteCommunicator {
     @Override
     public Set<AnimeRecommendation> getSimilarAnimeTitles(String username) {
         ResponseEntity<GetUserListAndRecommendations> response = makeAnilistQuery(username);
-        return getRecommendationMap(response, getToExclude(response))
+        return getRecommendationMap(response)
                 .entrySet()
                 .stream()
                 .map(entry -> new AnimeRecommendation(entry.getKey(), entry.getValue()))
@@ -70,7 +70,8 @@ public class AnilistCommunicator implements AnimeSiteCommunicator {
         return Stream.concat(completed, other).collect(Collectors.toUnmodifiableSet());
     }
 
-    private Map<AnimeTitle, Integer> getRecommendationMap(ResponseEntity<GetUserListAndRecommendations> response, Set<AnimeTitle> toExclude) {
+    private Map<AnimeTitle, Integer> getRecommendationMap(ResponseEntity<GetUserListAndRecommendations> response) {
+        Set<AnimeTitle> toExclude = getToExclude(response);
         Map<AnimeTitle, Integer> recommendationMap = new HashMap<>();
         response.getBody().data().completed().lists().get(0).entries().stream()
                 .map(mapUserTitleToRecommendations(toExclude))
