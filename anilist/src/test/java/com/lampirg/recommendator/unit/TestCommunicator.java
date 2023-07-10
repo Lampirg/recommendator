@@ -72,7 +72,7 @@ public class TestCommunicator {
                                     )
                             ))
                     ),
-                    1
+                    0
             )
     );
 

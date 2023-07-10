@@ -83,12 +83,16 @@ public class AnilistCommunicator implements AnimeSiteCommunicator {
 
     private Function<Completed.CompletedList.Entries, Map.Entry<UserAnimeTitle, Set<AnimeTitle>>> mapUserTitleToRecommendations(Set<AnimeTitle> toExclude) {
         return entries -> Map.entry(
-                new UserAnimeTitle(Utils.retrieveFromAnilistMedia(entries.media()), entries.score()),
+                new UserAnimeTitle(Utils.retrieveFromAnilistMedia(entries.media()), adjustScoreEqualToZero(entries.score())),
                 entries.media().recommendations().nodes().stream()
                         .filter(nodes -> nodes.mediaRecommendation() != null && nodes.rating() > 0)
                         .map(nodes -> Utils.retrieveFromAnilistMedia(nodes.mediaRecommendation()))
                         .filter(title -> !toExclude.contains(title))
                         .collect(Collectors.toUnmodifiableSet())
         );
+    }
+
+    private int adjustScoreEqualToZero(int score) {
+        return score == 0 ? 1 : score;
     }
 }
