@@ -15,13 +15,10 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -60,6 +57,18 @@ public class AnilistCommunicator implements AnimeSiteCommunicator {
         );
     }
 
+    private Map<AnimeTitle, Integer> getRecommendationMap(ResponseEntity<GetUserListAndRecommendations> response) {
+        Set<AnimeTitle> toExclude = getToExclude(response);
+        Map<AnimeTitle, Integer> recommendationMap = new HashMap<>();
+        response.getBody().data().completed().lists().get(0).entries().stream()
+                .map(mapUserTitleToRecommendations())
+                .map(applyExcluding(toExclude))
+                .forEach(entry -> entry.getValue().forEach(
+                        recommendation -> recommendationMap.merge(recommendation, entry.getKey().score(), Integer::sum)
+                ));
+        return recommendationMap;
+    }
+
     private Set<AnimeTitle> getToExclude(ResponseEntity<GetUserListAndRecommendations> response) {
         Stream<AnimeTitle> completed = response.getBody().data().completed().lists().get(0).entries().stream()
                 .map(entries -> Utils.retrieveFromAnilistMedia(entries.media()));
@@ -70,29 +79,24 @@ public class AnilistCommunicator implements AnimeSiteCommunicator {
         return Stream.concat(completed, other).collect(Collectors.toUnmodifiableSet());
     }
 
-    private Map<AnimeTitle, Integer> getRecommendationMap(ResponseEntity<GetUserListAndRecommendations> response) {
-        Set<AnimeTitle> toExclude = getToExclude(response);
-        Map<AnimeTitle, Integer> recommendationMap = new HashMap<>();
-        response.getBody().data().completed().lists().get(0).entries().stream()
-                .map(mapUserTitleToRecommendations(toExclude))
-                .forEach(entry -> entry.getValue().forEach(
-                        recommendation -> recommendationMap.merge(recommendation, entry.getKey().score(), Integer::sum)
-                ));
-        return recommendationMap;
-    }
-
-    private Function<Completed.CompletedList.Entries, Map.Entry<UserAnimeTitle, Set<AnimeTitle>>> mapUserTitleToRecommendations(Set<AnimeTitle> toExclude) {
+    private Function<Completed.CompletedList.Entries, Map.Entry<UserAnimeTitle, Stream<AnimeTitle>>> mapUserTitleToRecommendations() {
         return entries -> Map.entry(
-                new UserAnimeTitle(Utils.retrieveFromAnilistMedia(entries.media()), adjustScoreEqualToZero(entries.score())),
+                new UserAnimeTitle(Utils.retrieveFromAnilistMedia(entries.media()), entries.score() == 0 ? 1 : entries.score()),
                 entries.media().recommendations().nodes().stream()
-                        .filter(nodes -> nodes.mediaRecommendation() != null && nodes.rating() > 0)
+                        .filter(filterInvalidRecommendations())
                         .map(nodes -> Utils.retrieveFromAnilistMedia(nodes.mediaRecommendation()))
-                        .filter(title -> !toExclude.contains(title))
-                        .collect(Collectors.toUnmodifiableSet())
         );
     }
 
-    private int adjustScoreEqualToZero(int score) {
-        return score == 0 ? 1 : score;
+    private Predicate<Completed.CompletedList.Entries.Media.Recommendations.Nodes> filterInvalidRecommendations() {
+        return nodes -> nodes.mediaRecommendation() != null && nodes.rating() > 0;
+    }
+
+    private Function<Map.Entry<UserAnimeTitle, Stream<AnimeTitle>>, Map.Entry<UserAnimeTitle, Stream<AnimeTitle>>> applyExcluding(Set<AnimeTitle> toExclude) {
+        return entry -> Map.entry(
+                entry.getKey(),
+                entry.getValue()
+                        .filter(Predicate.not(toExclude::contains))
+        );
     }
 }
