@@ -1,0 +1,79 @@
+version: '2.1'
+services:
+  discovery:
+    healthcheck:
+      test: [ "CMD", "wget", "--no-verbose", "http://localhost:8080/actuator/health" ]
+      interval: 10s
+      timeout: 20s
+      retries: 5
+    build: discovery
+    environment:
+      SERVER_PORT: 8080
+    ports:
+      - "8761:8080"
+  recommendator:
+    healthcheck:
+      test: [ "CMD", "wget", "--no-verbose", "http://localhost:8080/actuator/health" ]
+      interval: 10s
+      timeout: 20s
+      retries: 5
+    build: recommendator
+    environment:
+      SERVER_PORT: 8080
+      EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: http://discovery:8080/eureka/
+    ports:
+      - "8081:8080"
+    depends_on:
+      discovery:
+        condition: service_healthy
+  mal:
+    healthcheck:
+      test: [ "CMD", "wget", "--no-verbose", "http://localhost:8080/actuator/health" ]
+      interval: 10s
+      timeout: 20s
+      retries: 5
+    build: mal
+    environment:
+      SERVER_PORT: 8080
+      EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: http://discovery:8080/eureka/
+    ports:
+      - "8082:8080"
+    depends_on:
+      discovery:
+        condition: service_healthy
+      recommendator:
+        condition: service_healthy
+  shikimori:
+    healthcheck:
+      test: [ "CMD", "wget", "--no-verbose", "http://localhost:8080/actuator/health" ]
+      interval: 10s
+      timeout: 20s
+      retries: 5
+    build: shikimori
+    environment:
+      SERVER_PORT: 8080
+      EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: http://discovery:8080/eureka/
+    ports:
+      - "8083:8080"
+    depends_on:
+      discovery:
+        condition: service_healthy
+      recommendator:
+        condition: service_healthy
+  anilist:
+    healthcheck:
+      test: [ "CMD", "wget", "--no-verbose", "http://localhost:8080/actuator/health" ]
+      interval: 10s
+      timeout: 20s
+      retries: 5
+    build: anilist
+    environment:
+      SERVER_PORT: 8080
+      EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: http://discovery:8080/eureka/
+    ports:
+      - "8084:8080"
+    depends_on:
+      discovery:
+        condition: service_healthy
+      recommendator:
+        condition: service_healthy
