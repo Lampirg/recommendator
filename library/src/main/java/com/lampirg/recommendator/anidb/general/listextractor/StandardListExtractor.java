@@ -42,18 +42,18 @@ public abstract class StandardListExtractor implements UserListExtractor {
                 .limit(LIMIT_SIZE).collect(Collectors.toSet());
     }
 
-    protected Set<UserAnimeTitle> getUserCompletedAnimeList(String username) {
+    public final Set<UserAnimeTitle> getUserCompletedAnimeList(String username) {
         return getUserAnimeList(username, "completed");
     }
-    protected Set<UserAnimeTitle> getUserWatchingAnimeList(String username) {
+    public final Set<UserAnimeTitle> getUserWatchingAnimeList(String username) {
         return getUserAnimeList(username, "watching");
     }
-    protected Set<UserAnimeTitle> getUserDroppedAnimeList(String username) {
+    public final Set<UserAnimeTitle> getUserDroppedAnimeList(String username) {
         return getUserAnimeList(username, "dropped");
     }
-    protected Set<UserAnimeTitle> getUserOnHoldAnimeList(String username) {
+    public final Set<UserAnimeTitle> getUserOnHoldAnimeList(String username) {
         return getUserAnimeList(username, "on_hold");
     }
 
-    public abstract Set<UserAnimeTitle> getUserAnimeList(String username, String listType);
+    protected abstract Set<UserAnimeTitle> getUserAnimeList(String username, String listType);
 }
