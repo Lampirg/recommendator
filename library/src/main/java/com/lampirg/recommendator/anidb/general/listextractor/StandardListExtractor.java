@@ -43,17 +43,17 @@ public abstract class StandardListExtractor implements UserListExtractor {
     }
 
     public final Set<UserAnimeTitle> getUserCompletedAnimeList(String username) {
-        return getUserAnimeList(username, "completed");
+        return getUserAnimeList(username, ListType.COMPLETED);
     }
     public final Set<UserAnimeTitle> getUserWatchingAnimeList(String username) {
-        return getUserAnimeList(username, "watching");
+        return getUserAnimeList(username, ListType.WATCHING);
     }
     public final Set<UserAnimeTitle> getUserDroppedAnimeList(String username) {
-        return getUserAnimeList(username, "dropped");
+        return getUserAnimeList(username, ListType.DROPPED);
     }
     public final Set<UserAnimeTitle> getUserOnHoldAnimeList(String username) {
-        return getUserAnimeList(username, "on_hold");
+        return getUserAnimeList(username, ListType.ON_HOLD);
     }
 
-    protected abstract Set<UserAnimeTitle> getUserAnimeList(String username, String listType);
+    protected abstract Set<UserAnimeTitle> getUserAnimeList(String username, ListType listType);
 }

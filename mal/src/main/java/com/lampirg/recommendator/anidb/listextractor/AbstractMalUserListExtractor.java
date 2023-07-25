@@ -1,6 +1,7 @@
 package com.lampirg.recommendator.anidb.listextractor;
 
 import com.lampirg.recommendator.anidb.Utils;
+import com.lampirg.recommendator.anidb.general.listextractor.ListType;
 import com.lampirg.recommendator.anidb.general.listextractor.StandardListExtractor;
 import com.lampirg.recommendator.anidb.general.listextractor.UserListExtractor;
 import com.lampirg.recommendator.anidb.json.Data;
@@ -24,8 +25,9 @@ public abstract class AbstractMalUserListExtractor extends StandardListExtractor
     @Override
     public abstract void setUser(String username);
 
-    public Set<UserAnimeTitle> getUserAnimeList(String username, String listType) {
-        return userListFinder.findUserList(username, listType).stream()
+    @Override
+    public Set<UserAnimeTitle> getUserAnimeList(String username, ListType listType) {
+        return userListFinder.findUserList(username, listType.getDefaultValue()).stream()
                 .map(AbstractMalUserListExtractor::adjustDataWithScoreEqualToZero)
                 .map(data -> new UserAnimeTitle(
                         Utils.retrieveFromMalNode(data.node()),

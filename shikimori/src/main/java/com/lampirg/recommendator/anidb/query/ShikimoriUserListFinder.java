@@ -19,7 +19,7 @@ public class ShikimoriUserListFinder {
     public List<ShikiUserNode> findUserList(String username, String listType) {
         List<ShikiUserNode> dataList = new ArrayList<>();
         int page = 1;
-        int limit = 100;
+        int limit = 100; // bigger limit is not supported by shikimori API
         while (true) {
             String queryUrl = "https://shikimori.one/api/users/"+username+"/anime_rates?status="+listType+"&censored=false&limit="+limit+"&page="+page;
             ResponseEntity<List<ShikiUserNode>> response = queryMaker.exchange(
