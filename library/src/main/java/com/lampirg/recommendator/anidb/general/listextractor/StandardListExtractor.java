@@ -1,6 +1,7 @@
 package com.lampirg.recommendator.anidb.general.listextractor;
 
 import com.lampirg.recommendator.anidb.titles.model.UserAnimeTitle;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpEntity;
 
 import java.util.*;
@@ -9,32 +10,21 @@ import java.util.stream.Stream;
 
 public abstract class StandardListExtractor implements UserListExtractor {
 
-    protected String username;
-    protected Set<UserAnimeTitle> completed;
-    protected Set<UserAnimeTitle> watching;
-    protected Set<UserAnimeTitle> dropped;
-    protected Set<UserAnimeTitle> onHold;
+    private Map<ListType, Set<UserAnimeTitle>> userAnimeLists;
 
     private final static int LIMIT_SIZE = 50;
 
     @Override
-    public void setUser(String username) {
-        this.username = username;
-        completed = getUserCompletedAnimeList(username);
-        watching = getUserWatchingAnimeList(username);
-        dropped = getUserDroppedAnimeList(username);
-        onHold = getUserOnHoldAnimeList(username);
-    }
-
-    @Override
-    public Set<UserAnimeTitle> getToExclude() {
-        return Stream.of(completed, watching, dropped, onHold)
+    public Set<UserAnimeTitle> getToExclude(String username) {
+        initializeUserIfEmpty(username);
+        return userAnimeLists.values().stream()
                 .flatMap(Set::stream).collect(Collectors.toSet());
     }
 
     @Override
-    public Set<UserAnimeTitle> getToInclude() {
-        return completed.stream()
+    public Set<UserAnimeTitle> getToInclude(String username) {
+        initializeUserIfEmpty(username);
+        return userAnimeLists.get(ListType.COMPLETED).stream()
                 .sorted(
                         Comparator.comparingInt(UserAnimeTitle::score).reversed()
                                 .thenComparing(x -> x.animeTitle().name())
@@ -42,18 +32,28 @@ public abstract class StandardListExtractor implements UserListExtractor {
                 .limit(LIMIT_SIZE).collect(Collectors.toSet());
     }
 
-    protected Set<UserAnimeTitle> getUserCompletedAnimeList(String username) {
-        return getUserAnimeList(username, "completed");
-    }
-    protected Set<UserAnimeTitle> getUserWatchingAnimeList(String username) {
-        return getUserAnimeList(username, "watching");
-    }
-    protected Set<UserAnimeTitle> getUserDroppedAnimeList(String username) {
-        return getUserAnimeList(username, "dropped");
-    }
-    protected Set<UserAnimeTitle> getUserOnHoldAnimeList(String username) {
-        return getUserAnimeList(username, "on_hold");
+    private void initializeUserIfEmpty(String username) {
+        if (userAnimeLists != null)
+            return;
+        userAnimeLists = new HashMap<>(4);
+        userAnimeLists.put(ListType.COMPLETED, getUserCompletedAnimeList(username));
+        userAnimeLists.put(ListType.WATCHING, getUserWatchingAnimeList(username));
+        userAnimeLists.put(ListType.DROPPED, getUserDroppedAnimeList(username));
+        userAnimeLists.put(ListType.ON_HOLD, getUserOnHoldAnimeList(username));
     }
 
-    public abstract Set<UserAnimeTitle> getUserAnimeList(String username, String listType);
+    public final Set<UserAnimeTitle> getUserCompletedAnimeList(String username) {
+        return getUserAnimeList(username, ListType.COMPLETED);
+    }
+    public final Set<UserAnimeTitle> getUserWatchingAnimeList(String username) {
+        return getUserAnimeList(username, ListType.WATCHING);
+    }
+    public final Set<UserAnimeTitle> getUserDroppedAnimeList(String username) {
+        return getUserAnimeList(username, ListType.DROPPED);
+    }
+    public final Set<UserAnimeTitle> getUserOnHoldAnimeList(String username) {
+        return getUserAnimeList(username, ListType.ON_HOLD);
+    }
+
+    protected abstract Set<UserAnimeTitle> getUserAnimeList(String username, ListType listType);
 }

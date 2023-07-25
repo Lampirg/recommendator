@@ -62,7 +62,7 @@ public class TestRecommendationsFinder {
                                 "https://shikimori.one" + json.get(1).image().original()
                         )
                 ),
-                shikimoriRecommendationsFinder.getRecommendations(titles.get(2))
+                shikimoriRecommendationsFinder.findRecommendations(titles.get(2))
         );
     }
 }

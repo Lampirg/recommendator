@@ -28,16 +28,15 @@ public class TestListExtractor {
 
     @Test
     void testToIncludeAndToExclude() {
-        Mockito.when(extractor.getUserAnimeList("lampirg", "completed"))
+        Mockito.when(extractor.getUserCompletedAnimeList("lampirg"))
                 .thenReturn(Set.of(titles.get(0)));
-        Mockito.when(extractor.getUserAnimeList("lampirg", "watching"))
+        Mockito.when(extractor.getUserWatchingAnimeList("lampirg"))
                 .thenReturn(Set.of(titles.get(1)));
-        Mockito.when(extractor.getUserAnimeList("lampirg", "dropped"))
+        Mockito.when(extractor.getUserDroppedAnimeList("lampirg"))
                 .thenReturn(Set.of(titles.get(2)));
-        Mockito.when(extractor.getUserAnimeList("lampirg", "on_hold"))
+        Mockito.when(extractor.getUserOnHoldAnimeList("lampirg"))
                 .thenReturn(Set.of(titles.get(3)));
-        extractor.setUser("lampirg");
-        Assertions.assertEquals(new HashSet<>(titles), extractor.getToExclude());
-        Assertions.assertEquals(Set.of(titles.get(0)), extractor.getToInclude());
+        Assertions.assertEquals(new HashSet<>(titles), extractor.getToExclude("lampirg"));
+        Assertions.assertEquals(Set.of(titles.get(0)), extractor.getToInclude("lampirg"));
     }
 }

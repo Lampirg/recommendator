@@ -35,7 +35,7 @@ public class ShikimoriTitleMapper extends IterativeTitleMapper implements TitleM
 
     @Override
     protected void findAndAddTitleRecommendations(UserAnimeTitle title) {
-        Set<AnimeTitle> recommendedTitles = recommendationsFinder.getRecommendations(title.animeTitle());
+        Set<AnimeTitle> recommendedTitles = recommendationsFinder.findRecommendations(title.animeTitle());
         for (AnimeTitle animeTitle : recommendedTitles) {
             if (getToExclude().contains(animeTitle))
                 continue;

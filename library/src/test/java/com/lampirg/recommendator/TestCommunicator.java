@@ -36,8 +36,8 @@ public class TestCommunicator {
 
     @Test
     void findTitles() {
-        Mockito.when(userListExtractor.getToInclude()).thenReturn(titles);
-        Mockito.when(userListExtractor.getToExclude()).thenReturn(Set.of());
+        Mockito.when(userListExtractor.getToInclude("lampirg")).thenReturn(titles);
+        Mockito.when(userListExtractor.getToExclude("lampirg")).thenReturn(Set.of());
         Mockito.when(titleMapper.fillToExclude(Mockito.anySet())).thenReturn(titleMapper);
         Mockito.when(titleMapper.getRecommendedAnimeMap(titles))
                 .thenReturn(getMapFromSet(titles));

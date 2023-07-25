@@ -81,6 +81,8 @@ public class TestTitleMapper {
         Assertions.assertEquals(10, result.get(titles.get(3)));
     }
 
+    // TODO: remake this test as it violate Repeatable principle in F.I.R.S.T. acronym
+    // (also asserting speed using timeout is obviously bad idea; instead probably spy method in Mockito should be used)
     @Test
     @DisplayName("Test second call of getRecommendedAnimeMap method in TitleMapper classes")
     void whenSecondTime() {
@@ -88,12 +90,16 @@ public class TestTitleMapper {
                 .then(onMock -> reccommendations.get((AnimeTitle) onMock.getArgument(0)));
         singleThreadTitleMapper.fillToExclude(Set.of());
         var result = singleThreadTitleMapper.getRecommendedAnimeMap(userTitles);
-        Assertions.assertEquals(result, Assertions.assertTimeoutPreemptively(Duration.ofMillis(1), () -> singleThreadTitleMapper.getRecommendedAnimeMap(userTitles)));
+        Assertions.assertEquals(result, Assertions.assertTimeoutPreemptively(
+                Duration.ofMillis(1), () -> singleThreadTitleMapper.getRecommendedAnimeMap(userTitles)
+        ));
         Assertions.assertEquals(11, result.get(titles.get(2)));
         Assertions.assertEquals(10, result.get(titles.get(3)));
         concurrentTitleMapper.fillToExclude(Set.of());
         result = concurrentTitleMapper.getRecommendedAnimeMap(userTitles);
-        Assertions.assertEquals(result, Assertions.assertTimeoutPreemptively(Duration.ofMillis(1), () -> concurrentTitleMapper.getRecommendedAnimeMap(userTitles)));
+        Assertions.assertEquals(result, Assertions.assertTimeoutPreemptively(
+                Duration.ofMillis(1), () -> concurrentTitleMapper.getRecommendedAnimeMap(userTitles)
+        ));
         Assertions.assertEquals(11, result.get(titles.get(2)));
         Assertions.assertEquals(10, result.get(titles.get(3)));
     }

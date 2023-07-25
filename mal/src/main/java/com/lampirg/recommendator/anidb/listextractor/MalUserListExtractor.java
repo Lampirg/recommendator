@@ -1,6 +1,7 @@
 package com.lampirg.recommendator.anidb.listextractor;
 
 import com.lampirg.recommendator.anidb.Utils;
+import com.lampirg.recommendator.anidb.general.listextractor.ListType;
 import com.lampirg.recommendator.anidb.general.listextractor.StandardListExtractor;
 import com.lampirg.recommendator.anidb.general.listextractor.UserListExtractor;
 import com.lampirg.recommendator.anidb.json.Data;
@@ -12,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public abstract class AbstractMalUserListExtractor extends StandardListExtractor implements UserListExtractor {
+public class MalUserListExtractor extends StandardListExtractor implements UserListExtractor {
 
     private MalUserListFinder userListFinder;
 
@@ -22,11 +23,9 @@ public abstract class AbstractMalUserListExtractor extends StandardListExtractor
     }
 
     @Override
-    public abstract void setUser(String username);
-
-    public Set<UserAnimeTitle> getUserAnimeList(String username, String listType) {
-        return userListFinder.findUserList(username, listType).stream()
-                .map(this::adjustDataWithScoreEqualToZero)
+    protected Set<UserAnimeTitle> getUserAnimeList(String username, ListType listType) {
+        return userListFinder.findUserList(username, listType.getDefaultValue()).stream()
+                .map(MalUserListExtractor::adjustDataWithScoreEqualToZero)
                 .map(data -> new UserAnimeTitle(
                         Utils.retrieveFromMalNode(data.node()),
                         data.listStatus().score()
@@ -34,7 +33,7 @@ public abstract class AbstractMalUserListExtractor extends StandardListExtractor
                 .collect(Collectors.toSet());
     }
 
-    private Data adjustDataWithScoreEqualToZero(Data data) {
+    private static Data adjustDataWithScoreEqualToZero(Data data) {
         if (data.listStatus().score() != 0)
             return data;
         return new Data(data.node(), new ListStatus(1));

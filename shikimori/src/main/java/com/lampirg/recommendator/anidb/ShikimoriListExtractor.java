@@ -1,6 +1,7 @@
 package com.lampirg.recommendator.anidb;
 
 
+import com.lampirg.recommendator.anidb.general.listextractor.ListType;
 import com.lampirg.recommendator.anidb.general.listextractor.StandardListExtractor;
 import com.lampirg.recommendator.anidb.general.listextractor.UserListExtractor;
 import com.lampirg.recommendator.anidb.json.ShikiUserNode;
@@ -25,8 +26,9 @@ public class ShikimoriListExtractor extends StandardListExtractor implements Use
         this.userListFinder = userListFinder;
     }
 
-    public Set<UserAnimeTitle> getUserAnimeList(String username, String listType) {
-        return userListFinder.findUserList(username, listType).stream()
+    @Override
+    public Set<UserAnimeTitle> getUserAnimeList(String username, ListType listType) {
+        return userListFinder.findUserList(username, listType.getDefaultValue()).stream()
                 .map(this::adjustDataWithScoreEqualToZero)
                 .map(shikiUserNode -> new UserAnimeTitle(
                         Utils.retrieveFromShikiNode(shikiUserNode.anime()),

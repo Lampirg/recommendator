@@ -51,7 +51,7 @@ public class TestTitleMapper {
     @Test
     @DisplayName("Test when exclude list is empty")
     void notGivenToExclude() {
-        Mockito.when(shikimoriRecommendationsFinder.getRecommendations(Mockito.any()))
+        Mockito.when(shikimoriRecommendationsFinder.findRecommendations(Mockito.any()))
                 .then(onMock -> recommendations.get((AnimeTitle) onMock.getArgument(0)));
         shikimoriTitleMapper.fillToExclude(Set.of());
         var result = shikimoriTitleMapper.getRecommendedAnimeMap(userTitles);
@@ -62,7 +62,7 @@ public class TestTitleMapper {
     @Test
     @DisplayName("Test when given not empty exclude list")
     void givenToExclude() {
-        Mockito.when(shikimoriRecommendationsFinder.getRecommendations(Mockito.any()))
+        Mockito.when(shikimoriRecommendationsFinder.findRecommendations(Mockito.any()))
                 .then(onMock -> recommendations.get((AnimeTitle) onMock.getArgument(0)));
         shikimoriTitleMapper.fillToExclude(toExclude);
         var result = shikimoriTitleMapper.getRecommendedAnimeMap(userTitles);
@@ -73,7 +73,7 @@ public class TestTitleMapper {
     @Test
     @DisplayName("Test caching")
     void whenSecondTime() {
-        Mockito.when(shikimoriRecommendationsFinder.getRecommendations(Mockito.any()))
+        Mockito.when(shikimoriRecommendationsFinder.findRecommendations(Mockito.any()))
                 .then(onMock -> recommendations.get((AnimeTitle) onMock.getArgument(0)));
         shikimoriTitleMapper.fillToExclude(Set.of());
         var result = shikimoriTitleMapper.getRecommendedAnimeMap(userTitles);

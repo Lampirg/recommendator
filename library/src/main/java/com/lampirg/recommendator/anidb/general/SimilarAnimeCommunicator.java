@@ -31,8 +31,9 @@ public class SimilarAnimeCommunicator implements AnimeSiteCommunicator {
 
     @Override
     public Set<AnimeRecommendation> getSimilarAnimeTitles(String username) {
-        userListExtractor.setUser(username);
-        return getSimilarAnimeTitles(userListExtractor.getToInclude(), userListExtractor.getToExclude());
+        return getSimilarAnimeTitles(
+                userListExtractor.getToInclude(username), userListExtractor.getToExclude(username)
+        );
     }
 
     public Set<AnimeRecommendation> getSimilarAnimeTitles(Set<UserAnimeTitle> animeTitles, Set<UserAnimeTitle> toExclude) {

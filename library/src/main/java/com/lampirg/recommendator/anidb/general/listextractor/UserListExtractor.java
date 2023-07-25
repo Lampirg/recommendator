@@ -6,7 +6,6 @@ import org.springframework.http.HttpEntity;
 import java.util.Set;
 
 public interface UserListExtractor {
-    void setUser(String username);
-    Set<UserAnimeTitle> getToExclude();
-    Set<UserAnimeTitle> getToInclude();
+    Set<UserAnimeTitle> getToExclude(String username);
+    Set<UserAnimeTitle> getToInclude(String username);
 }

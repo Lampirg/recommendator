@@ -47,11 +47,11 @@ public class TestListExtractor {
     @Test
     @DisplayName("Test List Extractor")
     void testListExtractor() {
-        when(shikimoriUserListFinder.findUserList("lampirg", "completed")).thenReturn(completed);
-        when(shikimoriUserListFinder.findUserList("lampirg", "dropped")).thenReturn(dropped);
-        when(shikimoriUserListFinder.findUserList("lampirg", "watching")).thenReturn(watching);
-        when(shikimoriUserListFinder.findUserList("lampirg", "on_hold")).thenReturn(onHold);
-        shikimoriListExtractor.setUser("lampirg");
+        String username = "lampirg";
+        when(shikimoriUserListFinder.findUserList(username, "completed")).thenReturn(completed);
+        when(shikimoriUserListFinder.findUserList(username, "dropped")).thenReturn(dropped);
+        when(shikimoriUserListFinder.findUserList(username, "watching")).thenReturn(watching);
+        when(shikimoriUserListFinder.findUserList(username, "on_hold")).thenReturn(onHold);
         Assertions.assertEquals(
                 completed
                         .stream()
@@ -59,7 +59,7 @@ public class TestListExtractor {
                                 data -> new UserAnimeTitle(new AnimeTitle(data.anime().id(), data.anime().name(), "https://shikimori.one" + data.anime().image().original()), data.score())
                         )
                         .collect(Collectors.toSet()),
-                shikimoriListExtractor.getToInclude()
+                shikimoriListExtractor.getToInclude(username)
         );
         Assertions.assertEquals(
                 Stream.of(dropped, completed, watching, onHold)
@@ -68,7 +68,7 @@ public class TestListExtractor {
                                 data -> new UserAnimeTitle(new AnimeTitle(data.anime().id(), data.anime().name(), "https://shikimori.one" + data.anime().image().original()), data.score())
                         )
                         .collect(Collectors.toSet()),
-                shikimoriListExtractor.getToExclude()
+                shikimoriListExtractor.getToExclude(username)
         );
     }
 }
