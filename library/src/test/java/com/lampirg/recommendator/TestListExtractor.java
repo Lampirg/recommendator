@@ -36,8 +36,7 @@ public class TestListExtractor {
                 .thenReturn(Set.of(titles.get(2)));
         Mockito.when(extractor.getUserOnHoldAnimeList("lampirg"))
                 .thenReturn(Set.of(titles.get(3)));
-        extractor.setUser("lampirg");
-        Assertions.assertEquals(new HashSet<>(titles), extractor.getToExclude());
-        Assertions.assertEquals(Set.of(titles.get(0)), extractor.getToInclude());
+        Assertions.assertEquals(new HashSet<>(titles), extractor.getToExclude("lampirg"));
+        Assertions.assertEquals(Set.of(titles.get(0)), extractor.getToInclude("lampirg"));
     }
 }

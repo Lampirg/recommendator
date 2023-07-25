@@ -16,14 +16,14 @@ public class AnimeCommunicatorConfiguration {
 
     @Bean
     @Mal("single")
-    public SimilarAnimeCommunicator singleThreadMalCommunicator(@Mal("single") UserListExtractor listExtractor,
+    public SimilarAnimeCommunicator singleThreadMalCommunicator(@Mal UserListExtractor listExtractor,
                                                                 @Mal("single") TitleMapper mapper) {
         return attachBeansToCommunicator(new SimilarAnimeCommunicator(), listExtractor, mapper);
     }
 
     @Bean
     @Mal("concurrent")
-    public SimilarAnimeCommunicator concurrentThreadMalCommunicator(@Mal("concurrent") UserListExtractor listExtractor,
+    public SimilarAnimeCommunicator concurrentThreadMalCommunicator(@Mal UserListExtractor listExtractor,
                                                                     @Mal("concurrent") TitleMapper mapper) {
         return attachBeansToCommunicator(new SimilarAnimeCommunicator(), listExtractor, mapper);
     }

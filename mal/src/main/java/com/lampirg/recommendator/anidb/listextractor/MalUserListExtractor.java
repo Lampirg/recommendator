@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public abstract class AbstractMalUserListExtractor extends StandardListExtractor implements UserListExtractor {
+public class MalUserListExtractor extends StandardListExtractor implements UserListExtractor {
 
     private MalUserListFinder userListFinder;
 
@@ -23,12 +23,9 @@ public abstract class AbstractMalUserListExtractor extends StandardListExtractor
     }
 
     @Override
-    public abstract void setUser(String username);
-
-    @Override
-    public Set<UserAnimeTitle> getUserAnimeList(String username, ListType listType) {
+    protected Set<UserAnimeTitle> getUserAnimeList(String username, ListType listType) {
         return userListFinder.findUserList(username, listType.getDefaultValue()).stream()
-                .map(AbstractMalUserListExtractor::adjustDataWithScoreEqualToZero)
+                .map(MalUserListExtractor::adjustDataWithScoreEqualToZero)
                 .map(data -> new UserAnimeTitle(
                         Utils.retrieveFromMalNode(data.node()),
                         data.listStatus().score()
