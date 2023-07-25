@@ -27,7 +27,7 @@ public class ShikimoriRecommendationsFinder implements AnimeRecommendationsCache
     }
 
     @Cacheable("shikimori-recommendations")
-    public Set<AnimeTitle> getRecommendations(AnimeTitle title) {
+    public Set<AnimeTitle> findRecommendations(AnimeTitle title) {
         String url = "https://shikimori.one/api/animes/"+title.id()+"/similar";
         ResponseEntity<List<ShikiNode>> response = queryMaker.exchange(url, HttpMethod.GET, new ParameterizedTypeReference<>() {});
         Set<AnimeTitle> recommendedTitles = new HashSet<>();
