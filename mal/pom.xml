@@ -16,6 +16,7 @@
 	<properties>
 		<java.version>17</java.version>
 		<spring-cloud.version>2021.0.7</spring-cloud.version>
+		<library.version>0.0.2-SNAPSHOT</library.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -69,7 +70,7 @@
 		<dependency>
 			<groupId>com.lampirg</groupId>
 			<artifactId>library</artifactId>
-			<version>${project.version}</version>
+			<version>${library.version}</version>
 		</dependency>
 
 	</dependencies>
