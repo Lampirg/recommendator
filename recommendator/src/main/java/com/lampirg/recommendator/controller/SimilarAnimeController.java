@@ -16,6 +16,7 @@ public class SimilarAnimeController {
         this.restTemplate = restTemplate;
     }
 
+    // TODO: replace get request with post request
     @GetMapping
     public ResponseEntity<?> getSimilarAnime(@RequestBody Request request) {
         return restTemplate.getForEntity(
