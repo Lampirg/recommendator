@@ -2,6 +2,7 @@ package com.lampirg.recommendator.controller;
 
 import com.lampirg.recommendator.anidb.titles.model.AnimeRecommendationList;
 import com.lampirg.recommendator.model.Request;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -16,11 +17,10 @@ public class SimilarAnimeController {
         this.restTemplate = restTemplate;
     }
 
-    // TODO: replace get request with post request
     @GetMapping
-    public ResponseEntity<?> getSimilarAnime(@RequestBody Request request) {
+    public ResponseEntity<?> getSimilarAnime(@RequestHeader String service, @RequestHeader String username) {
         return restTemplate.getForEntity(
-                getUrl(request.service(), request.username()),
+                getUrl(service, username),
                 AnimeRecommendationList.class
         );
     }
