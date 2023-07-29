@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Main page</title>
+</head>
+<body>
+<form method="POST" th:action="@{/recommend}" id="request" th:object="${request}">
+    <label for="username">Username: </label>
+    <input type="text" name="username" id="username" th:field="*{username}" required autofocus/><br/>
+
+    <select th:field="*{service}" required>
+        <option value="">Choose service</option>
+        <option th:each="value : ${services}" th:value="${value.name}" th:text="${value.beautyName}"></option>
+<!--        <option value="mal">My Anime List</option>-->
+<!--        <option value="shiki">Shikimori</option>-->
+<!--        <option value="anilist">Anilist</option>-->
+    </select>
+
+    <input type="submit" value="Find recommendations"/>
+</form>
+</body>
+</html>

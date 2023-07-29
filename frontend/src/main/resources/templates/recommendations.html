@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Recommendations</title>
+</head>
+<body>
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Number of recommendations</th>
+    </tr>
+    <tr th:each="recommendation : ${list}">
+        <td th:text="${recommendation.title.name}"></td>
+        <td th:text="${recommendation.numOfRecommendations}"></td>
+        <td><img th:src="${recommendation.title.imageUrl}" alt="Error while loading image"></td>
+    </tr>
+</table>
+</body>
+</html>

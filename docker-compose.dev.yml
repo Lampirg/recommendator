@@ -77,3 +77,20 @@ services:
         condition: service_healthy
       recommendator:
         condition: service_healthy
+  frontend:
+    healthcheck:
+      test: [ "CMD", "wget", "--no-verbose", "http://localhost:8080/actuator/health" ]
+      interval: 10s
+      timeout: 20s
+      retries: 5
+    build: frontend
+    environment:
+      SERVER_PORT: 8080
+      EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: http://discovery:8080/eureka/
+    ports:
+      - "8085:8080"
+    depends_on:
+      discovery:
+        condition: service_healthy
+      recommendator:
+        condition: service_healthy
