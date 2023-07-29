@@ -14,6 +14,7 @@
     <tr th:each="recommendation : ${list}">
         <td th:text="${recommendation.title.name}"></td>
         <td th:text="${recommendation.numOfRecommendations}"></td>
+        <td><img th:src="${recommendation.title.imageUrl}" alt="Error while loading image"></td>
     </tr>
 </table>
 </body>
