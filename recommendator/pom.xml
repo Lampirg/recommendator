@@ -64,7 +64,7 @@
 		<dependency>
 			<groupId>com.lampirg</groupId>
 			<artifactId>library</artifactId>
-			<version>${project.version}</version>
+			<version>0.0.2-SNAPSHOT</version>
 		</dependency>
 
 	</dependencies>
