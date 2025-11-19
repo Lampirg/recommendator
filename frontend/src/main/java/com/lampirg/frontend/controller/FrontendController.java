@@ -25,19 +25,12 @@ import java.util.Map;
 public class FrontendController {
 
     private final AnimeRecommendationService communicator;
-    
-    @Value("recommend")
-    private String connectingServiceName;
-
-    public void setConnectingServiceName(String connectingServiceName) {
-        this.connectingServiceName = connectingServiceName;
-    }
 
     @GetMapping
     public String mainPage(Model model) {
         model.addAttribute("services", Arrays.stream(Services.values()).toList());
         model.addAttribute("request", new Request());
-        return "/main";
+        return "main";
     }
 
     @PostMapping
@@ -48,7 +41,7 @@ public class FrontendController {
                 "username", List.of(request.getUsername())
         ));
         AnimeRecommendationList list = communicator.getAnimeRecommendationList(headers);
-        ModelAndView mav = new ModelAndView("/recommendations");
+        ModelAndView mav = new ModelAndView("recommendations");
         mav.addObject("list", list.animeRecommendations());
         return mav;
     }
