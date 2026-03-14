@@ -1,22 +1,35 @@
 services:
+  library:
+    image: lampirg/library:0.0.1
+    build:
+      context: library
+      target: build
   discovery:
+    image: lampirg/discovery:0.0.1
     healthcheck:
       test: [ "CMD", "wget", "--no-verbose", "http://localhost:8080/actuator/health" ]
       interval: 10s
       timeout: 20s
       retries: 5
-    build: discovery
+    build:
+      context: discovery
+      additional_contexts:
+        animerecommendator-library: service:library
     environment:
       SERVER_PORT: 8080
     ports:
       - "8761:8080"
   recommendator:
+    image: lampirg/recommendator:0.0.1
     healthcheck:
       test: [ "CMD", "wget", "--no-verbose", "http://localhost:8080/actuator/health" ]
       interval: 10s
       timeout: 20s
       retries: 5
-    build: recommendator
+    build:
+      context: recommendator
+      additional_contexts:
+        animerecommendator-library: service:library
     environment:
       SERVER_PORT: 8080
       EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: http://discovery:8080/eureka/
@@ -26,12 +39,16 @@ services:
       discovery:
         condition: service_healthy
   mal:
+    image: lampirg/mal:0.0.1
     healthcheck:
       test: [ "CMD", "wget", "--no-verbose", "http://localhost:8080/actuator/health" ]
       interval: 10s
       timeout: 20s
       retries: 5
-    build: mal
+    build:
+      context: mal
+      additional_contexts:
+        animerecommendator-library: service:library
     environment:
       SERVER_PORT: 8080
       EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: http://discovery:8080/eureka/
@@ -43,12 +60,16 @@ services:
       recommendator:
         condition: service_healthy
   shikimori:
+    image: lampirg/shikimori:0.0.1
     healthcheck:
       test: [ "CMD", "wget", "--no-verbose", "http://localhost:8080/actuator/health" ]
       interval: 10s
       timeout: 20s
       retries: 5
-    build: shikimori
+    build:
+      context: shikimori
+      additional_contexts:
+        animerecommendator-library: service:library
     environment:
       SERVER_PORT: 8080
       EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: http://discovery:8080/eureka/
@@ -60,12 +81,16 @@ services:
       recommendator:
         condition: service_healthy
   anilist:
+    image: lampirg/anilist:0.0.1
     healthcheck:
       test: [ "CMD", "wget", "--no-verbose", "http://localhost:8080/actuator/health" ]
       interval: 10s
       timeout: 20s
       retries: 5
-    build: anilist
+    build:
+      context: anilist
+      additional_contexts:
+        animerecommendator-library: service:library
     environment:
       SERVER_PORT: 8080
       EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: http://discovery:8080/eureka/
@@ -77,12 +102,16 @@ services:
       recommendator:
         condition: service_healthy
   frontend:
+    image: lampirg/frontend:0.0.1
     healthcheck:
       test: [ "CMD", "wget", "--no-verbose", "http://localhost:8080/actuator/health" ]
       interval: 10s
       timeout: 20s
       retries: 5
-    build: frontend
+    build:
+      context: frontend
+      additional_contexts:
+        animerecommendator-library: service:library
     environment:
       SERVER_PORT: 8080
       EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: http://discovery:8080/eureka/
