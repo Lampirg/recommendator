@@ -85,6 +85,7 @@
 	</dependencyManagement>
 
 	<build>
+		<finalName>shikimori</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
