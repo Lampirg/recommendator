@@ -65,4 +65,8 @@
 
 	</dependencies>
 
+	<build>
+		<finalName>library</finalName>
+	</build>
+
 </project>
